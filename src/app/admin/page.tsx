@@ -611,7 +611,8 @@ function DesignTab({ content, updateDesign }: any) {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('/api/upload', {
+      // Usar endpoint especial para logo que guarda con nombre fijo
+      const response = await fetch('/api/upload-logo', {
         method: 'POST',
         body: formData,
       });
@@ -622,7 +623,7 @@ function DesignTab({ content, updateDesign }: any) {
         throw new Error(data.error || 'Error al subir el archivo');
       }
 
-      // Actualizar estado local (se sincroniza automáticamente al contexto)
+      // Actualizar estado local con la URL fija del logo
       const newDesign = { ...design, logo: data.url };
       setDesign(newDesign);
     } catch (error: any) {
