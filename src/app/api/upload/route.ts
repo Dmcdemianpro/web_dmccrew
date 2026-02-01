@@ -7,6 +7,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File | null
+    const saveAs = formData.get('saveAs') as string | null
 
     if (!file) {
       return NextResponse.json(
@@ -33,33 +34,40 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Crear nombre único para el archivo
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
+    const ext = path.extname(file.name).toLowerCase() || '.png'
 
-    // Obtener extensión original y crear nombre único
-    const ext = path.extname(file.name) || '.png'
-    const timestamp = Date.now()
-    const randomStr = Math.random().toString(36).substring(2, 8)
-    const fileName = `img-${timestamp}-${randomStr}${ext}`
+    let filePath: string
+    let publicUrl: string
 
-    // Asegurar que existe la carpeta uploads
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
-    if (!existsSync(uploadsDir)) {
-      await mkdir(uploadsDir, { recursive: true })
+    // Si saveAs es "logo", guardar como /public/logo.ext (reemplaza el anterior)
+    if (saveAs === 'logo') {
+      const fileName = `logo${ext}`
+      filePath = path.join(process.cwd(), 'public', fileName)
+      publicUrl = `/${fileName}?v=${Date.now()}`
+    } else {
+      // Guardar en uploads con nombre único
+      const timestamp = Date.now()
+      const randomStr = Math.random().toString(36).substring(2, 8)
+      const fileName = `img-${timestamp}-${randomStr}${ext}`
+
+      const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
+      if (!existsSync(uploadsDir)) {
+        await mkdir(uploadsDir, { recursive: true })
+      }
+
+      filePath = path.join(uploadsDir, fileName)
+      publicUrl = `/uploads/${fileName}`
     }
 
     // Guardar archivo
-    const filePath = path.join(uploadsDir, fileName)
     await writeFile(filePath, buffer)
-
-    // Retornar la URL pública del archivo (estática desde /public/uploads)
-    const publicUrl = `/uploads/${fileName}`
 
     return NextResponse.json({
       success: true,
       url: publicUrl,
-      fileName: fileName
+      fileName: path.basename(filePath)
     })
 
   } catch (error) {

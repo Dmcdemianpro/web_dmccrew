@@ -610,9 +610,9 @@ function DesignTab({ content, updateDesign }: any) {
     try {
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('saveAs', 'logo');
 
-      // Usar endpoint especial para logo que guarda con nombre fijo
-      const response = await fetch('/api/upload-logo', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
