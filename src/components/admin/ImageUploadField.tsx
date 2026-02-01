@@ -121,7 +121,7 @@ export function ImageUploadField({
       {mode === "url" && (
         <div className="relative">
           <input
-            type="url"
+            type="text"
             value={value}
             onChange={(e) => onChange(e.target.value)}
             className="admin-input w-full pr-10"
