@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File | null
-    const saveAs = formData.get('saveAs') as string | null
+    const targetPath = formData.get('targetPath') as string | null
 
     if (!file) {
       return NextResponse.json(
@@ -36,18 +36,35 @@ export async function POST(request: NextRequest) {
 
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
-    const ext = path.extname(file.name).toLowerCase() || '.png'
 
     let filePath: string
     let publicUrl: string
 
-    // Si saveAs es "logo", guardar como /public/logo.ext (reemplaza el anterior)
-    if (saveAs === 'logo') {
-      const fileName = `logo${ext}`
-      filePath = path.join(process.cwd(), 'public', fileName)
-      publicUrl = `/${fileName}?v=${Date.now()}`
+    // Si hay targetPath, guardar en esa ruta (reemplaza el archivo existente)
+    if (targetPath && targetPath.startsWith('/')) {
+      // Limpiar query params si existen (ej: /logo.png?v=123 -> /logo.png)
+      const cleanPath = targetPath.split('?')[0]
+
+      // Seguridad: solo permitir rutas dentro de public
+      if (cleanPath.includes('..')) {
+        return NextResponse.json(
+          { error: 'Ruta no válida' },
+          { status: 400 }
+        )
+      }
+
+      filePath = path.join(process.cwd(), 'public', cleanPath)
+
+      // Asegurar que el directorio existe
+      const dir = path.dirname(filePath)
+      if (!existsSync(dir)) {
+        await mkdir(dir, { recursive: true })
+      }
+
+      publicUrl = `${cleanPath}?v=${Date.now()}`
     } else {
-      // Guardar en uploads con nombre único
+      // Sin targetPath: guardar en uploads con nombre único
+      const ext = path.extname(file.name).toLowerCase() || '.png'
       const timestamp = Date.now()
       const randomStr = Math.random().toString(36).substring(2, 8)
       const fileName = `img-${timestamp}-${randomStr}${ext}`
@@ -61,7 +78,7 @@ export async function POST(request: NextRequest) {
       publicUrl = `/uploads/${fileName}`
     }
 
-    // Guardar archivo
+    // Guardar archivo (sobrescribe si existe)
     await writeFile(filePath, buffer)
 
     return NextResponse.json({

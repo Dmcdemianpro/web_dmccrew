@@ -610,7 +610,7 @@ function DesignTab({ content, updateDesign }: any) {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('saveAs', 'logo');
+      formData.append('targetPath', '/logo.png');
 
       const response = await fetch('/api/upload', {
         method: 'POST',
@@ -623,8 +623,8 @@ function DesignTab({ content, updateDesign }: any) {
         throw new Error(data.error || 'Error al subir el archivo');
       }
 
-      // Actualizar estado local - siempre usar /logo.png con cache buster
-      const newDesign = { ...design, logo: `/logo.png?v=${Date.now()}` };
+      // Actualizar estado con la URL retornada (incluye cache buster)
+      const newDesign = { ...design, logo: data.url };
       setDesign(newDesign);
     } catch (error: any) {
       setUploadError(error.message || 'Error al subir el archivo');
