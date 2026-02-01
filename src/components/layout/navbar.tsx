@@ -47,7 +47,7 @@ export function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <img
-                src={content.design?.logo || "/logo.png"}
+                src={content.design?.logo?.startsWith('http') ? content.design.logo : "/logo.png"}
                 alt={content.siteName || "DMC Projects"}
                 className="h-8 sm:h-10 w-auto max-w-[160px] object-contain"
               />

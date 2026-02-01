@@ -623,8 +623,8 @@ function DesignTab({ content, updateDesign }: any) {
         throw new Error(data.error || 'Error al subir el archivo');
       }
 
-      // Actualizar estado local con la URL fija del logo
-      const newDesign = { ...design, logo: data.url };
+      // Actualizar estado local - siempre usar /logo.png con cache buster
+      const newDesign = { ...design, logo: `/logo.png?v=${Date.now()}` };
       setDesign(newDesign);
     } catch (error: any) {
       setUploadError(error.message || 'Error al subir el archivo');

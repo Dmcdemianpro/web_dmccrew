@@ -47,7 +47,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
               <img
-                src={content.design?.logo || "/logo.png"}
+                src={content.design?.logo?.startsWith('http') ? content.design.logo : "/logo.png"}
                 alt={content.siteName || "DMC Projects"}
                 className="h-12 w-auto max-w-[140px] object-contain"
               />
