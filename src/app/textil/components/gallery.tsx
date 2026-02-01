@@ -54,7 +54,7 @@ export function TextilGallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
   // Use content gallery if available and has items with URLs, otherwise use default
-  const gallery = content.textilGallery?.length > 0 && content.textilGallery[0]?.url?.startsWith('http')
+  const gallery = content.textilGallery?.length > 0 && content.textilGallery[0]?.url
     ? content.textilGallery
     : defaultGallery;
 

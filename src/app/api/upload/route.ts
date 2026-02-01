@@ -1,6 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile } from 'fs/promises'
+import { mkdir, writeFile } from 'fs/promises'
+import { existsSync } from 'fs'
 import path from 'path'
+
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+
+// Mapeo simple para extraer extensión desde el tipo MIME cuando el nombre del archivo no la trae
+const mimeToExt: Record<string, string> = {
+  'image/png': '.png',
+  'image/jpeg': '.jpg',
+  'image/jpg': '.jpg',
+  'image/gif': '.gif',
+  'image/webp': '.webp',
+  'image/svg+xml': '.svg',
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validar tipo de archivo
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp', 'image/svg+xml']
+    const allowedTypes = Object.keys(mimeToExt)
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
         { error: 'Tipo de archivo no permitido. Use PNG, JPG, GIF, WebP o SVG.' },
@@ -35,16 +49,29 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // SIEMPRE guardar como logo.png - solución simple y directa
-    const filePath = path.join(process.cwd(), 'public', 'logo.png')
+    // Asegurar carpeta /public/uploads existe
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
+    if (!existsSync(uploadsDir)) {
+      await mkdir(uploadsDir, { recursive: true })
+    }
+
+    // Generar nombre de archivo seguro y único
+    const originalExt = path.extname(file.name).toLowerCase() || mimeToExt[file.type] || '.png'
+    const baseName = path
+      .basename(file.name, path.extname(file.name))
+      .replace(/[^a-zA-Z0-9_-]/g, '-')
+      .toLowerCase() || 'upload'
+    const fileName = `${Date.now()}-${baseName}${originalExt}`
+    const filePath = path.join(uploadsDir, fileName)
+
     await writeFile(filePath, buffer)
 
-    const publicUrl = `/logo.png?v=${Date.now()}`
+    const publicUrl = `/uploads/${fileName}`
 
     return NextResponse.json({
       success: true,
       url: publicUrl,
-      fileName: 'logo.png'
+      fileName,
     })
 
   } catch (error) {

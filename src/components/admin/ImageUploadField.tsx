@@ -57,6 +57,7 @@ export function ImageUploadField({
         throw new Error(data.error || "Error al subir el archivo");
       }
 
+      // Guardamos la URL tal cual para que el consumo sea coherente con el rewrite
       onChange(data.url);
     } catch (error: any) {
       setUploadError(error.message || "Error al subir el archivo");
