@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { mkdir, writeFile } from 'fs/promises'
 import { existsSync } from 'fs'
 import path from 'path'
+import { put } from '@vercel/blob'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -49,12 +50,6 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Asegurar carpeta /public/uploads existe
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
-    if (!existsSync(uploadsDir)) {
-      await mkdir(uploadsDir, { recursive: true })
-    }
-
     // Generar nombre de archivo seguro y único
     const originalExt = path.extname(file.name).toLowerCase() || mimeToExt[file.type] || '.png'
     const baseName = path
@@ -62,15 +57,16 @@ export async function POST(request: NextRequest) {
       .replace(/[^a-zA-Z0-9_-]/g, '-')
       .toLowerCase() || 'upload'
     const fileName = `${Date.now()}-${baseName}${originalExt}`
-    const filePath = path.join(uploadsDir, fileName)
 
-    await writeFile(filePath, buffer)
-
-    const publicUrl = `/uploads/${fileName}`
+    // Subir a Vercel Blob (persistente)
+    const { url } = await put(fileName, buffer, {
+      access: 'public',
+      contentType: file.type,
+    })
 
     return NextResponse.json({
       success: true,
-      url: publicUrl,
+      url,
       fileName,
     })
 
