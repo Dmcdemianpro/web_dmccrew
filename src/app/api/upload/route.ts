@@ -1,19 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { existsSync } from 'fs'
+import { writeFile } from 'fs/promises'
 import path from 'path'
 
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File | null
-    const targetPath = formData.get('targetPath') as string | null
-
-    // DEBUG: Log para ver qué recibe el servidor
-    console.log('=== UPLOAD DEBUG ===')
-    console.log('targetPath recibido:', targetPath)
-    console.log('file name:', file?.name)
-    console.log('====================')
 
     if (!file) {
       return NextResponse.json(
@@ -43,54 +35,16 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    let filePath: string
-    let publicUrl: string
-
-    // Si hay targetPath, guardar en esa ruta (reemplaza el archivo existente)
-    if (targetPath && targetPath.startsWith('/')) {
-      // Limpiar query params si existen (ej: /logo.png?v=123 -> /logo.png)
-      const cleanPath = targetPath.split('?')[0]
-
-      // Seguridad: solo permitir rutas dentro de public
-      if (cleanPath.includes('..')) {
-        return NextResponse.json(
-          { error: 'Ruta no válida' },
-          { status: 400 }
-        )
-      }
-
-      filePath = path.join(process.cwd(), 'public', cleanPath)
-
-      // Asegurar que el directorio existe
-      const dir = path.dirname(filePath)
-      if (!existsSync(dir)) {
-        await mkdir(dir, { recursive: true })
-      }
-
-      publicUrl = `${cleanPath}?v=${Date.now()}`
-    } else {
-      // Sin targetPath: guardar en uploads con nombre único
-      const ext = path.extname(file.name).toLowerCase() || '.png'
-      const timestamp = Date.now()
-      const randomStr = Math.random().toString(36).substring(2, 8)
-      const fileName = `img-${timestamp}-${randomStr}${ext}`
-
-      const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
-      if (!existsSync(uploadsDir)) {
-        await mkdir(uploadsDir, { recursive: true })
-      }
-
-      filePath = path.join(uploadsDir, fileName)
-      publicUrl = `/uploads/${fileName}`
-    }
-
-    // Guardar archivo (sobrescribe si existe)
+    // SIEMPRE guardar como logo.png - solución simple y directa
+    const filePath = path.join(process.cwd(), 'public', 'logo.png')
     await writeFile(filePath, buffer)
+
+    const publicUrl = `/logo.png?v=${Date.now()}`
 
     return NextResponse.json({
       success: true,
       url: publicUrl,
-      fileName: path.basename(filePath)
+      fileName: 'logo.png'
     })
 
   } catch (error) {
