@@ -693,7 +693,7 @@ function DesignTab({ content, updateDesign }: any) {
           <div>
             <label className="block text-sm text-gray-400 mb-2">URL del Logo/Icono</label>
             <input
-              type="url"
+              type="text"
               value={design.logo}
               onChange={(e) => setDesign({ ...design, logo: e.target.value })}
               className="admin-input w-full"
@@ -1475,7 +1475,7 @@ function ContactTab({ content, updateContact }: any) {
           <div>
             <label className="block text-sm text-gray-400 mb-2">Instagram URL</label>
             <input
-              type="url"
+              type="text"
               value={contact.instagram}
               onChange={(e) => setContact({ ...contact, instagram: e.target.value })}
               className="admin-input w-full"
@@ -1485,7 +1485,7 @@ function ContactTab({ content, updateContact }: any) {
           <div>
             <label className="block text-sm text-gray-400 mb-2">Facebook URL</label>
             <input
-              type="url"
+              type="text"
               value={contact.facebook}
               onChange={(e) => setContact({ ...contact, facebook: e.target.value })}
               className="admin-input w-full"
@@ -1495,7 +1495,7 @@ function ContactTab({ content, updateContact }: any) {
           <div>
             <label className="block text-sm text-gray-400 mb-2">LinkedIn URL</label>
             <input
-              type="url"
+              type="text"
               value={contact.linkedin}
               onChange={(e) => setContact({ ...contact, linkedin: e.target.value })}
               className="admin-input w-full"
