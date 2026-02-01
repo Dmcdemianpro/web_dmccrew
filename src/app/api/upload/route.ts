@@ -9,6 +9,12 @@ export async function POST(request: NextRequest) {
     const file = formData.get('file') as File | null
     const targetPath = formData.get('targetPath') as string | null
 
+    // DEBUG: Log para ver qué recibe el servidor
+    console.log('=== UPLOAD DEBUG ===')
+    console.log('targetPath recibido:', targetPath)
+    console.log('file name:', file?.name)
+    console.log('====================')
+
     if (!file) {
       return NextResponse.json(
         { error: 'No se recibió ningún archivo' },
