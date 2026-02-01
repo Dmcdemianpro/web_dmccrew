@@ -610,9 +610,9 @@ function DesignTab({ content, updateDesign }: any) {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('targetPath', '/logo.png');
 
-      const response = await fetch('/api/upload', {
+      // Endpoint dedicado para logo - siempre guarda como /logo.png
+      const response = await fetch('/api/logo', {
         method: 'POST',
         body: formData,
       });
