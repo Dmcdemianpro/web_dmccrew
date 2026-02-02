@@ -339,7 +339,9 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     const loadContent = async () => {
       try {
         // Intentar cargar desde el servidor primero
-        const response = await fetch('/api/content')
+        const response = await fetch('/api/content', {
+          credentials: 'include',
+        })
         const serverData = await response.json()
 
         if (serverData && !serverData.error) {
@@ -543,6 +545,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       const response = await fetch('/api/content', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(content),
       })
 
