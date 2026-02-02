@@ -420,7 +420,14 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       setIsAuthenticated(true)
       localStorage.setItem('dmcAdminAuth', 'true')
       // Cookie para que las API detecten sesión (solo bandera, no es seguridad fuerte)
-      document.cookie = 'dmcAdminAuth=true; path=/; max-age=604800'
+      if (typeof window !== 'undefined') {
+        const host = window.location.hostname
+        const isLocal = host === 'localhost' || host === '127.0.0.1'
+        const rootDomain = host.split('.').slice(-2).join('.')
+        const domainPart = isLocal ? '' : `; domain=.${rootDomain}`
+        const securePart = window.location.protocol === 'https:' ? '; Secure' : ''
+        document.cookie = `dmcAdminAuth=true; Path=/; Max-Age=604800; SameSite=Lax${domainPart}${securePart}`
+      }
       return true
     }
     return false
@@ -429,7 +436,14 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setIsAuthenticated(false)
     localStorage.removeItem('dmcAdminAuth')
-    document.cookie = 'dmcAdminAuth=; Max-Age=0; path=/'
+    if (typeof window !== 'undefined') {
+      const host = window.location.hostname
+      const isLocal = host === 'localhost' || host === '127.0.0.1'
+      const rootDomain = host.split('.').slice(-2).join('.')
+      const domainPart = isLocal ? '' : `; domain=.${rootDomain}`
+      const securePart = window.location.protocol === 'https:' ? '; Secure' : ''
+      document.cookie = `dmcAdminAuth=; Path=/; Max-Age=0; SameSite=Lax${domainPart}${securePart}`
+    }
   }
 
   // Funciones para actualizar contenido
