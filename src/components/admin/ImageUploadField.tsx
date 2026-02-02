@@ -50,6 +50,7 @@ export function ImageUploadField({
         method: "POST",
         body: formData,
         credentials: 'include',
+        headers: { 'x-admin-auth': 'true' },
       });
 
       const data = await response.json();

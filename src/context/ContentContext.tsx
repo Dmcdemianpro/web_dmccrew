@@ -558,7 +558,10 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     try {
       const response = await fetch('/api/content', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-auth': 'true',
+        },
         credentials: 'include',
         body: JSON.stringify(content),
       })
