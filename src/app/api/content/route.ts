@@ -83,9 +83,10 @@ export async function POST(request: NextRequest) {
   try {
     await ensureDirs();
 
-    // Autenticación simple basada en cookie (mismo flag que el admin)
+    // Autenticación simple basada en cookie o header (mismo flag que el admin)
     const cookie = request.headers.get('cookie') || ''
-    const isAuth = cookie.includes('dmcAdminAuth=true')
+    const headerAuth = request.headers.get('x-admin-auth')
+    const isAuth = cookie.includes('dmcAdminAuth=true') || headerAuth === 'true'
     if (!isAuth) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

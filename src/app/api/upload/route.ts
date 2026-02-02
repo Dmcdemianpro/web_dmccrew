@@ -21,9 +21,10 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData()
     const file = formData.get('file') as File | null
 
-    // Autenticación simple basada en cookie del admin
+    // Autenticación simple basada en cookie o header
     const cookie = request.headers.get('cookie') || ''
-    const isAuth = cookie.includes('dmcAdminAuth=true')
+    const headerAuth = request.headers.get('x-admin-auth')
+    const isAuth = cookie.includes('dmcAdminAuth=true') || headerAuth === 'true'
     if (!isAuth) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
