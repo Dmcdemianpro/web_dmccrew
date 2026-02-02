@@ -27,8 +27,9 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid path' }, { status: 400 })
     }
 
-    // Construir ruta al archivo
-    const filePath = path.join(process.cwd(), 'public', 'uploads', fileName)
+    // Construir ruta al archivo (usar DATA_DIR igual que upload)
+    const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), 'data')
+    const filePath = path.join(DATA_DIR, 'uploads', fileName)
 
     // Verificar que existe
     if (!existsSync(filePath)) {
