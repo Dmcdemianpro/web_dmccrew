@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 
-const CONTENT_FILE = path.join(process.cwd(), "data", "content.json");
+// Directorio externo persistente
+const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), 'data')
+const CONTENT_DIR = path.join(DATA_DIR, 'content')
+const TMP_DIR = path.join(DATA_DIR, 'tmp')
+const CONTENT_FILE = path.join(CONTENT_DIR, "site.json");
 
 // Función para detectar URLs de placeholder rotas
 function isBrokenPlaceholderUrl(value: unknown): boolean {
@@ -42,13 +46,9 @@ function cleanBrokenUrls<T>(obj: T): T {
 }
 
 // Ensure data directory exists
-async function ensureDataDir() {
-  const dataDir = path.join(process.cwd(), "data");
-  try {
-    await fs.access(dataDir);
-  } catch {
-    await fs.mkdir(dataDir, { recursive: true });
-  }
+async function ensureDirs() {
+  await fs.mkdir(CONTENT_DIR, { recursive: true });
+  await fs.mkdir(TMP_DIR, { recursive: true });
 }
 
 // GET - Load content from JSON file
@@ -57,7 +57,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
-    await ensureDataDir();
+    await ensureDirs();
 
     try {
       const content = await fs.readFile(CONTENT_FILE, "utf-8");
@@ -81,7 +81,14 @@ export async function GET() {
 // POST - Save content to JSON file
 export async function POST(request: NextRequest) {
   try {
-    await ensureDataDir();
+    await ensureDirs();
+
+    // Autenticación simple basada en cookie (mismo flag que el admin)
+    const cookie = request.headers.get('cookie') || ''
+    const isAuth = cookie.includes('dmcAdminAuth=true')
+    if (!isAuth) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
     const content = await request.json();
 
@@ -96,8 +103,11 @@ export async function POST(request: NextRequest) {
     // Limpiar URLs de placeholder rotas antes de guardar
     const cleanedContent = cleanBrokenUrls(content);
 
-    // Save content to file
-    await fs.writeFile(CONTENT_FILE, JSON.stringify(cleanedContent, null, 2), "utf-8");
+    // Write safely: tmp then rename (atomic)
+    const tmpPath = path.join(TMP_DIR, `site-${Date.now()}.tmp`)
+    const data = JSON.stringify(cleanedContent, null, 2)
+    await fs.writeFile(tmpPath, data, 'utf-8')
+    await fs.rename(tmpPath, CONTENT_FILE)
 
     return NextResponse.json({ success: true, message: "Content saved successfully" });
   } catch (error) {

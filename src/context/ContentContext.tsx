@@ -417,6 +417,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
       setIsAuthenticated(true)
       localStorage.setItem('dmcAdminAuth', 'true')
+      // Cookie para que las API detecten sesión (solo bandera, no es seguridad fuerte)
+      document.cookie = 'dmcAdminAuth=true; path=/; max-age=604800'
       return true
     }
     return false
@@ -425,6 +427,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setIsAuthenticated(false)
     localStorage.removeItem('dmcAdminAuth')
+    document.cookie = 'dmcAdminAuth=; Max-Age=0; path=/'
   }
 
   // Funciones para actualizar contenido
