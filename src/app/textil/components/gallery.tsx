@@ -115,15 +115,15 @@ export function TextilGallery() {
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-[#ff0040]/30 bg-[#ff0040]/10 text-[#ff0040] text-sm font-bold mb-6"
+            className="tag-racing mb-6"
           >
             <Camera className="w-4 h-4" />
             Nuestros Trabajos
           </motion.span>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6" style={{ fontFamily: "var(--font-display)" }}>
             Galeria{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff0040] to-[#ff6600]">
+            <span className="title-gradient-animated">
               Urban
             </span>
           </h2>
@@ -131,6 +131,8 @@ export function TextilGallery() {
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Explora nuestros trabajos mas recientes y dejate inspirar
           </p>
+
+          <div className="divider-racing mt-8" />
         </motion.div>
 
         {/* Masonry Grid */}
@@ -142,7 +144,8 @@ export function TextilGallery() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className={`relative group cursor-pointer overflow-hidden rounded-xl ${
+              whileHover={{ scale: 1.02 }}
+              className={`relative group cursor-pointer gallery-image-racing ${
                 index === 0 || index === 5 ? 'row-span-2' : ''
               }`}
               onClick={() => openLightbox(index)}
@@ -156,24 +159,21 @@ export function TextilGallery() {
                 />
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
 
                 {/* Zoom Icon */}
                 <motion.div
                   initial={{ scale: 0 }}
                   whileHover={{ scale: 1 }}
-                  className="absolute top-4 right-4 w-10 h-10 bg-[#ff0040] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
+                  className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-r from-[#ff0040] to-[#ff6600] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 neon-glow"
                 >
                   <ZoomIn className="w-5 h-5 text-white" />
                 </motion.div>
 
                 {/* Caption */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-white font-bold text-sm">{item.caption}</p>
+                <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+                  <p className="text-white font-bold text-sm" style={{ fontFamily: "var(--font-display)" }}>{item.caption}</p>
                 </div>
-
-                {/* Border Glow on Hover */}
-                <div className="absolute inset-0 border-2 border-[#ff0040]/0 group-hover:border-[#ff0040]/50 rounded-xl transition-colors duration-300" />
               </div>
             </motion.div>
           ))}

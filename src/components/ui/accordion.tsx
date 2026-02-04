@@ -72,12 +72,14 @@ interface AccordionTriggerProps {
   children: React.ReactNode;
   className?: string;
   value: string;
+  style?: React.CSSProperties;
 }
 
 function AccordionTrigger({
   children,
   className,
   value,
+  style,
 }: AccordionTriggerProps) {
   const context = React.useContext(AccordionContext);
   if (!context) throw new Error("AccordionTrigger must be used within Accordion");
@@ -92,6 +94,7 @@ function AccordionTrigger({
         "flex w-full items-center justify-between py-4 font-medium transition-all hover:text-brand [&[data-state=open]>svg]:rotate-180",
         className
       )}
+      style={style}
       aria-expanded={isOpen}
       data-state={isOpen ? "open" : "closed"}
     >

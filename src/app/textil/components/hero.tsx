@@ -19,20 +19,20 @@ export function TextilHero() {
 
   return (
     <section ref={containerRef} className="theme-textil relative min-h-screen flex items-center overflow-hidden">
-      {/* Video/Image Background with Parallax */}
+      {/* Background Image with Parallax */}
       <motion.div style={{ scale }} className="absolute inset-0 -z-20">
         <motion.div
-          style={{ y }}
+          style={{
+            y,
+            backgroundImage: `url(https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1920&q=80)`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
           className="absolute inset-0"
-        >
-          <img
-            src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80"
-            alt="Urban Streetwear Store"
-            className="w-full h-full object-cover"
-          />
-        </motion.div>
-        {/* Lighter overlay to show image */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50" />
+        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/60" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30" />
       </motion.div>
 
@@ -171,7 +171,7 @@ export function TextilHero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#ff0040]/50 bg-black/50 backdrop-blur-sm text-[#ff0040] text-sm font-bold">
+            <span className="tag-racing text-sm">
               <motion.span
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
@@ -182,15 +182,16 @@ export function TextilHero() {
             </span>
           </motion.div>
 
-          {/* Animated Title */}
+          {/* Animated Title with Glitch Effect */}
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mt-8 text-5xl sm:text-7xl lg:text-9xl font-black tracking-tighter leading-none"
+            style={{ fontFamily: "var(--font-display)" }}
           >
             <motion.span
-              className="block text-white"
+              className="block text-white relative glitch-text-urban neon-text-intense"
               animate={{
                 textShadow: [
                   "0 0 20px rgba(255,0,64,0)",
@@ -199,13 +200,20 @@ export function TextilHero() {
                 ]
               }}
               transition={{ duration: 2, repeat: Infinity }}
+              data-text="PERSONALIZA"
             >
               PERSONALIZA
             </motion.span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#ff0040] via-[#ff6600] to-[#ff0040] bg-[length:200%_auto] animate-gradient">
+            <motion.span
+              className="block title-gradient-animated relative glitch-text-urban"
+              data-text="TU ESTILO"
+            >
               TU ESTILO
-            </span>
+            </motion.span>
           </motion.h1>
+
+          {/* Scanlines overlay for urban effect */}
+          <div className="absolute inset-0 pointer-events-none scanlines-overlay opacity-[0.03]" />
 
           {/* Description with Highlight */}
           <motion.p
@@ -242,16 +250,22 @@ export function TextilHero() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 cursor-pointer hover:border-[#ff0040]/50 transition-all duration-300"
+                whileHover={{
+                  scale: 1.05,
+                  y: -5,
+                  rotateX: 5,
+                  rotateY: -5
+                }}
+                className="group relative card-racing card-3d-tilt glow-corners p-4 cursor-pointer"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#ff0040]/0 to-[#ff6600]/0 group-hover:from-[#ff0040]/10 group-hover:to-[#ff6600]/10 rounded-xl transition-all duration-300" />
+                {/* Shine Element */}
+                <div className="card-shine" />
                 <div className="relative flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#ff0040] to-[#ff6600] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#ff0040] to-[#ff6600] flex items-center justify-center icon-float-animated">
                     <stat.icon className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#ff0040] to-[#ff6600]">
+                    <div className="text-2xl font-black title-gradient-animated" style={{ fontFamily: "var(--font-display)" }}>
                       {stat.value}
                     </div>
                     <div className="text-xs text-gray-400">{stat.label}</div>
@@ -274,28 +288,16 @@ export function TextilHero() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 overflow-hidden rounded-xl font-bold text-lg text-white transition-all duration-300"
+              className="btn-racing shine-effect-auto"
             >
-              {/* Animated Background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#ff0040] to-[#ff6600]" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#ff6600] to-[#ff0040] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              {/* Shine Effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000" />
-              </div>
-              {/* Glow */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#ff0040] to-[#ff6600] rounded-xl blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
-
-              <span className="relative flex items-center gap-2">
-                <MessageCircle className="h-5 w-5" />
-                Cotizar por WhatsApp
-              </span>
+              <MessageCircle className="h-5 w-5" />
+              Cotizar por WhatsApp
             </motion.a>
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="#catalogo"
-                className="group inline-flex items-center justify-center gap-2 px-10 py-5 border-2 border-white/20 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:border-[#ff0040] hover:bg-[#ff0040]/10 backdrop-blur-sm"
+                className="btn-racing-outline group"
               >
                 Ver Catalogo
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-2" />

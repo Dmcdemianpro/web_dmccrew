@@ -73,15 +73,15 @@ export function TextilServices() {
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-[#ff0040]/30 bg-[#ff0040]/10 text-[#ff0040] text-sm font-bold mb-6"
+            className="tag-racing mb-6"
           >
             <Sparkles className="w-4 h-4" />
             Catalogo de Productos
           </motion.span>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6" style={{ fontFamily: "var(--font-display)" }}>
             Nuestros{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff0040] to-[#ff6600]">
+            <span className="title-gradient-animated">
               Productos
             </span>
           </h2>
@@ -89,6 +89,8 @@ export function TextilServices() {
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Personalizamos todo tipo de prendas con tecnologia DTF de ultima generacion
           </p>
+
+          <div className="divider-racing mt-8" />
         </motion.div>
 
         {/* Services Grid */}
@@ -100,15 +102,22 @@ export function TextilServices() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -15 }}
-              className="group relative"
+              whileHover={{
+                y: -15,
+                rotateX: 5,
+                rotateY: -5
+              }}
+              className="group relative card-3d-tilt"
             >
               {/* Glow Effect on Hover */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff0040] to-[#ff6600] rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
 
-              <div className="relative bg-[#111] rounded-2xl overflow-hidden border border-white/5 group-hover:border-[#ff0040]/30 transition-all duration-500">
+              <div className="relative card-racing glow-corners rounded-2xl overflow-hidden">
+                {/* Shine Element */}
+                <div className="card-shine" />
+
                 {/* Image */}
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative h-64 overflow-hidden gallery-image-racing">
                   <motion.img
                     src={service.image}
                     alt={service.title}
@@ -119,7 +128,7 @@ export function TextilServices() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent" />
 
                   {/* Features Tags */}
-                  <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                  <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
                     {service.features.map((feature, i) => (
                       <motion.span
                         key={i}
@@ -127,7 +136,7 @@ export function TextilServices() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.1 + i * 0.1 }}
-                        className="px-2 py-1 text-xs font-bold bg-black/50 backdrop-blur-sm border border-[#ff0040]/30 text-[#ff0040] rounded"
+                        className="tag-racing"
                       >
                         {feature}
                       </motion.span>
@@ -138,17 +147,17 @@ export function TextilServices() {
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     whileHover={{ scale: 1, opacity: 1 }}
-                    className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                   >
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[#ff0040] to-[#ff6600] flex items-center justify-center">
-                      <Shirt className="w-8 h-8 text-white" />
+                    <div className="icon-racing">
+                      <Shirt className="w-8 h-8" />
                     </div>
                   </motion.div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#ff0040] transition-colors">
+                <div className="p-6 relative z-10">
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#ff0040] transition-colors" style={{ fontFamily: "var(--font-display)" }}>
                     {service.title}
                   </h3>
                   <p className="text-gray-400 text-sm mb-4 line-clamp-2">
@@ -161,6 +170,7 @@ export function TextilServices() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-[#ff0040] font-bold text-sm group-hover:gap-3 transition-all"
+                    style={{ fontFamily: "var(--font-display)" }}
                   >
                     Cotizar ahora
                     <ArrowRight className="w-4 h-4" />
@@ -190,7 +200,7 @@ export function TextilServices() {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white font-bold text-lg rounded-xl transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,0,64,0.4)]"
+            className="btn-racing shine-effect-auto"
           >
             <Star className="w-5 h-5" />
             Consulta Personalizada

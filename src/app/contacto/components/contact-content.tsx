@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Mail,
   Phone,
@@ -12,6 +12,9 @@ import {
   Heart,
   Shirt,
   Send,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
 } from "lucide-react";
 import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
@@ -29,20 +32,65 @@ const topics: { value: TopicType; label: string; icon: React.ComponentType<{ cla
   { value: "general", label: "Consulta General", icon: Mail },
 ];
 
+interface FormStatus {
+  type: "idle" | "loading" | "success" | "error";
+  message: string;
+}
+
 export function ContactContent() {
   const searchParams = useSearchParams();
   const initialTopic = (searchParams.get("tema") as TopicType) || "general";
   const [topic, setTopic] = useState<TopicType>(initialTopic);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState<FormStatus>({ type: "idle", message: "" });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    alert("Mensaje enviado. Te contactaremos pronto.");
+    setFormStatus({ type: "loading", message: "Enviando mensaje..." });
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const data = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      company: formData.get("company") as string,
+      topic,
+      message: formData.get("message") as string,
+      garment: formData.get("garment") as string,
+      quantity: formData.get("quantity") as string,
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setFormStatus({
+          type: "success",
+          message: result.message || "Mensaje enviado correctamente. Te contactaremos pronto.",
+        });
+        form.reset();
+      } else {
+        setFormStatus({
+          type: "error",
+          message: result.error || "Error al enviar el mensaje. Intenta de nuevo.",
+        });
+      }
+    } catch {
+      setFormStatus({
+        type: "error",
+        message: "Error de conexión. Por favor intenta de nuevo o contáctanos por WhatsApp.",
+      });
+    }
   };
+
+  const isSubmitting = formStatus.type === "loading";
 
   return (
     <Section className="pt-32">
@@ -207,7 +255,10 @@ export function ContactContent() {
                   variant={topic === "salud" ? "salud" : topic === "textil" ? "textil" : "default"}
                 >
                   {isSubmitting ? (
-                    "Enviando..."
+                    <>
+                      <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                      Enviando...
+                    </>
                   ) : (
                     <>
                       <Send className="h-5 w-5 mr-2" />
@@ -215,6 +266,48 @@ export function ContactContent() {
                     </>
                   )}
                 </Button>
+
+                {/* Status Messages */}
+                <AnimatePresence mode="wait">
+                  {formStatus.type === "success" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="flex items-start gap-3 p-4 rounded-lg bg-green-500/10 border border-green-500/20"
+                    >
+                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-green-500 font-medium">Mensaje enviado</p>
+                        <p className="text-sm text-green-400/80 mt-1">{formStatus.message}</p>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {formStatus.type === "error" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="flex items-start gap-3 p-4 rounded-lg bg-red-500/10 border border-red-500/20"
+                    >
+                      <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-red-500 font-medium">Error al enviar</p>
+                        <p className="text-sm text-red-400/80 mt-1">{formStatus.message}</p>
+                        <a
+                          href={getWhatsAppLink(topic === "salud" ? "salud" : "textilCotizar")}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 mt-3 text-sm text-[#25D366] hover:underline"
+                        >
+                          <MessageCircle className="h-4 w-4" />
+                          Contactar por WhatsApp
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </form>
             </div>
           </motion.div>

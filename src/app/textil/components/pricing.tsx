@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Section, SectionHeader } from "@/components/ui/section";
 
 const pricingTiers = [
   { quantity: "1-10", time: "3-5 días hábiles" },
@@ -18,42 +17,70 @@ const highlights = [
 
 export function TextilPricing() {
   return (
-    <Section className="bg-muted/50">
-      <SectionHeader
-        title="Volúmenes y Tiempos de Entrega"
-        subtitle="Nos adaptamos a tus necesidades, desde pedidos pequeños hasta mayoristas"
+    <section className="theme-textil py-16 md:py-24 relative overflow-hidden">
+      {/* Dark Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] to-[#111]" />
+      <div className="absolute inset-0 urban-pattern opacity-10" />
+
+      {/* Animated Orbs */}
+      <motion.div
+        className="absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full bg-[#ff0040]/10 blur-[120px]"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{ duration: 8, repeat: Infinity }}
       />
 
-      <div className="max-w-4xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2
+            className="text-3xl font-bold tracking-tight sm:text-4xl text-white mb-4"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Volúmenes y Tiempos de{" "}
+            <span className="title-gradient-animated">Entrega</span>
+          </h2>
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            Nos adaptamos a tus necesidades, desde pedidos pequeños hasta mayoristas
+          </p>
+          <div className="divider-racing mt-6" />
+        </motion.div>
+
         {/* Pricing Table */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-card rounded-xl border border-border overflow-hidden mb-8"
+          className="card-racing p-0 mb-8 overflow-hidden"
         >
-          <table className="w-full">
+          <table className="table-racing">
             <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-6 py-4 text-left font-semibold">Cantidad</th>
-                <th className="px-6 py-4 text-left font-semibold">Tiempo estimado*</th>
+              <tr>
+                <th>Cantidad</th>
+                <th>Tiempo estimado*</th>
               </tr>
             </thead>
             <tbody>
               {pricingTiers.map((tier, index) => (
-                <tr
-                  key={tier.quantity}
-                  className={index !== pricingTiers.length - 1 ? "border-b border-border" : ""}
-                >
-                  <td className="px-6 py-4 font-medium">{tier.quantity}</td>
-                  <td className="px-6 py-4 text-muted-foreground">{tier.time}</td>
+                <tr key={tier.quantity}>
+                  <td className="font-medium text-white" style={{ fontFamily: "var(--font-display)" }}>
+                    {tier.quantity}
+                  </td>
+                  <td>{tier.time}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </motion.div>
 
-        <p className="text-sm text-muted-foreground text-center mb-8">
+        <p className="text-sm text-gray-500 text-center mb-10">
           *Desde aprobación de arte y pago. No incluye despacho.
         </p>
 
@@ -66,15 +93,24 @@ export function TextilPricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-card rounded-xl border border-border p-6 text-center"
+              whileHover={{
+                y: -5,
+                rotateX: 5,
+                rotateY: -5
+              }}
+              className="card-racing card-3d-tilt glow-corners p-6 text-center"
             >
-              <div className="text-sm text-muted-foreground mb-1">{item.label}</div>
-              <div className="text-2xl font-bold text-accent-textil mb-1">{item.value}</div>
-              <div className="text-xs text-muted-foreground">{item.description}</div>
+              {/* Shine Element */}
+              <div className="card-shine" />
+              <div className="relative z-10">
+                <div className="text-sm text-gray-500 mb-1">{item.label}</div>
+                <div className="stat-number-racing text-2xl mb-1">{item.value}</div>
+                <div className="text-xs text-gray-500">{item.description}</div>
+              </div>
             </motion.div>
           ))}
         </div>
       </div>
-    </Section>
+    </section>
   );
 }

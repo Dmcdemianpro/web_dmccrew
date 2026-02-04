@@ -508,3 +508,691 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 5px 20px rgba(163, 22, 33, 0.4);
 }
+
+/* ================================
+   URBAN GLITCH EFFECTS
+   ================================ */
+
+/* Glitch Text Urban - Subtle */
+@keyframes glitch-urban {
+  0%, 90%, 100% {
+    transform: translate(0);
+    text-shadow: none;
+  }
+  91% {
+    transform: translate(-2px, 0);
+    text-shadow: 2px 0 #ff0040, -2px 0 #00ffff;
+  }
+  92% {
+    transform: translate(2px, 0);
+    text-shadow: -2px 0 #ff0040, 2px 0 #00ffff;
+  }
+  93% {
+    transform: translate(0, -1px);
+    text-shadow: 2px 0 #ff6600, -2px 0 #00ffff;
+  }
+  94% {
+    transform: translate(0, 1px);
+    text-shadow: -2px 0 #ff0040, 2px 0 #00ffff;
+  }
+  95% {
+    transform: translate(-1px, 0);
+    text-shadow: 2px 0 #ff0040, -2px 0 #ff6600;
+  }
+}
+
+.glitch-text-urban {
+  position: relative;
+  animation: glitch-urban 5s ease-in-out infinite;
+}
+
+.glitch-text-urban::before,
+.glitch-text-urban::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.glitch-text-urban::before {
+  color: #ff0040;
+  animation: glitch-layer-1 5s ease-in-out infinite;
+}
+
+.glitch-text-urban::after {
+  color: #00ffff;
+  animation: glitch-layer-2 5s ease-in-out infinite;
+}
+
+@keyframes glitch-layer-1 {
+  0%, 90%, 100% {
+    opacity: 0;
+    transform: translate(0);
+  }
+  91%, 94% {
+    opacity: 0.8;
+    transform: translate(-3px, 0);
+    clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+  }
+}
+
+@keyframes glitch-layer-2 {
+  0%, 90%, 100% {
+    opacity: 0;
+    transform: translate(0);
+  }
+  92%, 95% {
+    opacity: 0.8;
+    transform: translate(3px, 0);
+    clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+  }
+}
+
+/* Scanlines Overlay */
+.scanlines-overlay {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+/* Transition utilities for smoother animations */
+.transition-400 {
+  transition-duration: 400ms;
+}
+
+.transition-ease-out {
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ================================
+   TEXTIL RACING/FUTURISTA THEME - ENHANCED
+   ================================ */
+
+/* Variables de fuentes para tema textil */
+.theme-textil {
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
+
+  /* Enhanced Racing Colors */
+  --accent-primary: #ff0040;
+  --accent-secondary: #ff6600;
+  --accent-tertiary: #ff3366;
+  --accent-glow: rgba(255, 0, 64, 0.6);
+
+  /* Enhanced Gradients */
+  --gradient-racing: linear-gradient(135deg, #ff0040, #ff6600);
+  --gradient-dark: linear-gradient(180deg, #0a0a0a 0%, #111111 100%);
+  --gradient-card: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+
+  /* Enhanced Shadows */
+  --shadow-neon: 0 0 20px var(--accent-primary), 0 0 40px var(--accent-glow);
+  --shadow-glow: 0 0 30px var(--accent-glow);
+  --shadow-intense: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px var(--accent-glow);
+}
+
+/* Aplicar fuentes en theme-textil */
+.theme-textil h1,
+.theme-textil h2,
+.theme-textil h3,
+.theme-textil h4,
+.theme-textil h5,
+.theme-textil h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.theme-textil p,
+.theme-textil span:not(.icon-racing *),
+.theme-textil a,
+.theme-textil li,
+.theme-textil label,
+.theme-textil td,
+.theme-textil th {
+  font-family: var(--font-body);
+}
+
+/* ===== ENHANCED GLOW EFFECTS ===== */
+.neon-glow-intense {
+  box-shadow:
+    0 0 10px var(--accent-neon-glow),
+    0 0 20px var(--accent-neon-glow),
+    0 0 40px var(--accent-neon-glow),
+    0 0 80px rgba(255, 0, 64, 0.3);
+}
+
+.neon-text-intense {
+  text-shadow:
+    0 0 10px var(--accent-neon-glow),
+    0 0 20px var(--accent-neon-glow),
+    0 0 40px rgba(255, 0, 64, 0.8),
+    0 0 80px rgba(255, 0, 64, 0.5);
+}
+
+/* ===== ENHANCED SHINE EFFECT ===== */
+@keyframes shine-sweep {
+  0% { left: -100%; }
+  50%, 100% { left: 100%; }
+}
+
+.shine-effect-auto {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect-auto::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shine-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ===== 3D TILT CARD EFFECT ===== */
+.card-3d-tilt {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  will-change: transform;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-3d-tilt:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(10px);
+  box-shadow:
+    -20px 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 30px var(--accent-neon-glow);
+}
+
+/* ===== FLOATING PARTICLES ANIMATION ===== */
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translateY(-30px) translateX(10px) scale(1.2);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-60px) translateX(-10px) scale(1);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translateY(-30px) translateX(20px) scale(0.8);
+    opacity: 0.6;
+  }
+}
+
+.particle-animated {
+  animation: particle-float 6s ease-in-out infinite;
+}
+
+/* ===== GLOW PULSE ANIMATION ===== */
+@keyframes glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 30px var(--accent-glow));
+  }
+  50% {
+    filter: drop-shadow(0 0 50px var(--accent-glow)) drop-shadow(0 0 80px var(--accent-glow));
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* ===== RACING LINE ANIMATION ===== */
+@keyframes racing-line {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.racing-line-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.racing-line-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gradient-racing);
+  animation: racing-line 2s ease-in-out infinite;
+}
+
+/* ===== ENHANCED HOVER CARD ===== */
+.card-racing {
+  position: relative;
+  background: var(--gradient-card);
+  border: 1px solid rgba(255, 0, 64, 0.2);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.card-racing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 0, 64, 0.15) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.card-racing:hover {
+  border-color: var(--accent-neon);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: var(--shadow-intense);
+}
+
+.card-racing:hover::before {
+  opacity: 1;
+}
+
+/* Shine effect on card */
+.card-racing .card-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.8s ease;
+  pointer-events: none;
+}
+
+.card-racing:hover .card-shine {
+  left: 150%;
+}
+
+/* ===== GLOW CORNERS EFFECT ===== */
+.glow-corners {
+  position: relative;
+}
+
+.glow-corners::before,
+.glow-corners::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.glow-corners::before {
+  top: 10px;
+  left: 10px;
+  border-top: 2px solid var(--accent-neon);
+  border-left: 2px solid var(--accent-neon);
+  box-shadow: -5px -5px 20px var(--accent-neon-glow);
+}
+
+.glow-corners::after {
+  bottom: 10px;
+  right: 10px;
+  border-bottom: 2px solid var(--accent-secondary);
+  border-right: 2px solid var(--accent-secondary);
+  box-shadow: 5px 5px 20px rgba(255, 102, 0, 0.5);
+}
+
+.glow-corners:hover::before,
+.glow-corners:hover::after {
+  opacity: 1;
+}
+
+/* ===== BUTTON RACING STYLE ===== */
+.btn-racing {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 40px;
+  background: linear-gradient(135deg, #ff0040, #ff6600);
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.btn-racing::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shine-sweep 3s ease-in-out infinite;
+}
+
+.btn-racing:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 10px 30px rgba(255, 0, 64, 0.4),
+    0 0 60px rgba(255, 0, 64, 0.3);
+}
+
+/* ===== SECONDARY BUTTON RACING ===== */
+.btn-racing-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 40px;
+  background: transparent;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  text-decoration: none;
+}
+
+.btn-racing-outline:hover {
+  border-color: var(--accent-neon);
+  color: var(--accent-neon);
+  background: rgba(255, 0, 64, 0.1);
+  box-shadow: 0 0 30px var(--accent-neon-glow);
+}
+
+/* ===== STATS NUMBER ANIMATION ===== */
+@keyframes stat-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px var(--accent-neon-glow));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 20px var(--accent-neon-glow));
+  }
+}
+
+.stat-number-racing {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff0040, #ff6600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: stat-pulse 3s ease-in-out infinite;
+}
+
+/* ===== ICON WRAPPER RACING ===== */
+.icon-racing {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 0, 64, 0.1);
+  border: 2px solid rgba(255, 0, 64, 0.3);
+  border-radius: 50%;
+  color: var(--accent-neon);
+  transition: all 0.4s ease;
+}
+
+.icon-racing:hover,
+.group:hover .icon-racing {
+  background: linear-gradient(135deg, #ff0040, #ff6600);
+  border-color: transparent;
+  color: white;
+  box-shadow: var(--shadow-neon);
+}
+
+/* ===== TAG RACING STYLE ===== */
+.tag-racing {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: rgba(255, 0, 64, 0.1);
+  border: 1px solid rgba(255, 0, 64, 0.3);
+  border-radius: 20px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-neon);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.tag-racing:hover {
+  background: rgba(255, 0, 64, 0.2);
+  border-color: var(--accent-neon);
+  box-shadow: 0 0 15px var(--accent-neon-glow);
+}
+
+/* ===== SCROLLBAR RACING (Solo para tema textil) ===== */
+.theme-textil::-webkit-scrollbar {
+  width: 8px;
+}
+
+.theme-textil::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+.theme-textil::-webkit-scrollbar-thumb {
+  background: var(--accent-neon);
+  border-radius: 4px;
+}
+
+.theme-textil::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* ===== TITLE GRADIENT ANIMATION ===== */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.title-gradient-animated {
+  background: linear-gradient(90deg, #ff0040, #ff6600, #ff3366, #ff0040);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-x 4s ease infinite;
+}
+
+/* ===== SECTION DIVIDER RACING ===== */
+.divider-racing {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(135deg, #ff0040, #ff6600);
+  margin: 20px auto;
+  border-radius: 2px;
+  box-shadow: var(--shadow-glow);
+  position: relative;
+}
+
+.divider-racing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ff0040, #ff6600);
+  filter: blur(10px);
+  opacity: 0.5;
+}
+
+/* ===== HERO SECTION ENHANCEMENTS ===== */
+.hero-racing-bg {
+  background:
+    radial-gradient(circle at 20% 80%, rgba(255, 0, 64, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 0, 64, 0.05) 0%, transparent 70%),
+    linear-gradient(180deg, #0a0a0a 0%, #111111 100%);
+}
+
+/* ===== SERVICE CARD ICON ANIMATION ===== */
+@keyframes icon-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.icon-float-animated {
+  animation: icon-float 3s ease-in-out infinite;
+}
+
+/* ===== FAQ ACCORDION RACING ===== */
+.accordion-racing {
+  background: rgba(17, 17, 17, 0.8);
+  border: 1px solid rgba(255, 0, 64, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.accordion-racing:hover {
+  border-color: rgba(255, 0, 64, 0.5);
+  box-shadow: 0 0 20px rgba(255, 0, 64, 0.1);
+}
+
+.accordion-racing[data-state="open"] {
+  border-color: var(--accent-neon);
+  box-shadow: 0 0 30px var(--accent-neon-glow);
+}
+
+/* ===== GALLERY IMAGE HOVER ===== */
+.gallery-image-racing {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 0, 64, 0.2);
+  transition: all 0.4s ease;
+}
+
+.gallery-image-racing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 0, 64, 0.3), rgba(255, 102, 0, 0.3));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.gallery-image-racing:hover {
+  border-color: var(--accent-neon);
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px var(--accent-neon-glow);
+}
+
+.gallery-image-racing:hover::after {
+  opacity: 1;
+}
+
+/* ===== PROCESS STEP NUMBER ===== */
+.step-number-racing {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff0040, #ff6600);
+  border-radius: 50%;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  box-shadow: 0 0 30px var(--accent-neon-glow);
+}
+
+/* ===== TABLE RACING STYLE ===== */
+.table-racing {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-racing thead tr {
+  background: rgba(255, 0, 64, 0.1);
+}
+
+.table-racing th {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px;
+  border-bottom: 2px solid rgba(255, 0, 64, 0.3);
+  color: white;
+}
+
+.table-racing td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #b0b0b0;
+}
+
+.table-racing tbody tr {
+  transition: all 0.3s ease;
+}
+
+.table-racing tbody tr:hover {
+  background: rgba(255, 0, 64, 0.05);
+}
+
+.table-racing tbody tr:hover td {
+  color: white;
+}

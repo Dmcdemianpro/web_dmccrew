@@ -8,6 +8,8 @@ import { TextilPricing } from "./components/pricing";
 import { TextilGallery } from "./components/gallery";
 import { TextilFAQ } from "./components/faq";
 import { TextilCTA } from "./components/cta";
+import { ScrollProgress } from "./components/scroll-progress";
+import { Stats } from "./components/stats";
 
 export const metadata: Metadata = {
   title: "Impresión DTF Profesional - Poleras y Uniformes",
@@ -26,6 +28,7 @@ export const metadata: Metadata = {
 export default function TextilPage() {
   return (
     <>
+      <ScrollProgress />
       <TextilHero />
       <TextilWhatIsDTF />
       <TextilServices />
@@ -33,6 +36,7 @@ export default function TextilPage() {
       <TextilRecommendations />
       <TextilPricing />
       <TextilGallery />
+      <Stats />
       <TextilFAQ />
       <TextilCTA />
     </>

@@ -33,14 +33,17 @@ export function TextilCTA() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#ff0040]/50 bg-[#ff0040]/10 text-[#ff0040] text-sm font-medium mb-6"
+              className="tag-racing mb-6"
             >
               <Sparkles className="w-4 h-4" />
               Cotizacion Gratis
             </motion.div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-6">
-              Listo para <span className="text-gradient-neon neon-text">personalizar</span>?
+            <h2
+              className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-6"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Listo para <span className="title-gradient-animated neon-text-intense">personalizar</span>?
             </h2>
 
             <p className="text-lg sm:text-xl text-gray-300 mb-10">
@@ -48,22 +51,26 @@ export function TextilCTA() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <motion.a
                 href={getWhatsAppLink("textilCotizar")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 neon-glow shine-effect"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-racing shine-effect-auto"
               >
                 <MessageCircle className="h-5 w-5" />
                 Cotizar por WhatsApp
-              </a>
-              <Link
-                href="/contacto?tema=textil"
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white/20 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:border-[#ff0040] hover:bg-[#ff0040]/10"
-              >
-                <FileText className="h-5 w-5" />
-                Completar Formulario
-              </Link>
+              </motion.a>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  href="/contacto?tema=textil"
+                  className="btn-racing-outline"
+                >
+                  <FileText className="h-5 w-5" />
+                  Completar Formulario
+                </Link>
+              </motion.div>
             </div>
           </div>
         </motion.div>

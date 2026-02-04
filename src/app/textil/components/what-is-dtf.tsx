@@ -26,13 +26,13 @@ export function TextilWhatIsDTF() {
             transition={{ duration: 0.6 }}
           >
             {/* Badge */}
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#ff0040]/30 bg-[#ff0040]/10 text-[#ff0040] text-xs font-medium mb-6">
+            <span className="tag-racing mb-6">
               <Zap className="w-3 h-3" />
               Tecnologia DTF
             </span>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 text-white">
-              Que es la <span className="text-gradient-neon">impresion DTF</span>?
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 text-white" style={{ fontFamily: "var(--font-display)" }}>
+              Que es la <span className="title-gradient-animated">impresion DTF</span>?
             </h2>
 
             <p className="text-lg text-gray-300 mb-6">
@@ -59,12 +59,14 @@ export function TextilWhatIsDTF() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:border-[#ff0040]/50 transition-colors"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  className="group flex items-center gap-3 p-3 card-racing glow-corners"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#ff0040] to-[#ff6600] flex items-center justify-center">
+                  <div className="card-shine" />
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#ff0040] to-[#ff6600] flex items-center justify-center icon-float-animated relative z-10">
                     <benefit.icon className="h-5 w-5 text-white" />
                   </div>
-                  <span className="text-sm font-medium text-white">{benefit.text}</span>
+                  <span className="text-sm font-medium text-white relative z-10">{benefit.text}</span>
                 </motion.div>
               ))}
             </div>
@@ -99,15 +101,17 @@ export function TextilWhatIsDTF() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.3 + index * 0.1 }}
-                  className="card-urban p-6 hover:border-[#ff0040]/50"
+                  whileHover={{ y: -5, rotateX: 3, rotateY: -3 }}
+                  className="card-racing card-3d-tilt glow-corners p-6"
                 >
-                  <h3 className="font-bold text-white mb-3 flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-gradient-to-br from-[#ff0040] to-[#ff6600] flex items-center justify-center text-xs font-bold">
+                  <div className="card-shine" />
+                  <h3 className="font-bold text-white mb-3 flex items-center gap-2 relative z-10" style={{ fontFamily: "var(--font-display)" }}>
+                    <span className="step-number-racing w-8 h-8 text-sm">
                       {index + 1}
                     </span>
                     {item.title}
                   </h3>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-400 relative z-10">
                     {item.description}
                   </p>
                 </motion.div>

@@ -30,12 +30,17 @@ import {
   Loader2,
   CheckCircle,
   AlertCircle,
+  MessageSquare,
+  Mail,
+  Clock,
+  CheckCheck,
 } from "lucide-react";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 // Tabs disponibles
 const tabs = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "messages", label: "Mensajes", icon: MessageSquare },
   { id: "design", label: "Diseño", icon: Palette },
   { id: "welcome", label: "Bienvenida", icon: Home },
   { id: "hero", label: "Hero", icon: FileText },
@@ -319,6 +324,9 @@ export default function AdminPage() {
               {activeTab === "dashboard" && (
                 <DashboardTab content={content} />
               )}
+              {activeTab === "messages" && (
+                <MessagesTab />
+              )}
               {activeTab === "design" && (
                 <DesignTab
                   content={content}
@@ -386,7 +394,29 @@ export default function AdminPage() {
 
 // Dashboard Tab
 function DashboardTab({ content }: any) {
+  const [visits, setVisits] = useState<{ count: number; lastUpdated: string } | null>(null);
+  const [loadingVisits, setLoadingVisits] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/visits")
+      .then((res) => res.json())
+      .then((data) => {
+        setVisits(data);
+        setLoadingVisits(false);
+      })
+      .catch(() => setLoadingVisits(false));
+  }, []);
+
   const stats = [
+    {
+      label: "Visitas Totales",
+      value: loadingVisits ? "..." : visits?.count || 0,
+      icon: Eye,
+      color: "text-brand",
+      bg: "bg-brand/10",
+      trend: "+12%",
+      trendUp: true,
+    },
     {
       label: "Servicios Salud",
       value: content.saludServices?.length || 0,
@@ -408,13 +438,6 @@ function DashboardTab({ content }: any) {
       color: "text-blue-500",
       bg: "bg-blue-500/10",
     },
-    {
-      label: "Imagenes Galeria",
-      value: content.textilGallery?.length || 0,
-      icon: Camera,
-      color: "text-purple-500",
-      bg: "bg-purple-500/10",
-    },
   ];
 
   const portfolioByType = {
@@ -422,8 +445,39 @@ function DashboardTab({ content }: any) {
     textil: content.portfolio?.filter((p: any) => p.type === "textil").length || 0,
   };
 
+  const totalPortfolio = portfolioByType.salud + portfolioByType.textil;
+  const saludPercent = totalPortfolio > 0 ? (portfolioByType.salud / totalPortfolio) * 100 : 50;
+
   return (
     <div className="space-y-6">
+      {/* Bienvenida */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="admin-card p-6 bg-gradient-to-r from-brand/20 to-transparent border-brand/30"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-2">Bienvenido al Panel de Control</h2>
+            <p className="text-gray-400">
+              Gestiona el contenido de tu sitio web desde aqui. Ultima actualizacion:{" "}
+              {visits?.lastUpdated
+                ? new Date(visits.lastUpdated).toLocaleDateString("es-CL", {
+                    day: "numeric",
+                    month: "short",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "N/A"}
+            </p>
+          </div>
+          <div className="hidden md:flex items-center gap-2">
+            <span className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+            <span className="text-green-500 text-sm font-medium">Sistema Operativo</span>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Estadisticas principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
@@ -432,12 +486,17 @@ function DashboardTab({ content }: any) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="admin-card p-6"
+            className="admin-card p-6 hover:border-white/20 transition-colors"
           >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-400 mb-1">{stat.label}</p>
                 <p className="text-3xl font-bold text-white">{stat.value}</p>
+                {stat.trend && (
+                  <p className={`text-xs mt-1 ${stat.trendUp ? "text-green-500" : "text-red-500"}`}>
+                    {stat.trend} vs mes anterior
+                  </p>
+                )}
               </div>
               <div className={`w-12 h-12 rounded-xl ${stat.bg} flex items-center justify-center`}>
                 <stat.icon className={`w-6 h-6 ${stat.color}`} />
@@ -447,8 +506,9 @@ function DashboardTab({ content }: any) {
         ))}
       </div>
 
-      {/* Informacion general */}
-      <div className="grid md:grid-cols-2 gap-6">
+      {/* Grid de información */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {/* Informacion del Sitio */}
         <div className="admin-card p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <LayoutDashboard className="w-5 h-5 text-brand" />
@@ -461,80 +521,426 @@ function DashboardTab({ content }: any) {
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/10">
               <span className="text-gray-400">Tagline:</span>
-              <span className="text-white font-medium text-sm">{content.siteTagline}</span>
+              <span className="text-white font-medium text-sm text-right max-w-[180px] truncate">
+                {content.siteTagline}
+              </span>
             </div>
-            <div className="flex justify-between items-center py-2">
+            <div className="flex justify-between items-center py-2 border-b border-white/10">
               <span className="text-gray-400">Email:</span>
               <span className="text-white font-medium text-sm">{content.contact.email}</span>
+            </div>
+            <div className="flex justify-between items-center py-2">
+              <span className="text-gray-400">Telefono:</span>
+              <span className="text-white font-medium text-sm">{content.contact.phone}</span>
             </div>
           </div>
         </div>
 
+        {/* Portfolio por Tipo con barra visual */}
         <div className="admin-card p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <FolderOpen className="w-5 h-5 text-brand" />
             Portfolio por Tipo
           </h3>
           <div className="space-y-4">
+            {/* Barra visual */}
+            <div className="h-4 bg-white/10 rounded-full overflow-hidden flex">
+              <div
+                className="h-full bg-green-500 transition-all duration-500"
+                style={{ width: `${saludPercent}%` }}
+              />
+              <div
+                className="h-full bg-[#ff0040] transition-all duration-500"
+                style={{ width: `${100 - saludPercent}%` }}
+              />
+            </div>
+
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
-                  <Heart className="w-5 h-5 text-green-500" />
-                </div>
-                <span className="text-white">Salud Digital</span>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+                <span className="text-gray-400 text-sm">Salud Digital</span>
               </div>
-              <span className="text-2xl font-bold text-white">{portfolioByType.salud}</span>
+              <span className="text-xl font-bold text-white">{portfolioByType.salud}</span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[#ff0040]/10 flex items-center justify-center">
-                  <Shirt className="w-5 h-5 text-[#ff0040]" />
-                </div>
-                <span className="text-white">Textil DTF</span>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-[#ff0040]" />
+                <span className="text-gray-400 text-sm">Textil DTF</span>
               </div>
-              <span className="text-2xl font-bold text-white">{portfolioByType.textil}</span>
+              <span className="text-xl font-bold text-white">{portfolioByType.textil}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Galeria Stats */}
+        <div className="admin-card p-6">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <Camera className="w-5 h-5 text-brand" />
+            Contenido Multimedia
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                  <Camera className="w-5 h-5 text-purple-500" />
+                </div>
+                <div>
+                  <span className="text-white text-sm font-medium">Galeria Textil</span>
+                  <p className="text-xs text-gray-500">Imagenes de productos</p>
+                </div>
+              </div>
+              <span className="text-2xl font-bold text-white">
+                {content.textilGallery?.length || 0}
+              </span>
+            </div>
+            <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                  <Briefcase className="w-5 h-5 text-blue-500" />
+                </div>
+                <div>
+                  <span className="text-white text-sm font-medium">Total Proyectos</span>
+                  <p className="text-xs text-gray-500">En portfolio</p>
+                </div>
+              </div>
+              <span className="text-2xl font-bold text-white">
+                {content.portfolio?.length || 0}
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Accesos rapidos */}
+      {/* Accesos rapidos mejorados */}
       <div className="admin-card p-6">
         <h3 className="text-lg font-semibold text-white mb-4">Accesos Rapidos</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <a
             href="/"
             target="_blank"
-            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-center"
+            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-gradient-to-br from-brand/20 to-brand/5 border border-brand/20 hover:border-brand/40 transition-all text-center group"
           >
-            <Eye className="w-6 h-6 text-brand" />
+            <Eye className="w-6 h-6 text-brand group-hover:scale-110 transition-transform" />
             <span className="text-sm text-white">Ver Sitio</span>
           </a>
           <a
             href="/salud"
             target="_blank"
-            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-center"
+            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/5 border border-green-500/20 hover:border-green-500/40 transition-all text-center group"
           >
-            <Heart className="w-6 h-6 text-green-500" />
+            <Heart className="w-6 h-6 text-green-500 group-hover:scale-110 transition-transform" />
             <span className="text-sm text-white">Salud</span>
           </a>
           <a
             href="/textil"
             target="_blank"
-            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-center"
+            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-gradient-to-br from-[#ff0040]/20 to-[#ff0040]/5 border border-[#ff0040]/20 hover:border-[#ff0040]/40 transition-all text-center group"
           >
-            <Shirt className="w-6 h-6 text-[#ff0040]" />
+            <Shirt className="w-6 h-6 text-[#ff0040] group-hover:scale-110 transition-transform" />
             <span className="text-sm text-white">Textil</span>
+          </a>
+          <a
+            href="/contacto"
+            target="_blank"
+            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-500/20 hover:border-purple-500/40 transition-all text-center group"
+          >
+            <Phone className="w-6 h-6 text-purple-500 group-hover:scale-110 transition-transform" />
+            <span className="text-sm text-white">Contacto</span>
           </a>
           <button
             onClick={() => window.location.reload()}
-            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-center"
+            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-white/5 border border-white/10 hover:border-white/30 transition-all text-center group"
           >
-            <RotateCcw className="w-6 h-6 text-gray-400" />
+            <RotateCcw className="w-6 h-6 text-gray-400 group-hover:scale-110 group-hover:rotate-180 transition-all duration-500" />
             <span className="text-sm text-white">Recargar</span>
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+// Messages Tab - Para ver mensajes de contacto
+function MessagesTab() {
+  const [messages, setMessages] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedMessage, setSelectedMessage] = useState<any>(null);
+
+  useEffect(() => {
+    fetch("/api/messages")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.messages) {
+          setMessages(data.messages.reverse()); // Más recientes primero
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const markAsRead = async (index: number) => {
+    try {
+      await fetch("/api/messages", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ index, read: true }),
+      });
+      setMessages((prev) =>
+        prev.map((m, i) => (i === index ? { ...m, read: true } : m))
+      );
+    } catch (err) {
+      console.error("Error al marcar como leído:", err);
+    }
+  };
+
+  const deleteMessage = async (index: number) => {
+    if (!window.confirm("¿Eliminar este mensaje?")) return;
+    try {
+      await fetch("/api/messages", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ index }),
+      });
+      setMessages((prev) => prev.filter((_, i) => i !== index));
+      if (selectedMessage && messages[index] === selectedMessage) {
+        setSelectedMessage(null);
+      }
+    } catch (err) {
+      console.error("Error al eliminar:", err);
+    }
+  };
+
+  const topicLabels: Record<string, string> = {
+    salud: "Salud Digital",
+    textil: "Textil DTF",
+    general: "General",
+  };
+
+  const topicColors: Record<string, string> = {
+    salud: "bg-green-500/20 text-green-500",
+    textil: "bg-[#ff0040]/20 text-[#ff0040]",
+    general: "bg-blue-500/20 text-blue-500",
+  };
+
+  const unreadCount = messages.filter((m) => !m.read).length;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="w-8 h-8 animate-spin text-brand" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header con estadisticas */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="admin-card p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center">
+              <MessageSquare className="w-6 h-6 text-brand" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-white">{messages.length}</p>
+              <p className="text-sm text-gray-400">Total mensajes</p>
+            </div>
+          </div>
+        </div>
+        <div className="admin-card p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center">
+              <Mail className="w-6 h-6 text-yellow-500" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-white">{unreadCount}</p>
+              <p className="text-sm text-gray-400">Sin leer</p>
+            </div>
+          </div>
+        </div>
+        <div className="admin-card p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
+              <CheckCheck className="w-6 h-6 text-green-500" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-white">
+                {messages.length - unreadCount}
+              </p>
+              <p className="text-sm text-gray-400">Leídos</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Lista de mensajes */}
+      <div className="admin-card p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">
+          Mensajes de Contacto
+        </h3>
+
+        {messages.length === 0 ? (
+          <div className="text-center py-12 text-gray-500">
+            <MessageSquare className="w-16 h-16 mx-auto mb-4 opacity-30" />
+            <p>No hay mensajes todavía</p>
+            <p className="text-sm mt-2">
+              Los mensajes enviados desde el formulario aparecerán aquí
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {messages.map((msg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className={`p-4 rounded-lg border transition-all cursor-pointer ${
+                  !msg.read
+                    ? "bg-brand/5 border-brand/30 hover:border-brand/50"
+                    : "bg-white/5 border-white/10 hover:border-white/20"
+                } ${selectedMessage === msg ? "ring-2 ring-brand" : ""}`}
+                onClick={() => {
+                  setSelectedMessage(msg);
+                  if (!msg.read) markAsRead(index);
+                }}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      {!msg.read && (
+                        <span className="w-2 h-2 bg-brand rounded-full flex-shrink-0" />
+                      )}
+                      <span className="font-medium text-white truncate">
+                        {msg.name}
+                      </span>
+                      <span
+                        className={`px-2 py-0.5 rounded text-xs ${
+                          topicColors[msg.topic] || topicColors.general
+                        }`}
+                      >
+                        {topicLabels[msg.topic] || msg.topic}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-400 truncate">{msg.email}</p>
+                    <p className="text-sm text-gray-300 mt-2 line-clamp-2">
+                      {msg.message}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="text-xs text-gray-500 flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {msg.timestamp
+                        ? new Date(msg.timestamp).toLocaleDateString("es-CL", {
+                            day: "numeric",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        : "N/A"}
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteMessage(index);
+                      }}
+                      className="p-1.5 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Detalle del mensaje seleccionado */}
+      <AnimatePresence>
+        {selectedMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="admin-card p-6"
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-semibold text-white">
+                  {selectedMessage.name}
+                </h3>
+                <p className="text-sm text-gray-400">{selectedMessage.email}</p>
+              </div>
+              <button
+                onClick={() => setSelectedMessage(null)}
+                className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 p-4 bg-white/5 rounded-lg">
+              {selectedMessage.phone && (
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Teléfono</p>
+                  <a
+                    href={`tel:${selectedMessage.phone}`}
+                    className="text-brand hover:underline"
+                  >
+                    {selectedMessage.phone}
+                  </a>
+                </div>
+              )}
+              {selectedMessage.company && (
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Empresa</p>
+                  <p className="text-white">{selectedMessage.company}</p>
+                </div>
+              )}
+              {selectedMessage.garment && (
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Prenda</p>
+                  <p className="text-white">{selectedMessage.garment}</p>
+                </div>
+              )}
+              {selectedMessage.quantity && (
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Cantidad</p>
+                  <p className="text-white">{selectedMessage.quantity}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <p className="text-xs text-gray-500 mb-2">Mensaje</p>
+              <p className="text-gray-200 whitespace-pre-wrap bg-white/5 p-4 rounded-lg">
+                {selectedMessage.message}
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <a
+                href={`mailto:${selectedMessage.email}?subject=Re: Contacto DMC Projects`}
+                className="admin-btn"
+              >
+                <Mail className="w-4 h-4 mr-2" />
+                Responder por Email
+              </a>
+              {selectedMessage.phone && (
+                <a
+                  href={`https://wa.me/${selectedMessage.phone.replace(/\D/g, "")}`}
+                  target="_blank"
+                  className="px-4 py-2 rounded-lg bg-green-500/20 text-green-500 hover:bg-green-500/30 transition-colors flex items-center gap-2"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  WhatsApp
+                </a>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
