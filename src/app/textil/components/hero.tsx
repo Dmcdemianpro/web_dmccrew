@@ -19,39 +19,25 @@ export function TextilHero() {
 
   return (
     <section ref={containerRef} className="theme-textil relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Video with Fallback Image */}
-      <motion.div style={{ scale }} className="absolute inset-0 -z-20">
-        {/* Video de fondo */}
+      {/* Background Video */}
+      <div className="absolute inset-0 z-0">
         <video
           autoPlay
           muted
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          poster="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1920&q=80"
         >
-          {/* Video de ropa/moda - puedes cambiar esta URL por tu propio video */}
-          <source src="https://cdn.coverr.co/videos/coverr-fashion-model-walking-down-the-runway-8559/1080p.mp4" type="video/mp4" />
-          {/* Fallback a imagen si el video no carga */}
+          {/* Video de prueba - reemplazar con tu propio video */}
+          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
         </video>
-        {/* Imagen de respaldo si el video no está disponible */}
-        <motion.div
-          style={{
-            y,
-            backgroundImage: `url(https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1920&q=80)`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
-          className="absolute inset-0 -z-10"
-        />
-        {/* Overlay - Gradiente para legibilidad del texto */}
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-black/30" />
-      </motion.div>
+        {/* Overlay oscuro para legibilidad */}
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+      </div>
 
       {/* Animated Grid Pattern */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-20 z-10">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ff004012_1px,transparent_1px),linear-gradient(to_bottom,#ff004012_1px,transparent_1px)] bg-[size:60px_60px]" />
       </div>
 
@@ -177,7 +163,7 @@ export function TextilHero() {
       />
 
       {/* Main Content */}
-      <motion.div style={{ opacity }} className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-20 relative z-10">
+      <motion.div style={{ opacity }} className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-20 relative z-20">
         <div className="max-w-4xl">
           {/* Badge with Pulse */}
           <motion.div
@@ -345,8 +331,8 @@ export function TextilHero() {
       </motion.div>
 
       {/* Corner Decorations */}
-      <div className="absolute top-0 left-0 w-32 h-32 border-l-2 border-t-2 border-[#ff0040]/30" />
-      <div className="absolute bottom-0 right-0 w-32 h-32 border-r-2 border-b-2 border-[#ff6600]/30" />
+      <div className="absolute top-0 left-0 w-32 h-32 border-l-2 border-t-2 border-[#ff0040]/30 z-10" />
+      <div className="absolute bottom-0 right-0 w-32 h-32 border-r-2 border-b-2 border-[#ff6600]/30 z-10" />
     </section>
   );
 }
