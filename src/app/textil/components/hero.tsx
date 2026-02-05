@@ -19,8 +19,22 @@ export function TextilHero() {
 
   return (
     <section ref={containerRef} className="theme-textil relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Image with Parallax */}
+      {/* Background Video with Fallback Image */}
       <motion.div style={{ scale }} className="absolute inset-0 -z-20">
+        {/* Video de fondo */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          poster="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=1920&q=80"
+        >
+          {/* Video de ropa/moda - puedes cambiar esta URL por tu propio video */}
+          <source src="https://cdn.coverr.co/videos/coverr-fashion-model-walking-down-the-runway-8559/1080p.mp4" type="video/mp4" />
+          {/* Fallback a imagen si el video no carga */}
+        </video>
+        {/* Imagen de respaldo si el video no está disponible */}
         <motion.div
           style={{
             y,
@@ -29,11 +43,11 @@ export function TextilHero() {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
           }}
-          className="absolute inset-0"
+          className="absolute inset-0 -z-10"
         />
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30" />
+        {/* Overlay - Gradiente para legibilidad del texto */}
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-black/30" />
       </motion.div>
 
       {/* Animated Grid Pattern */}
