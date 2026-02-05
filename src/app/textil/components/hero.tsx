@@ -4,10 +4,31 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { MessageCircle, ArrowRight, Sparkles, Shirt, Palette, Star, Zap } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/utils";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+
+const videos = [
+  "/videos/8058590-hd_1920_1080_25fps.mp4",
+  "/videos/3249516-compressed.mp4",
+  "/videos/2026-02-05T16-39-19_slow_motion_watermarked.mp4",
+];
 
 export function TextilHero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [currentVideo, setCurrentVideo] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  useEffect(() => {
+    // Cuando un video termina, hacer crossfade al siguiente
+    const timer = setTimeout(() => {
+      setFade(false); // Ocultar actual
+      setTimeout(() => {
+        setCurrentVideo((prev) => (prev + 1) % videos.length);
+        setFade(true); // Mostrar siguiente
+      }, 500); // 500ms de transición
+    }, 12000); // Cada 12 segundos cambiar de video
+
+    return () => clearTimeout(timer);
+  }, [currentVideo]);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
@@ -19,17 +40,17 @@ export function TextilHero() {
 
   return (
     <section ref={containerRef} className="theme-textil relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Video */}
+      {/* Background Video Carousel */}
       <div className="absolute inset-0 z-0">
         <video
+          key={currentVideo}
           autoPlay
           muted
-          loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+          style={{ opacity: fade ? 1 : 0 }}
         >
-          {/* Video de prueba - reemplazar con tu propio video */}
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
+          <source src={videos[currentVideo]} type="video/mp4" />
         </video>
         {/* Overlay oscuro para legibilidad */}
         <div className="absolute inset-0 bg-black/60" />
