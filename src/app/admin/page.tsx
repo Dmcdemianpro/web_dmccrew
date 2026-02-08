@@ -1721,7 +1721,19 @@ function SaludTab({ content, updateSaludHero }: any) {
 // Textil Tab
 function TextilTab({ content, updateTextilHero, updateTextilPricing }: any) {
   const [hero, setHero] = useState(content.textilHero);
-  const [pricing, setPricing] = useState(content.textilPricing);
+  const [pricing, setPricing] = useState(content.textilPricing || {
+    adultos: [
+      { producto: 'Polera Algodón Personalizada', talla: 'Hasta 2XL', precio: 15990 },
+      { producto: 'Polerón Canguro', talla: 'Hasta 2XL', precio: 25990 },
+      { producto: 'Polerón Polo', talla: 'Hasta 2XL', precio: 23990 },
+    ],
+    ninos: [
+      { producto: 'Polera Algodón Personalizada', talla: 'Hasta XS', precio: 12990 },
+      { producto: 'Polerón Canguro', talla: 'Hasta XS', precio: 21990 },
+      { producto: 'Polerón Polo', talla: 'Hasta XS', precio: 19990 },
+    ],
+    cotizacion: ['Personalización Empresas', 'Tallas Especiales', 'Pedidos por Mayor'],
+  });
   const isFirstRender = useRef(true);
   const isFirstRenderPricing = useRef(true);
   const lastContextValue = useRef(JSON.stringify(content.textilHero));
@@ -1748,6 +1760,7 @@ function TextilTab({ content, updateTextilHero, updateTextilPricing }: any) {
   }, [hero, updateTextilHero]);
 
   useEffect(() => {
+    if (!content.textilPricing) return;
     const currentStr = JSON.stringify(content.textilPricing);
     if (currentStr !== lastPricingValue.current) {
       lastPricingValue.current = currentStr;

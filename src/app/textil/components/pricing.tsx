@@ -32,9 +32,24 @@ function ProductCard({ product }: { product: { name: string; size: string; price
   );
 }
 
+const defaultPricing = {
+  adultos: [
+    { producto: "Polera Algodón Personalizada", talla: "Hasta 2XL", precio: 15990 },
+    { producto: "Polerón Canguro", talla: "Hasta 2XL", precio: 25990 },
+    { producto: "Polerón Polo", talla: "Hasta 2XL", precio: 23990 },
+  ],
+  ninos: [
+    { producto: "Polera Algodón Personalizada", talla: "Hasta XS", precio: 12990 },
+    { producto: "Polerón Canguro", talla: "Hasta XS", precio: 21990 },
+    { producto: "Polerón Polo", talla: "Hasta XS", precio: 19990 },
+  ],
+  cotizacion: ["Personalización Empresas", "Tallas Especiales", "Pedidos por Mayor"],
+};
+
 export function TextilPricing() {
   const { content } = useContent();
-  const { adultos, ninos, cotizacion } = content.textilPricing;
+  const pricing = content.textilPricing || defaultPricing;
+  const { adultos, ninos, cotizacion } = pricing;
 
   const adultProducts = adultos.map((p) => ({
     name: p.producto,
