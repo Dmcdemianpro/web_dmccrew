@@ -22,6 +22,22 @@ const cotizacionItems = [
   { icon: Package, label: "Pedidos por Mayor", description: "Desde 50 unidades, precios especiales" },
 ];
 
+function ProductCard({ product }: { product: { name: string; size: string; price: string } }) {
+  return (
+    <div className="flex items-center justify-between py-4 px-4 border-b border-white/10 last:border-b-0">
+      <div className="min-w-0 flex-1 mr-4">
+        <p className="font-medium text-white text-sm sm:text-base" style={{ fontFamily: "var(--font-display)" }}>
+          {product.name}
+        </p>
+        <p className="text-xs text-gray-500 mt-0.5">{product.size}</p>
+      </div>
+      <div className="flex-shrink-0">
+        <span className="stat-number-racing text-lg sm:text-xl">{product.price}</span>
+      </div>
+    </div>
+  );
+}
+
 export function TextilPricing() {
   return (
     <section id="precios" className="theme-textil py-16 md:py-24 relative overflow-hidden">
@@ -68,8 +84,8 @@ export function TextilPricing() {
           <div className="divider-racing mt-6" />
         </motion.div>
 
-        {/* Pricing Tables Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-10">
+        {/* Pricing Cards Grid */}
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-10">
           {/* Adultos */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -77,34 +93,17 @@ export function TextilPricing() {
             viewport={{ once: true }}
             className="card-racing p-0 overflow-hidden"
           >
-            <div className="bg-gradient-to-r from-[#ff0040] to-[#ff6600] px-6 py-4 flex items-center gap-3">
-              <Users className="w-5 h-5 text-white" />
+            <div className="bg-gradient-to-r from-[#ff0040] to-[#ff6600] px-5 py-3 sm:px-6 sm:py-4 flex items-center gap-3">
+              <Users className="w-5 h-5 text-white flex-shrink-0" />
               <h3 className="text-lg font-bold text-white" style={{ fontFamily: "var(--font-display)" }}>
                 Adultos
               </h3>
             </div>
-            <table className="table-racing">
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Talla</th>
-                  <th className="text-right">Precio</th>
-                </tr>
-              </thead>
-              <tbody>
-                {adultProducts.map((product) => (
-                  <tr key={product.name}>
-                    <td className="font-medium text-white" style={{ fontFamily: "var(--font-display)" }}>
-                      {product.name}
-                    </td>
-                    <td className="text-gray-400 text-sm">{product.size}</td>
-                    <td className="text-right">
-                      <span className="stat-number-racing text-lg">{product.price}</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div>
+              {adultProducts.map((product) => (
+                <ProductCard key={product.name} product={product} />
+              ))}
+            </div>
           </motion.div>
 
           {/* Niños */}
@@ -114,34 +113,17 @@ export function TextilPricing() {
             viewport={{ once: true }}
             className="card-racing p-0 overflow-hidden"
           >
-            <div className="bg-gradient-to-r from-[#ff6600] to-[#ff0040] px-6 py-4 flex items-center gap-3">
-              <Baby className="w-5 h-5 text-white" />
+            <div className="bg-gradient-to-r from-[#ff6600] to-[#ff0040] px-5 py-3 sm:px-6 sm:py-4 flex items-center gap-3">
+              <Baby className="w-5 h-5 text-white flex-shrink-0" />
               <h3 className="text-lg font-bold text-white" style={{ fontFamily: "var(--font-display)" }}>
                 Niños
               </h3>
             </div>
-            <table className="table-racing">
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Talla</th>
-                  <th className="text-right">Precio</th>
-                </tr>
-              </thead>
-              <tbody>
-                {kidProducts.map((product) => (
-                  <tr key={product.name}>
-                    <td className="font-medium text-white" style={{ fontFamily: "var(--font-display)" }}>
-                      {product.name}
-                    </td>
-                    <td className="text-gray-400 text-sm">{product.size}</td>
-                    <td className="text-right">
-                      <span className="stat-number-racing text-lg">{product.price}</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div>
+              {kidProducts.map((product) => (
+                <ProductCard key={product.name} product={product} />
+              ))}
+            </div>
           </motion.div>
         </div>
 
