@@ -1721,7 +1721,7 @@ function SaludTab({ content, updateSaludHero }: any) {
 // Textil Tab
 function TextilTab({ content, updateTextilHero, updateTextilPricing }: any) {
   const [hero, setHero] = useState(content.textilHero);
-  const [pricing, setPricing] = useState(content.textilPricing || {
+  const _defaultPricing = {
     adultos: [
       { producto: 'Polera Algodón Personalizada', talla: 'Hasta 2XL', precio: 15990 },
       { producto: 'Polerón Canguro', talla: 'Hasta 2XL', precio: 25990 },
@@ -1733,7 +1733,11 @@ function TextilTab({ content, updateTextilHero, updateTextilPricing }: any) {
       { producto: 'Polerón Polo', talla: 'Hasta XS', precio: 19990 },
     ],
     cotizacion: ['Personalización Empresas', 'Tallas Especiales', 'Pedidos por Mayor'],
-  });
+  };
+  const _rawPricing = content.textilPricing;
+  const [pricing, setPricing] = useState(
+    (_rawPricing && Array.isArray(_rawPricing.adultos)) ? _rawPricing : _defaultPricing
+  );
   const isFirstRender = useRef(true);
   const isFirstRenderPricing = useRef(true);
   const lastContextValue = useRef(JSON.stringify(content.textilHero));

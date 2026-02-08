@@ -48,7 +48,8 @@ const defaultPricing = {
 
 export function TextilPricing() {
   const { content } = useContent();
-  const pricing = content.textilPricing || defaultPricing;
+  const raw = content.textilPricing;
+  const pricing = (raw && Array.isArray(raw.adultos)) ? raw : defaultPricing;
   const { adultos, ninos, cotizacion } = pricing;
 
   const adultProducts = adultos.map((p) => ({
