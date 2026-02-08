@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { CONTACT_INFO, getWhatsAppLink } from "@/lib/utils";
+import { CONTACT_INFO, openWhatsApp } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 type TopicType = "salud" | "textil" | "general";
@@ -295,15 +295,13 @@ export function ContactContent() {
                       <div>
                         <p className="text-red-500 font-medium">Error al enviar</p>
                         <p className="text-sm text-red-400/80 mt-1">{formStatus.message}</p>
-                        <a
-                          href={getWhatsAppLink(topic === "salud" ? "salud" : "textilCotizar")}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          onClick={() => openWhatsApp(topic === "salud" ? "salud" : "textilPersonalizar")}
                           className="inline-flex items-center gap-2 mt-3 text-sm text-[#25D366] hover:underline"
                         >
                           <MessageCircle className="h-4 w-4" />
                           Contactar por WhatsApp
-                        </a>
+                        </button>
                       </div>
                     </motion.div>
                   )}
@@ -332,30 +330,18 @@ export function ContactContent() {
                 <Button
                   variant="outline"
                   className="w-full justify-start"
-                  asChild
+                  onClick={() => openWhatsApp("salud")}
                 >
-                  <a
-                    href={getWhatsAppLink("salud")}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Heart className="h-4 w-4 mr-2 text-accent-salud" />
-                    Integración de sistemas
-                  </a>
+                  <Heart className="h-4 w-4 mr-2 text-accent-salud" />
+                  Integración de sistemas
                 </Button>
                 <Button
                   variant="outline"
                   className="w-full justify-start"
-                  asChild
+                  onClick={() => openWhatsApp("textilPersonalizar")}
                 >
-                  <a
-                    href={getWhatsAppLink("textilCotizar")}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Shirt className="h-4 w-4 mr-2 text-accent-textil" />
-                    Cotizar DTF
-                  </a>
+                  <Shirt className="h-4 w-4 mr-2 text-accent-textil" />
+                  Cotizar DTF
                 </Button>
               </div>
             </div>

@@ -4,6 +4,13 @@ import { Providers } from "@/components/providers/Providers";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://dmcprojects.cl"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   title: {
     default: "DMC Projects - Interoperabilidad en Salud e Impresión DTF",
     template: "%s | DMC Projects",

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Calendar, MessageCircle } from "lucide-react";
 import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
-import { getWhatsAppLink } from "@/lib/utils";
+import { openWhatsApp } from "@/lib/utils";
 
 export function CTASection() {
   return (
@@ -42,16 +42,10 @@ export function CTASection() {
           <Button
             variant="textil"
             size="lg"
-            asChild
+            onClick={() => openWhatsApp("textilPersonalizar")}
           >
-            <a
-              href={getWhatsAppLink("textilCotizar")}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle className="h-5 w-5 mr-2" />
-              Cotizar por WhatsApp
-            </a>
+            <MessageCircle className="h-5 w-5 mr-2" />
+            Cotizar por WhatsApp
           </Button>
         </div>
 

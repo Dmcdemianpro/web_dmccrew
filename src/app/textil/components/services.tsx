@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Shirt, Star, ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { getWhatsAppLink } from "@/lib/utils";
+import { openWhatsApp } from "@/lib/utils";
 
 const services = [
   {
@@ -165,16 +165,14 @@ export function TextilServices() {
                   </p>
 
                   {/* CTA */}
-                  <a
-                    href={getWhatsAppLink("textilCotizar")}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => openWhatsApp("textilPersonalizar")}
                     className="inline-flex items-center gap-2 text-[#ff0040] font-bold text-sm group-hover:gap-3 transition-all"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     Cotizar ahora
                     <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </button>
                 </div>
 
                 {/* Bottom Accent Line */}
@@ -194,17 +192,15 @@ export function TextilServices() {
           <p className="text-gray-400 mb-6">
             ¿Tienes un proyecto especial? ¡Te ayudamos a hacerlo realidad!
           </p>
-          <motion.a
-            href={getWhatsAppLink("textilConsulta")}
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.button
+            onClick={() => openWhatsApp("textilPersonalizar")}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="btn-racing shine-effect-auto"
           >
             <Star className="w-5 h-5" />
             Consulta Personalizada
-          </motion.a>
+          </motion.button>
         </motion.div>
       </div>
     </section>

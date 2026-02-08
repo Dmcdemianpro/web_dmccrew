@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Mail, Phone, MapPin, Instagram, Linkedin, MessageCircle } from "lucide-react";
-import { CONTACT_INFO, getWhatsAppLink } from "@/lib/utils";
+import { CONTACT_INFO, openWhatsApp } from "@/lib/utils";
 import { useContent } from "@/context/ContentContext";
 
 const footerLinks = {
@@ -107,15 +107,13 @@ export function Footer() {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <a
-              href={getWhatsAppLink("general")}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => openWhatsApp("general")}
               className="text-muted-foreground hover:text-brand transition-colors"
               aria-label="WhatsApp"
             >
               <MessageCircle className="h-5 w-5" />
-            </a>
+            </button>
             <a
               href={CONTACT_INFO.instagram}
               target="_blank"

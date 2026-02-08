@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { MessageCircle, FileText, Sparkles } from "lucide-react";
-import { getWhatsAppLink } from "@/lib/utils";
+import { openWhatsApp } from "@/lib/utils";
 
 export function TextilCTA() {
   return (
@@ -51,17 +51,15 @@ export function TextilCTA() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a
-                href={getWhatsAppLink("textilCotizar")}
-                target="_blank"
-                rel="noopener noreferrer"
+              <motion.button
+                onClick={() => openWhatsApp("textilPersonalizar")}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-racing shine-effect-auto"
               >
                 <MessageCircle className="h-5 w-5" />
                 Cotizar por WhatsApp
-              </motion.a>
+              </motion.button>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
                   href="/contacto?tema=textil"

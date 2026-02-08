@@ -12,7 +12,7 @@ import { ScrollProgress } from "./components/scroll-progress";
 import { Stats } from "./components/stats";
 
 export const metadata: Metadata = {
-  title: "Impresión DTF Profesional - Poleras y Uniformes",
+  title: "DMC Projects - Poleras y Uniformes Personalizados",
   description:
     "Personalización textil con tecnología DTF. Poleras, polerones, uniformes corporativos. Desde 1 unidad. Santiago, Chile.",
   keywords: [

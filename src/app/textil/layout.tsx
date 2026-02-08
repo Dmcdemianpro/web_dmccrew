@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Shirt, Home, Menu, X, MessageCircle, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getWhatsAppLink, CONTACT_INFO } from "@/lib/utils";
+import { openWhatsApp, CONTACT_INFO } from "@/lib/utils";
 import { useContent } from "@/context/ContentContext";
 
 const navLinks = [
@@ -94,15 +94,13 @@ export default function TextilLayout({
                 <Home className="w-4 h-4 inline mr-1" />
                 Volver
               </Link>
-              <a
-                href={getWhatsAppLink("textilCotizar")}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => openWhatsApp("textilPersonalizar")}
                 className="px-4 py-2 bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white rounded-lg font-medium hover:scale-105 transition-transform neon-glow"
               >
                 <MessageCircle className="w-4 h-4 inline mr-2" />
                 Cotizar
-              </a>
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -147,15 +145,13 @@ export default function TextilLayout({
                   </Link>
                 </li>
               </ul>
-              <a
-                href={getWhatsAppLink("textilCotizar")}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => { openWhatsApp("textilPersonalizar"); setIsMobileMenuOpen(false); }}
                 className="mt-4 block w-full text-center px-4 py-3 bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white rounded-lg font-medium"
               >
                 <MessageCircle className="w-4 h-4 inline mr-2" />
                 Cotizar Ahora
-              </a>
+              </button>
             </div>
           </motion.div>
         )}
@@ -227,15 +223,7 @@ export default function TextilLayout({
         </div>
       </footer>
 
-      {/* WhatsApp Button */}
-      <a
-        href={getWhatsAppLink("textilCotizar")}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-[#ff0040] to-[#ff6600] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-50 neon-glow"
-      >
-        <MessageCircle className="w-7 h-7 text-white" />
-      </a>
+      {/* WhatsApp Button es global via Providers */}
     </div>
   );
 }

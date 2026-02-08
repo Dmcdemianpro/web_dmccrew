@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Heart, Home, Phone, Menu, X, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getWhatsAppLink, CONTACT_INFO } from "@/lib/utils";
+import { openWhatsApp, CONTACT_INFO } from "@/lib/utils";
 import { useContent } from "@/context/ContentContext";
 
 const navLinks = [
@@ -100,15 +100,13 @@ export default function SaludLayout({
                 <Home className="w-4 h-4 inline mr-1" />
                 Volver
               </Link>
-              <a
-                href={getWhatsAppLink("salud")}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => openWhatsApp("salud")}
                 className="px-4 py-2 bg-accent-salud text-white rounded-lg font-medium hover:bg-accent-salud-dark transition-colors"
               >
                 <MessageCircle className="w-4 h-4 inline mr-2" />
                 Contactar
-              </a>
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -224,15 +222,7 @@ export default function SaludLayout({
         </div>
       </footer>
 
-      {/* WhatsApp Button */}
-      <a
-        href={getWhatsAppLink("salud")}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-50"
-      >
-        <MessageCircle className="w-7 h-7 text-white" />
-      </a>
+      {/* WhatsApp Button es global via Providers */}
     </div>
   );
 }

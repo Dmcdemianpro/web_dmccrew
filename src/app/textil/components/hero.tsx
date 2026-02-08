@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { MessageCircle, ArrowRight, Sparkles, Shirt, Palette, Star, Zap } from "lucide-react";
-import { getWhatsAppLink } from "@/lib/utils";
+import { openWhatsApp } from "@/lib/utils";
 import { useRef, useState, useEffect } from "react";
 
 const videos = [
@@ -303,17 +303,15 @@ export function TextilHero() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mt-12 flex flex-col sm:flex-row gap-4"
           >
-            <motion.a
-              href={getWhatsAppLink("textilCotizar")}
-              target="_blank"
-              rel="noopener noreferrer"
+            <motion.button
+              onClick={() => openWhatsApp("textilPersonalizar")}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="btn-racing shine-effect-auto"
             >
               <MessageCircle className="h-5 w-5" />
               Cotizar por WhatsApp
-            </motion.a>
+            </motion.button>
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
