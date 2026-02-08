@@ -64,6 +64,7 @@ export default function AdminPage() {
     updateHero,
     updateSaludHero,
     updateTextilHero,
+    updateTextilPricing,
     updateContact,
     updateWelcome,
     updateDesign,
@@ -355,6 +356,7 @@ export default function AdminPage() {
                 <TextilTab
                   content={content}
                   updateTextilHero={updateTextilHero}
+                  updateTextilPricing={updateTextilPricing}
                 />
               )}
               {activeTab === "gallery" && (
@@ -1717,10 +1719,13 @@ function SaludTab({ content, updateSaludHero }: any) {
 }
 
 // Textil Tab
-function TextilTab({ content, updateTextilHero }: any) {
+function TextilTab({ content, updateTextilHero, updateTextilPricing }: any) {
   const [hero, setHero] = useState(content.textilHero);
+  const [pricing, setPricing] = useState(content.textilPricing);
   const isFirstRender = useRef(true);
+  const isFirstRenderPricing = useRef(true);
   const lastContextValue = useRef(JSON.stringify(content.textilHero));
+  const lastPricingValue = useRef(JSON.stringify(content.textilPricing));
 
   useEffect(() => {
     const currentContextStr = JSON.stringify(content.textilHero);
@@ -1742,8 +1747,77 @@ function TextilTab({ content, updateTextilHero }: any) {
     }
   }, [hero, updateTextilHero]);
 
+  useEffect(() => {
+    const currentStr = JSON.stringify(content.textilPricing);
+    if (currentStr !== lastPricingValue.current) {
+      lastPricingValue.current = currentStr;
+      setPricing(content.textilPricing);
+    }
+  }, [content.textilPricing]);
+
+  useEffect(() => {
+    if (isFirstRenderPricing.current) {
+      isFirstRenderPricing.current = false;
+      return;
+    }
+    const pricingStr = JSON.stringify(pricing);
+    if (pricingStr !== lastPricingValue.current) {
+      lastPricingValue.current = pricingStr;
+      updateTextilPricing(pricing);
+    }
+  }, [pricing, updateTextilPricing]);
+
+  const updateProduct = (category: 'adultos' | 'ninos', index: number, field: string, value: string | number) => {
+    setPricing((prev: any) => {
+      const updated = [...prev[category]];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, [category]: updated };
+    });
+  };
+
+  const addProduct = (category: 'adultos' | 'ninos') => {
+    setPricing((prev: any) => ({
+      ...prev,
+      [category]: [...prev[category], { producto: '', talla: '', precio: 0 }],
+    }));
+  };
+
+  const removeProduct = (category: 'adultos' | 'ninos', index: number) => {
+    setPricing((prev: any) => ({
+      ...prev,
+      [category]: prev[category].filter((_: any, i: number) => i !== index),
+    }));
+  };
+
+  const updateCotizacion = (index: number, value: string) => {
+    setPricing((prev: any) => {
+      const updated = [...prev.cotizacion];
+      updated[index] = value;
+      return { ...prev, cotizacion: updated };
+    });
+  };
+
+  const addCotizacion = () => {
+    setPricing((prev: any) => ({
+      ...prev,
+      cotizacion: [...prev.cotizacion, ''],
+    }));
+  };
+
+  const removeCotizacion = (index: number) => {
+    setPricing((prev: any) => ({
+      ...prev,
+      cotizacion: prev.cotizacion.filter((_: any, i: number) => i !== index),
+    }));
+  };
+
+  const formatPrice = (precio: number) => {
+    return `$${precio.toLocaleString('es-CL')}`;
+  };
+
   return (
     <div className="space-y-6">
+      {/* Hero Section */}
       <div className="admin-card p-6">
         <h3 className="text-lg font-semibold text-white mb-6">Seccion Textil DTF</h3>
 
@@ -1786,6 +1860,172 @@ function TextilTab({ content, updateTextilHero }: any) {
               className="admin-input w-full h-24 resize-none"
             />
           </div>
+        </div>
+      </div>
+
+      {/* Precios Adultos */}
+      <div className="admin-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-white">Precios Adultos</h3>
+          <button
+            onClick={() => addProduct('adultos')}
+            className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Agregar
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {pricing.adultos.map((product: any, index: number) => (
+            <div key={index} className="flex flex-col sm:flex-row gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="flex-1">
+                <label className="block text-xs text-gray-500 mb-1">Producto</label>
+                <input
+                  type="text"
+                  value={product.producto}
+                  onChange={(e) => updateProduct('adultos', index, 'producto', e.target.value)}
+                  className="admin-input w-full"
+                  placeholder="Ej: Polera Algodón"
+                />
+              </div>
+              <div className="w-full sm:w-32">
+                <label className="block text-xs text-gray-500 mb-1">Talla</label>
+                <input
+                  type="text"
+                  value={product.talla}
+                  onChange={(e) => updateProduct('adultos', index, 'talla', e.target.value)}
+                  className="admin-input w-full"
+                  placeholder="Ej: Hasta 2XL"
+                />
+              </div>
+              <div className="w-full sm:w-32">
+                <label className="block text-xs text-gray-500 mb-1">Precio</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    value={product.precio}
+                    onChange={(e) => updateProduct('adultos', index, 'precio', parseInt(e.target.value) || 0)}
+                    className="admin-input w-full"
+                    placeholder="15990"
+                  />
+                </div>
+              </div>
+              <div className="flex items-end">
+                <button
+                  onClick={() => removeProduct('adultos', index)}
+                  className="p-2 text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors"
+                  title="Eliminar producto"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="flex items-end">
+                <span className="text-xs text-gray-500 pb-2">{formatPrice(product.precio)}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Precios Niños */}
+      <div className="admin-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-white">Precios Niños</h3>
+          <button
+            onClick={() => addProduct('ninos')}
+            className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Agregar
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {pricing.ninos.map((product: any, index: number) => (
+            <div key={index} className="flex flex-col sm:flex-row gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="flex-1">
+                <label className="block text-xs text-gray-500 mb-1">Producto</label>
+                <input
+                  type="text"
+                  value={product.producto}
+                  onChange={(e) => updateProduct('ninos', index, 'producto', e.target.value)}
+                  className="admin-input w-full"
+                  placeholder="Ej: Polera Algodón"
+                />
+              </div>
+              <div className="w-full sm:w-32">
+                <label className="block text-xs text-gray-500 mb-1">Talla</label>
+                <input
+                  type="text"
+                  value={product.talla}
+                  onChange={(e) => updateProduct('ninos', index, 'talla', e.target.value)}
+                  className="admin-input w-full"
+                  placeholder="Ej: Hasta XS"
+                />
+              </div>
+              <div className="w-full sm:w-32">
+                <label className="block text-xs text-gray-500 mb-1">Precio</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    value={product.precio}
+                    onChange={(e) => updateProduct('ninos', index, 'precio', parseInt(e.target.value) || 0)}
+                    className="admin-input w-full"
+                    placeholder="12990"
+                  />
+                </div>
+              </div>
+              <div className="flex items-end">
+                <button
+                  onClick={() => removeProduct('ninos', index)}
+                  className="p-2 text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors"
+                  title="Eliminar producto"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="flex items-end">
+                <span className="text-xs text-gray-500 pb-2">{formatPrice(product.precio)}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Items de Cotización */}
+      <div className="admin-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-white">Items de Cotizacion</h3>
+          <button
+            onClick={addCotizacion}
+            className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Agregar
+          </button>
+        </div>
+        <p className="text-sm text-gray-500 mb-4">Servicios que requieren cotizacion personalizada (ej: Empresas, Tallas Especiales, Pedidos por Mayor)</p>
+
+        <div className="space-y-3">
+          {pricing.cotizacion.map((item: string, index: number) => (
+            <div key={index} className="flex gap-3 items-center">
+              <input
+                type="text"
+                value={item}
+                onChange={(e) => updateCotizacion(index, e.target.value)}
+                className="admin-input flex-1"
+                placeholder="Ej: Personalización Empresas"
+              />
+              <button
+                onClick={() => removeCotizacion(index)}
+                className="p-2 text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors"
+                title="Eliminar"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -268,6 +268,7 @@ interface ContentContextType {
   updateHero: (data: Partial<HeroContent>) => void
   updateSaludHero: (data: Partial<HeroContent>) => void
   updateTextilHero: (data: Partial<HeroContent>) => void
+  updateTextilPricing: (data: SiteContent['textilPricing']) => void
   updateContact: (data: Partial<ContactInfo>) => void
   updateWelcome: (data: Partial<WelcomeSelector>) => void
   updateDesign: (data: Partial<SiteContent['design']>) => void
@@ -471,6 +472,10 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     setContent(prev => ({ ...prev, textilHero: { ...prev.textilHero, ...data } }))
   }
 
+  const updateTextilPricing = (data: SiteContent['textilPricing']) => {
+    setContent(prev => ({ ...prev, textilPricing: data }))
+  }
+
   const updateContact = (data: Partial<ContactInfo>) => {
     setContent(prev => ({ ...prev, contact: { ...prev.contact, ...data } }))
   }
@@ -640,6 +645,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     updateHero,
     updateSaludHero,
     updateTextilHero,
+    updateTextilPricing,
     updateContact,
     updateWelcome,
     updateDesign,

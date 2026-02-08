@@ -2,25 +2,19 @@
 
 import { motion } from "framer-motion";
 import { openWhatsApp } from "@/lib/utils";
+import { useContent } from "@/context/ContentContext";
 import { MessageCircle, Users, Baby, Building2, Ruler, Package } from "lucide-react";
 
-const adultProducts = [
-  { name: "Polera Algodón Personalizada", size: "Hasta 2XL", price: "$15.990" },
-  { name: "Polerón Canguro", size: "Hasta 2XL", price: "$25.990" },
-  { name: "Polerón Polo", size: "Hasta 2XL", price: "$23.990" },
+const cotizacionIcons = [Building2, Ruler, Package];
+const cotizacionDescriptions = [
+  "Uniformes, merchandising corporativo",
+  "Sobre 2XL o medidas personalizadas",
+  "Desde 50 unidades, precios especiales",
 ];
 
-const kidProducts = [
-  { name: "Polera Algodón Personalizada", size: "Hasta XS", price: "$12.990" },
-  { name: "Polerón Canguro", size: "Hasta XS", price: "$21.990" },
-  { name: "Polerón Polo", size: "Hasta XS", price: "$19.990" },
-];
-
-const cotizacionItems = [
-  { icon: Building2, label: "Personalización Empresas", description: "Uniformes, merchandising corporativo" },
-  { icon: Ruler, label: "Tallas Especiales", description: "Sobre 2XL o medidas personalizadas" },
-  { icon: Package, label: "Pedidos por Mayor", description: "Desde 50 unidades, precios especiales" },
-];
+function formatPrice(precio: number) {
+  return `$${precio.toLocaleString('es-CL')}`;
+}
 
 function ProductCard({ product }: { product: { name: string; size: string; price: string } }) {
   return (
@@ -39,6 +33,27 @@ function ProductCard({ product }: { product: { name: string; size: string; price
 }
 
 export function TextilPricing() {
+  const { content } = useContent();
+  const { adultos, ninos, cotizacion } = content.textilPricing;
+
+  const adultProducts = adultos.map((p) => ({
+    name: p.producto,
+    size: p.talla,
+    price: formatPrice(p.precio),
+  }));
+
+  const kidProducts = ninos.map((p) => ({
+    name: p.producto,
+    size: p.talla,
+    price: formatPrice(p.precio),
+  }));
+
+  const cotizacionItems = cotizacion.map((label, i) => ({
+    icon: cotizacionIcons[i] || Package,
+    label,
+    description: cotizacionDescriptions[i] || "",
+  }));
+
   return (
     <section id="precios" className="theme-textil py-16 md:py-24 relative overflow-hidden">
       {/* Dark Background */}
