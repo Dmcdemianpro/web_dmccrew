@@ -45,11 +45,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validar tamaño (máximo 5MB)
-    const maxSize = 5 * 1024 * 1024
+    // Validar tamaño (máximo 50MB)
+    const maxSize = 50 * 1024 * 1024
     if (file.size > maxSize) {
       return NextResponse.json(
-        { error: 'El archivo es muy grande. Máximo 5MB.' },
+        { error: 'El archivo es muy grande. Máximo 50MB.' },
         { status: 400 }
       )
     }

@@ -5,6 +5,7 @@ import { TextilServices } from "./components/services";
 import { TextilProcess } from "./components/process";
 import { TextilRecommendations } from "./components/recommendations";
 import { TextilPricing } from "./components/pricing";
+import { StockDesigns } from "./components/stock-designs";
 import { TextilGallery } from "./components/gallery";
 import { TextilFAQ } from "./components/faq";
 import { TextilCTA } from "./components/cta";
@@ -35,6 +36,7 @@ export default function TextilPage() {
       <TextilProcess />
       <TextilRecommendations />
       <TextilPricing />
+      <StockDesigns />
       <TextilGallery />
       <Stats />
       <TextilFAQ />

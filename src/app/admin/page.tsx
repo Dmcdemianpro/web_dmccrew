@@ -34,6 +34,7 @@ import {
   Mail,
   Clock,
   CheckCheck,
+  Tag,
 } from "lucide-react";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
@@ -47,6 +48,7 @@ const tabs = [
   { id: "salud", label: "Salud", icon: Heart },
   { id: "textil", label: "Textil", icon: Shirt },
   { id: "gallery", label: "Galeria Textil", icon: Camera },
+  { id: "stockDesigns", label: "Poleras Stock", icon: Tag },
   { id: "portfolio", label: "Portfolio", icon: FolderOpen },
   { id: "contact", label: "Contacto", icon: Phone },
   { id: "settings", label: "Ajustes", icon: Settings },
@@ -71,6 +73,9 @@ export default function AdminPage() {
     addGalleryItem,
     updateGalleryItem,
     deleteGalleryItem,
+    addStockDesign,
+    updateStockDesign,
+    deleteStockDesign,
     addPortfolioItem,
     updatePortfolioItem,
     deletePortfolioItem,
@@ -365,6 +370,15 @@ export default function AdminPage() {
                   addGalleryItem={addGalleryItem}
                   updateGalleryItem={updateGalleryItem}
                   deleteGalleryItem={deleteGalleryItem}
+                  onSave={showSaveMessage}
+                />
+              )}
+              {activeTab === "stockDesigns" && (
+                <StockDesignsTab
+                  content={content}
+                  addStockDesign={addStockDesign}
+                  updateStockDesign={updateStockDesign}
+                  deleteStockDesign={deleteStockDesign}
                   onSave={showSaveMessage}
                 />
               )}
@@ -1083,7 +1097,7 @@ function DesignTab({ content, updateDesign }: any) {
                 )}
               </button>
               <span className="text-xs text-gray-500 flex items-center">
-                PNG, JPG, GIF, WebP, SVG (max 5MB)
+                PNG, JPG, GIF, WebP, SVG (max 50MB)
               </span>
             </div>
             {uploadError && (
@@ -1723,14 +1737,27 @@ function TextilTab({ content, updateTextilHero, updateTextilPricing }: any) {
   const [hero, setHero] = useState(content.textilHero);
   const _defaultPricing = {
     adultos: [
-      { producto: 'Polera Algodón Personalizada', talla: 'Hasta 2XL', precio: 15990 },
-      { producto: 'Polerón Canguro', talla: 'Hasta 2XL', precio: 25990 },
-      { producto: 'Polerón Polo', talla: 'Hasta 2XL', precio: 23990 },
+      { producto: 'Polera Dogo Premium Hombre', talla: 'S-2XL', precio: 13990 },
+      { producto: 'Polera Piqué Monzha Mujer', talla: 'S-2XL', precio: 17000 },
+      { producto: 'Polera Piqué Pegaso Premium Mujer', talla: 'S-2XL', precio: 17000 },
+      { producto: 'Polera Piqué Tormo', talla: 'S-2XL', precio: 19000 },
+      { producto: 'Polera Dogo Premium', talla: '3XL-4XL', precio: 15990 },
+      { producto: 'Polera Piqué Monzha Hombre', talla: 'S-3XL', precio: 17000 },
+      { producto: 'Canguro', talla: 'S-XL', precio: 20990 },
+      { producto: 'Canguro', talla: 'XXL', precio: 22990 },
+      { producto: 'Polerón Polo', talla: 'S-XL', precio: 16990 },
+      { producto: 'Polerón Polo', talla: 'XXL', precio: 22990 },
+      { producto: 'Polerón Cierre', talla: 'S-XL', precio: 24990 },
+      { producto: 'Polerón Cierre', talla: 'XXL', precio: 24990 },
     ],
     ninos: [
-      { producto: 'Polera Algodón Personalizada', talla: 'Hasta XS', precio: 12990 },
-      { producto: 'Polerón Canguro', talla: 'Hasta XS', precio: 21990 },
-      { producto: 'Polerón Polo', talla: 'Hasta XS', precio: 19990 },
+      { producto: 'Polera Dogo Premium Niño', talla: '3/4-11/12', precio: 12990 },
+      { producto: 'Canguro', talla: '2-8', precio: 15600 },
+      { producto: 'Canguro', talla: '10-16', precio: 15600 },
+      { producto: 'Polerón Polo', talla: '2-8', precio: 15000 },
+      { producto: 'Polerón Polo', talla: '10-16', precio: 15600 },
+      { producto: 'Polerón Cierre', talla: '2-8', precio: 20990 },
+      { producto: 'Polerón Cierre', talla: '10-16', precio: 22990 },
     ],
     cotizacion: ['Personalización Empresas', 'Tallas Especiales', 'Pedidos por Mayor'],
   };
@@ -2374,6 +2401,298 @@ function GalleryTab({ content, addGalleryItem, updateGalleryItem, deleteGalleryI
           <strong className="text-[#ff0040]">Tip:</strong> Puedes usar URLs de servicios como Unsplash, Imgur, o cualquier URL de imagen publica.
           Las imagenes se mostraran en la galeria de la seccion Textil.
         </p>
+      </div>
+    </div>
+  );
+}
+
+// Stock Designs Tab
+function StockDesignsTab({ content, addStockDesign, updateStockDesign, deleteStockDesign, onSave }: any) {
+  const tallasAdulto = ['S', 'M', 'L', 'XL', '2XL'];
+  const tallasNino = ['3/4', '5/6', '7/8', '9/10', '11/12'];
+
+  const [newDesign, setNewDesign] = useState({
+    nombre: '',
+    imagen: '',
+    tipo: 'adulto' as 'adulto' | 'nino',
+    tallas: tallasAdulto.map(t => ({ talla: t, disponible: true })),
+  });
+
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editDesign, setEditDesign] = useState<any>(null);
+
+  const handleTipoChange = (tipo: 'adulto' | 'nino') => {
+    const tallas = tipo === 'adulto' ? tallasAdulto : tallasNino;
+    setNewDesign({
+      ...newDesign,
+      tipo,
+      tallas: tallas.map(t => ({ talla: t, disponible: true })),
+    });
+  };
+
+  const handleAdd = () => {
+    if (!newDesign.nombre.trim() || !newDesign.imagen.trim()) return;
+    addStockDesign({
+      nombre: newDesign.nombre.trim(),
+      imagen: newDesign.imagen.trim(),
+      tipo: newDesign.tipo,
+      tallas: newDesign.tallas,
+    });
+    setNewDesign({
+      nombre: '',
+      imagen: '',
+      tipo: 'adulto',
+      tallas: tallasAdulto.map(t => ({ talla: t, disponible: true })),
+    });
+    onSave();
+  };
+
+  const handleStartEdit = (design: any) => {
+    setEditingId(design.id);
+    setEditDesign({ ...design, tallas: [...design.tallas.map((t: any) => ({ ...t }))] });
+  };
+
+  const handleSaveEdit = () => {
+    if (!editDesign || !editingId) return;
+    updateStockDesign(editingId, {
+      nombre: editDesign.nombre,
+      imagen: editDesign.imagen,
+      tipo: editDesign.tipo,
+      tallas: editDesign.tallas,
+    });
+    setEditingId(null);
+    setEditDesign(null);
+    onSave();
+  };
+
+  const handleDelete = (id: number) => {
+    if (window.confirm('¿Eliminar este diseño de stock?')) {
+      deleteStockDesign(id);
+      onSave();
+    }
+  };
+
+  const toggleTalla = (tallas: any[], index: number) => {
+    return tallas.map((t: any, i: number) =>
+      i === index ? { ...t, disponible: !t.disponible } : t
+    );
+  };
+
+  const designs = content.stockDesigns || [];
+
+  return (
+    <div className="space-y-6">
+      {/* Info */}
+      <div className="admin-card p-4 border-l-4 border-[#ff0040]">
+        <p className="text-sm text-gray-400">
+          <strong className="text-[#ff0040]">Poleras de Stock:</strong> Diseños pre-hechos con 15% de descuento sobre Dogo Premium.
+          Adulto: <strong className="text-white">$11.890</strong> (antes $13.990) |
+          Niño: <strong className="text-white">$11.040</strong> (antes $12.990).
+          Los precios se calculan automáticamente.
+        </p>
+      </div>
+
+      {/* Add Form */}
+      <div className="admin-card p-6">
+        <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+          <Plus className="w-5 h-5 text-[#ff0040]" />
+          Agregar Diseño de Stock
+        </h3>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Nombre del Diseño</label>
+            <input
+              type="text"
+              value={newDesign.nombre}
+              onChange={(e) => setNewDesign({ ...newDesign, nombre: e.target.value })}
+              className="admin-input w-full"
+              placeholder="Ej: Dragon Japones, Calavera Mexicana..."
+            />
+          </div>
+
+          <ImageUploadField
+            value={newDesign.imagen}
+            onChange={(url: string) => setNewDesign({ ...newDesign, imagen: url })}
+            label="Imagen del Diseño"
+            previewAspect="square"
+          />
+
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Tipo de Polera</label>
+            <div className="flex gap-3">
+              {(['adulto', 'nino'] as const).map(tipo => (
+                <button
+                  key={tipo}
+                  type="button"
+                  onClick={() => handleTipoChange(tipo)}
+                  className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    newDesign.tipo === tipo
+                      ? 'bg-[#ff0040]/20 text-[#ff0040] border border-[#ff0040]/30'
+                      : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10'
+                  }`}
+                >
+                  {tipo === 'adulto' ? 'Adulto' : 'Niño'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Disponibilidad de Tallas</label>
+            <div className="flex flex-wrap gap-2">
+              {newDesign.tallas.map((t, i) => (
+                <button
+                  key={t.talla}
+                  type="button"
+                  onClick={() => setNewDesign({
+                    ...newDesign,
+                    tallas: toggleTalla(newDesign.tallas, i),
+                  })}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                    t.disponible
+                      ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                      : 'bg-orange-500/20 text-orange-400 border-orange-500/30'
+                  }`}
+                >
+                  {t.talla} {t.disponible ? '✓' : '✗'}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              Click para alternar: verde = en stock (24h) | naranja = sin stock (3-5 días)
+            </p>
+          </div>
+
+          <button
+            onClick={handleAdd}
+            disabled={!newDesign.nombre.trim() || !newDesign.imagen.trim()}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Agregar Diseño
+          </button>
+        </div>
+      </div>
+
+      {/* Existing Designs */}
+      <div className="admin-card p-6">
+        <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+          <Shirt className="w-5 h-5 text-[#ff0040]" />
+          Diseños de Stock ({designs.length})
+        </h3>
+
+        {designs.length === 0 ? (
+          <div className="text-center py-12 text-gray-500">
+            <Shirt className="w-12 h-12 mx-auto mb-4 opacity-50" />
+            <p>No hay diseños de stock</p>
+            <p className="text-sm mt-2">Agrega tu primer diseño arriba</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {designs.map((design: any) => (
+              <div key={design.id} className="relative group bg-white/5 rounded-lg overflow-hidden border border-white/10">
+                {editingId === design.id && editDesign ? (
+                  <div className="p-4 space-y-3">
+                    <input
+                      type="text"
+                      value={editDesign.nombre}
+                      onChange={(e) => setEditDesign({ ...editDesign, nombre: e.target.value })}
+                      className="admin-input w-full text-sm"
+                      placeholder="Nombre"
+                    />
+                    <ImageUploadField
+                      value={editDesign.imagen}
+                      onChange={(url: string) => setEditDesign({ ...editDesign, imagen: url })}
+                      label="Imagen"
+                      showPreview={false}
+                    />
+                    <div className="flex flex-wrap gap-1">
+                      {editDesign.tallas.map((t: any, i: number) => (
+                        <button
+                          key={t.talla}
+                          type="button"
+                          onClick={() => setEditDesign({
+                            ...editDesign,
+                            tallas: toggleTalla(editDesign.tallas, i),
+                          })}
+                          className={`px-2 py-1 rounded text-xs font-medium border ${
+                            t.disponible
+                              ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                              : 'bg-orange-500/20 text-orange-400 border-orange-500/30'
+                          }`}
+                        >
+                          {t.talla}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleSaveEdit}
+                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-green-500/20 text-green-500 rounded-lg hover:bg-green-500/30 text-sm"
+                      >
+                        <Save size={14} /> Guardar
+                      </button>
+                      <button
+                        onClick={() => { setEditingId(null); setEditDesign(null); }}
+                        className="flex-1 px-3 py-2 bg-gray-500/20 text-gray-400 rounded-lg hover:bg-gray-500/30 text-sm"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="aspect-square relative bg-gray-800">
+                      <img
+                        src={design.imagen}
+                        alt={design.nombre}
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      />
+                      <div className="absolute top-2 right-2">
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                          design.tipo === 'adulto' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'
+                        }`}>
+                          {design.tipo === 'adulto' ? 'Adulto' : 'Niño'}
+                        </span>
+                      </div>
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                        <button
+                          onClick={() => handleStartEdit(design)}
+                          className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-[#ff0040] transition-colors"
+                        >
+                          <Edit2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(design.id)}
+                          className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-colors"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="p-3">
+                      <p className="text-white text-sm font-medium">{design.nombre}</p>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {design.tallas?.map((t: any) => (
+                          <span
+                            key={t.talla}
+                            className={`text-[10px] px-1.5 py-0.5 rounded ${
+                              t.disponible ? 'bg-green-500/10 text-green-400' : 'bg-orange-500/10 text-orange-400'
+                            }`}
+                          >
+                            {t.talla}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

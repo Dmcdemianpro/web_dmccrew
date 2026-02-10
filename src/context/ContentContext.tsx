@@ -46,6 +46,14 @@ interface ContactInfo {
   linkedin: string
 }
 
+interface StockDesign {
+  id: number
+  nombre: string
+  imagen: string
+  tipo: 'adulto' | 'nino'
+  tallas: { talla: string; disponible: boolean }[]
+}
+
 // Selector de bienvenida
 interface WelcomeSelector {
   title: string
@@ -108,6 +116,9 @@ interface SiteContent {
     cotizacion: string[]
   }
   textilGallery: { id: number; url: string; caption: string }[]
+
+  // Stock Designs (Poleras de Stock)
+  stockDesigns: StockDesign[]
 
   // Portfolio
   portfolio: PortfolioItem[]
@@ -202,14 +213,27 @@ const defaultContent: SiteContent = {
   ],
   textilPricing: {
     adultos: [
-      { producto: 'Polera Algodón Personalizada', talla: 'Hasta 2XL', precio: 15990 },
-      { producto: 'Polerón Canguro', talla: 'Hasta 2XL', precio: 25990 },
-      { producto: 'Polerón Polo', talla: 'Hasta 2XL', precio: 23990 },
+      { producto: 'Polera Dogo Premium Hombre', talla: 'S-2XL', precio: 13990 },
+      { producto: 'Polera Piqué Monzha Mujer', talla: 'S-2XL', precio: 17000 },
+      { producto: 'Polera Piqué Pegaso Premium Mujer', talla: 'S-2XL', precio: 17000 },
+      { producto: 'Polera Piqué Tormo', talla: 'S-2XL', precio: 19000 },
+      { producto: 'Polera Dogo Premium', talla: '3XL-4XL', precio: 15990 },
+      { producto: 'Polera Piqué Monzha Hombre', talla: 'S-3XL', precio: 17000 },
+      { producto: 'Canguro', talla: 'S-XL', precio: 20990 },
+      { producto: 'Canguro', talla: 'XXL', precio: 22990 },
+      { producto: 'Polerón Polo', talla: 'S-XL', precio: 16990 },
+      { producto: 'Polerón Polo', talla: 'XXL', precio: 22990 },
+      { producto: 'Polerón Cierre', talla: 'S-XL', precio: 24990 },
+      { producto: 'Polerón Cierre', talla: 'XXL', precio: 24990 },
     ],
     ninos: [
-      { producto: 'Polera Algodón Personalizada', talla: 'Hasta XS', precio: 12990 },
-      { producto: 'Polerón Canguro', talla: 'Hasta XS', precio: 21990 },
-      { producto: 'Polerón Polo', talla: 'Hasta XS', precio: 19990 },
+      { producto: 'Polera Dogo Premium Niño', talla: '3/4-11/12', precio: 12990 },
+      { producto: 'Canguro', talla: '2-8', precio: 15600 },
+      { producto: 'Canguro', talla: '10-16', precio: 15600 },
+      { producto: 'Polerón Polo', talla: '2-8', precio: 15000 },
+      { producto: 'Polerón Polo', talla: '10-16', precio: 15600 },
+      { producto: 'Polerón Cierre', talla: '2-8', precio: 20990 },
+      { producto: 'Polerón Cierre', talla: '10-16', precio: 22990 },
     ],
     cotizacion: ['Personalización Empresas', 'Tallas Especiales', 'Pedidos por Mayor'],
   },
@@ -219,6 +243,9 @@ const defaultContent: SiteContent = {
     { id: 3, url: '/images/gallery/dtf-3.jpg', caption: 'Uniformes Empresa' },
     { id: 4, url: '/images/gallery/dtf-4.jpg', caption: 'Merchandising Evento' },
   ],
+
+  // Stock Designs
+  stockDesigns: [],
 
   // Portfolio
   portfolio: [
@@ -284,6 +311,9 @@ interface ContentContextType {
   addGalleryItem: (item: { url: string; caption: string }) => void
   updateGalleryItem: (id: number, data: { url?: string; caption?: string }) => void
   deleteGalleryItem: (id: number) => void
+  addStockDesign: (design: Omit<StockDesign, 'id'>) => void
+  updateStockDesign: (id: number, data: Partial<StockDesign>) => void
+  deleteStockDesign: (id: number) => void
   resetToDefault: () => void
   saveToServer: () => Promise<{ success: boolean; message: string }>
   publishChanges: () => Promise<{ success: boolean; message: string }>
@@ -559,6 +589,23 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     setContent(prev => ({ ...prev, textilGallery: prev.textilGallery.filter(g => g.id !== id) }))
   }
 
+  // Stock Designs
+  const addStockDesign = (design: Omit<StockDesign, 'id'>) => {
+    const newDesign = { ...design, id: Date.now() }
+    setContent(prev => ({ ...prev, stockDesigns: [...(prev.stockDesigns || []), newDesign] }))
+  }
+
+  const updateStockDesign = (id: number, data: Partial<StockDesign>) => {
+    setContent(prev => ({
+      ...prev,
+      stockDesigns: (prev.stockDesigns || []).map(d => d.id === id ? { ...d, ...data } : d)
+    }))
+  }
+
+  const deleteStockDesign = (id: number) => {
+    setContent(prev => ({ ...prev, stockDesigns: (prev.stockDesigns || []).filter(d => d.id !== id) }))
+  }
+
   // Resetear a valores por defecto
   const resetToDefault = () => {
     setContent(defaultContent)
@@ -661,6 +708,9 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     addGalleryItem,
     updateGalleryItem,
     deleteGalleryItem,
+    addStockDesign,
+    updateStockDesign,
+    deleteStockDesign,
     resetToDefault,
     saveToServer,
     publishChanges,

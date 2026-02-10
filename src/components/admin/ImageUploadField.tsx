@@ -172,7 +172,7 @@ export function ImageUploadField({
             )}
           </button>
           <p className="text-xs text-gray-500 mt-2 text-center">
-            PNG, JPG, GIF, WebP, SVG (max 5MB)
+            PNG, JPG, GIF, WebP, SVG (max 50MB)
           </p>
         </div>
       )}
