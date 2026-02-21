@@ -221,7 +221,7 @@ export function StockDesigns() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-4">
+                  <div className="relative z-10 p-4">
                     <h3
                       className="text-base font-bold text-white mb-3"
                       style={{ fontFamily: "var(--font-display)" }}
@@ -253,7 +253,7 @@ export function StockDesigns() {
 
                     {/* CTA */}
                     <motion.button
-                      onClick={() => openWhatsApp("textilPersonalizar")}
+                      onClick={() => openWhatsApp("textilStock", { diseno: design.nombre })}
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                       className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white text-sm font-bold rounded-xl hover:shadow-lg hover:shadow-[#ff0040]/25 transition-shadow"

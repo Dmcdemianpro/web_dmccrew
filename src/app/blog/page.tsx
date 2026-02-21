@@ -1,26 +1,17 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Heart, Shirt } from "lucide-react";
+import { ArrowRight, Shirt } from "lucide-react";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "Blog - Recursos y Artículos",
   description:
-    "Artículos sobre interoperabilidad en salud, guías de impresión DTF y más recursos para tu negocio.",
+    "Guías de impresión DTF, tips de diseño y recursos para personalizar tus prendas.",
 };
 
 // Placeholder blog posts
 const blogPosts = [
-  {
-    slug: "hl7-vs-fhir-cual-usar",
-    title: "HL7 vs FHIR: ¿Cuál usar en tu proyecto de integración?",
-    excerpt:
-      "Comparamos los dos estándares más usados en interoperabilidad de salud para ayudarte a elegir el correcto.",
-    type: "salud",
-    date: "2024-01-15",
-    readTime: "8 min",
-  },
   {
     slug: "dtf-vs-sublimado-vs-serigrafia",
     title: "DTF vs Sublimado vs Serigrafía: ¿Qué técnica elegir?",
@@ -29,15 +20,6 @@ const blogPosts = [
     type: "textil",
     date: "2024-01-10",
     readTime: "6 min",
-  },
-  {
-    slug: "5-senales-motor-integracion",
-    title: "5 señales de que tu hospital necesita un motor de integración",
-    excerpt:
-      "Identifica si es momento de implementar un motor de integración en tu institución de salud.",
-    type: "salud",
-    date: "2024-01-05",
-    readTime: "5 min",
   },
   {
     slug: "preparar-diseno-dtf",
@@ -55,21 +37,8 @@ export default function BlogPage() {
     <Section className="pt-32">
       <SectionHeader
         title="Blog y Recursos"
-        subtitle="Artículos, guías y recursos para mantenerte informado sobre interoperabilidad en salud e impresión DTF"
+        subtitle="Artículos, guías y recursos para sacar el máximo de la impresión DTF"
       />
-
-      {/* Filter Tabs */}
-      <div className="flex justify-center gap-2 mb-12">
-        <button className="px-4 py-2 rounded-full bg-brand text-white text-sm font-medium">
-          Todos
-        </button>
-        <button className="px-4 py-2 rounded-full bg-muted text-muted-foreground hover:bg-muted/80 text-sm font-medium transition-colors">
-          Salud
-        </button>
-        <button className="px-4 py-2 rounded-full bg-muted text-muted-foreground hover:bg-muted/80 text-sm font-medium transition-colors">
-          Textil DTF
-        </button>
-      </div>
 
       {/* Blog Grid */}
       <div className="grid md:grid-cols-2 gap-6">
@@ -83,20 +52,14 @@ export default function BlogPage() {
               {/* Image Placeholder */}
               <div className="aspect-video bg-muted relative overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  {post.type === "salud" ? (
-                    <Heart className="h-12 w-12 text-accent-salud/30" />
-                  ) : (
-                    <Shirt className="h-12 w-12 text-accent-textil/30" />
-                  )}
+                  <Shirt className="h-12 w-12 text-accent-textil/30" />
                 </div>
               </div>
 
               {/* Content */}
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-3">
-                  <Badge variant={post.type === "salud" ? "salud" : "textil"}>
-                    {post.type === "salud" ? "Salud" : "Textil"}
-                  </Badge>
+                  <Badge variant="textil">Textil</Badge>
                   <span className="text-xs text-muted-foreground">
                     {post.readTime} de lectura
                   </span>

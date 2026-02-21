@@ -9,7 +9,6 @@ import {
   MapPin,
   Clock,
   MessageCircle,
-  Heart,
   Shirt,
   Send,
   CheckCircle,
@@ -24,10 +23,9 @@ import { Badge } from "@/components/ui/badge";
 import { CONTACT_INFO, openWhatsApp } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
-type TopicType = "salud" | "textil" | "general";
+type TopicType = "textil" | "general";
 
 const topics: { value: TopicType; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { value: "salud", label: "Integración de Sistemas", icon: Heart },
   { value: "textil", label: "Impresión DTF", icon: Shirt },
   { value: "general", label: "Consulta General", icon: Mail },
 ];
@@ -39,7 +37,8 @@ interface FormStatus {
 
 export function ContactContent() {
   const searchParams = useSearchParams();
-  const initialTopic = (searchParams.get("tema") as TopicType) || "general";
+  const paramTopic = searchParams.get("tema");
+  const initialTopic: TopicType = paramTopic === "textil" ? "textil" : "general";
   const [topic, setTopic] = useState<TopicType>(initialTopic);
   const [formStatus, setFormStatus] = useState<FormStatus>({ type: "idle", message: "" });
 
@@ -124,7 +123,7 @@ export function ContactContent() {
                 <label className="block text-sm font-medium mb-3">
                   ¿Sobre qué tema nos contactas?
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   {topics.map((t) => (
                     <button
                       key={t.value}
@@ -133,9 +132,7 @@ export function ContactContent() {
                       className={cn(
                         "flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all",
                         topic === t.value
-                          ? t.value === "salud"
-                            ? "border-accent-salud bg-accent-salud/5"
-                            : t.value === "textil"
+                          ? t.value === "textil"
                             ? "border-accent-textil bg-accent-textil/5"
                             : "border-brand bg-brand/5"
                           : "border-border hover:border-muted-foreground"
@@ -145,9 +142,7 @@ export function ContactContent() {
                         className={cn(
                           "h-6 w-6",
                           topic === t.value
-                            ? t.value === "salud"
-                              ? "text-accent-salud"
-                              : t.value === "textil"
+                            ? t.value === "textil"
                               ? "text-accent-textil"
                               : "text-brand"
                             : "text-muted-foreground"
@@ -198,11 +193,11 @@ export function ContactContent() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1.5">
-                      {topic === "salud" ? "Institución" : topic === "textil" ? "Empresa" : "Empresa (opcional)"}
+                      {topic === "textil" ? "Empresa" : "Empresa (opcional)"}
                     </label>
                     <Input
                       name="company"
-                      placeholder={topic === "salud" ? "Clínica, Hospital..." : "Nombre empresa"}
+                      placeholder="Nombre empresa"
                     />
                   </div>
                 </div>
@@ -237,9 +232,7 @@ export function ContactContent() {
                   <Textarea
                     name="message"
                     placeholder={
-                      topic === "salud"
-                        ? "Describe tu proyecto de integración, sistemas involucrados, necesidades..."
-                        : topic === "textil"
+                      topic === "textil"
                         ? "Describe tu proyecto: tipo de diseño, tallas, colores de prenda..."
                         : "¿En qué podemos ayudarte?"
                     }
@@ -252,7 +245,7 @@ export function ContactContent() {
                   size="lg"
                   className="w-full"
                   disabled={isSubmitting}
-                  variant={topic === "salud" ? "salud" : topic === "textil" ? "textil" : "default"}
+                  variant={topic === "textil" ? "textil" : "default"}
                 >
                   {isSubmitting ? (
                     <>
@@ -296,7 +289,7 @@ export function ContactContent() {
                         <p className="text-red-500 font-medium">Error al enviar</p>
                         <p className="text-sm text-red-400/80 mt-1">{formStatus.message}</p>
                         <button
-                          onClick={() => openWhatsApp(topic === "salud" ? "salud" : "textilPersonalizar")}
+                          onClick={() => openWhatsApp("textilPersonalizar")}
                           className="inline-flex items-center gap-2 mt-3 text-sm text-[#25D366] hover:underline"
                         >
                           <MessageCircle className="h-4 w-4" />
@@ -327,14 +320,6 @@ export function ContactContent() {
                 ¿Prefieres una respuesta más rápida? Escríbenos por WhatsApp.
               </p>
               <div className="space-y-2">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => openWhatsApp("salud")}
-                >
-                  <Heart className="h-4 w-4 mr-2 text-accent-salud" />
-                  Integración de sistemas
-                </Button>
                 <Button
                   variant="outline"
                   className="w-full justify-start"

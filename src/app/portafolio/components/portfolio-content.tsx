@@ -1,54 +1,26 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Shirt, ArrowRight } from "lucide-react";
+import { Shirt, ArrowRight } from "lucide-react";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PORTFOLIO_ITEMS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 
-type FilterType = "all" | "salud" | "textil";
-
-const filters: { value: FilterType; label: string }[] = [
-  { value: "all", label: "Todos" },
-  { value: "salud", label: "Salud" },
-  { value: "textil", label: "Textil DTF" },
-];
+type FilterType = "textil";
 
 export function PortfolioContent() {
-  const [filter, setFilter] = useState<FilterType>("all");
+  const filter: FilterType = "textil";
 
-  const filteredItems = PORTFOLIO_ITEMS.filter(
-    (item) => filter === "all" || item.type === filter
-  );
+  const filteredItems = PORTFOLIO_ITEMS.filter((item) => item.type === filter);
 
   return (
     <Section className="pt-32">
       <SectionHeader
         title="Portafolio"
-        subtitle="Conoce algunos de nuestros proyectos y trabajos realizados para clientes de ambas líneas"
+        subtitle="Conoce algunos de nuestros trabajos de personalización textil"
       />
-
-      {/* Filters */}
-      <div className="flex justify-center gap-2 mb-12">
-        {filters.map((f) => (
-          <button
-            key={f.value}
-            onClick={() => setFilter(f.value)}
-            className={cn(
-              "px-4 py-2 rounded-full text-sm font-medium transition-colors",
-              filter === f.value
-                ? "bg-brand text-white"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            )}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
 
       {/* Portfolio Grid */}
       <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -66,11 +38,7 @@ export function PortfolioContent() {
               {/* Image Placeholder */}
               <div className="aspect-video bg-muted relative overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  {item.type === "salud" ? (
-                    <Heart className="h-12 w-12 text-accent-salud/30" />
-                  ) : (
-                    <Shirt className="h-12 w-12 text-accent-textil/30" />
-                  )}
+                  <Shirt className="h-12 w-12 text-accent-textil/30" />
                 </div>
 
                 {/* Overlay */}
@@ -84,11 +52,8 @@ export function PortfolioContent() {
 
               {/* Content */}
               <div className="p-6">
-                <Badge
-                  variant={item.type === "salud" ? "salud" : "textil"}
-                  className="mb-3"
-                >
-                  {item.type === "salud" ? "Salud" : "Textil"}
+                <Badge variant="textil" className="mb-3">
+                  Textil
                 </Badge>
 
                 <h3 className="text-lg font-semibold mb-2 group-hover:text-brand transition-colors">
@@ -126,9 +91,6 @@ export function PortfolioContent() {
           ¿Quieres que tu proyecto sea el próximo?
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button variant="salud" asChild>
-            <Link href="/contacto?tema=salud">Consultar proyecto Salud</Link>
-          </Button>
           <Button variant="textil" asChild>
             <Link href="/contacto?tema=textil">Cotizar trabajo DTF</Link>
           </Button>

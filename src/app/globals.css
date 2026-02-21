@@ -336,6 +336,19 @@ body {
   color: var(--foreground);
 }
 
+/* Improve readability on dark textil theme */
+.theme-textil .text-gray-300 {
+  color: #e5e7eb;
+}
+
+.theme-textil .text-gray-400 {
+  color: #cbd5e1;
+}
+
+.theme-textil .text-gray-500 {
+  color: #a1a1aa;
+}
+
 /* Neon Glow Effects */
 .neon-glow {
   box-shadow: 0 0 20px var(--accent-neon-glow),
@@ -806,6 +819,7 @@ body {
   );
   opacity: 0;
   transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .card-racing:hover {

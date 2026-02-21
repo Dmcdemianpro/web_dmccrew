@@ -1,65 +1,204 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Shirt, Star, ArrowRight, Sparkles } from "lucide-react";
-import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { Star, Sparkles, MessageCircle, Check } from "lucide-react";
 import { openWhatsApp } from "@/lib/utils";
+import { useContent } from "@/context/ContentContext";
+import { useState } from "react";
 
-const services = [
+/* ── Color variants with matching mockup images ── */
+const colorVariants = {
+  polera: [
+    { name: "Blanco", hex: "#f5f5f5", img: "/mockups/poleras/blanco.png" },
+    { name: "Negro", hex: "#1a1a1a", img: "/mockups/poleras/negro.png" },
+    { name: "Gris", hex: "#6b7280", img: "/mockups/poleras/gris.png" },
+    { name: "Rojo", hex: "#dc2626", img: "/mockups/poleras/rojo.png" },
+    { name: "Azul Marino", hex: "#1e3a5f", img: "/mockups/poleras/azul_marino.png" },
+  ],
+  poleron: [
+    { name: "Blanco", hex: "#f5f5f5", img: "/mockups/polerones/poleron_blanco.png" },
+    { name: "Negro", hex: "#1a1a1a", img: "/mockups/polerones/poleron_negro.png" },
+    { name: "Gris", hex: "#6b7280", img: "/mockups/polerones/poleron_gris.png" },
+    { name: "Rojo", hex: "#dc2626", img: "/mockups/polerones/poleron_rojo.png" },
+    { name: "Azul Marino", hex: "#1e3a5f", img: "/mockups/polerones/poleron_azul_marino.png" },
+  ],
+};
+
+const sizes = ["S", "M", "L", "XL", "2XL"];
+
+const getVariants = (title: string) => {
+  const key = title.toLowerCase();
+  if (key.includes("poleron")) return colorVariants.poleron;
+  return colorVariants.polera;
+};
+
+const fallbackCatalog = [
   {
+    id: 1,
     title: "Poleras Streetwear",
     description: "Algodon premium, oversize y regular fit. Disenos urbanos, graficos bold y colores vibrantes.",
-    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&q=80",
-    features: ["Oversize", "Full Color", "Urban"]
+    image: "",
+    features: ["Oversize", "Full Color", "Urban"],
+    highlighted: true,
   },
   {
+    id: 2,
     title: "Polerones Urban",
     description: "Hoodies premium con o sin capucha. Estilo streetwear, perfectos para tu crew o marca.",
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&q=80",
-    features: ["Hoodie", "Crew", "Premium"]
+    image: "",
+    features: ["Hoodie", "Crew", "Premium"],
+    highlighted: false,
   },
   {
+    id: 3,
     title: "Uniformes Corporativos",
     description: "Polos, camisas y chaquetas con tu identidad. Cotizacion especial por volumen.",
-    image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=500&q=80",
-    features: ["Logo", "Bordado", "Volumen"]
+    image: "",
+    features: ["Logo", "Bordado", "Volumen"],
+    highlighted: false,
   },
   {
+    id: 4,
     title: "Gorras & Accesorios",
     description: "Snapbacks, dad hats, beanies y mas. Complementa tu estilo con accesorios personalizados.",
-    image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500&q=80",
-    features: ["Snapback", "Beanie", "Custom"]
+    image: "",
+    features: ["Snapback", "Beanie", "Custom"],
+    highlighted: false,
   },
 ];
 
+/* ── Product Card ── */
+function ProductCard({ item, index }: {
+  item: typeof fallbackCatalog[0];
+  index: number;
+}) {
+  const variants = getVariants(item.title);
+  const [activeColor, setActiveColor] = useState(0);
+  const [selectedSize, setSelectedSize] = useState(2); // L por defecto
+  const currentImg = item.image || variants[activeColor]?.img || variants[0]?.img;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ delay: index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="group"
+    >
+      {/* Card con borde glow sutil */}
+      <div className="relative rounded-[20px] p-[1px] bg-gradient-to-b from-[#ff0040]/20 via-white/[0.06] to-white/[0.02] transition-all duration-500 hover:from-[#ff0040]/40 hover:via-[#ff6600]/20 hover:to-[#ff0040]/10">
+        <div className="relative rounded-[19px] bg-[#0f0f0f] overflow-hidden flex flex-col">
+
+          {/* ── Image container con borde interno redondeado ── */}
+          <div className="relative m-3 rounded-2xl overflow-hidden bg-[#1a1a1a]">
+            {/* Imagen del producto */}
+            <div className="relative aspect-square">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={currentImg}
+                  src={currentImg}
+                  alt={item.title}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full h-full object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-105"
+                  draggable={false}
+                />
+              </AnimatePresence>
+
+              {/* Badge esquina superior derecha */}
+              {item.highlighted && (
+                <div className="absolute top-3 right-3 z-10">
+                  <span className="px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white shadow-[0_4px_15px_rgba(255,0,64,0.5)]">
+                    -15%
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ── Contenido ── */}
+          <div className="px-4 pb-4 pt-1 flex flex-col gap-3">
+            {/* Titulo */}
+            <h3
+              className="text-lg font-bold text-white"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              {item.title}
+            </h3>
+
+            {/* Selector de tallas */}
+            <div className="flex items-center gap-2">
+              {sizes.map((size, i) => {
+                const isSelected = i === selectedSize;
+                return (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(i)}
+                    className={`relative w-10 h-10 rounded-full text-xs font-bold transition-all duration-300 flex items-center justify-center ${
+                      isSelected
+                        ? "bg-[#ff0040]/15 border-2 border-[#ff0040] text-white"
+                        : "bg-white/[0.04] border border-white/10 text-white/40 hover:text-white/70 hover:border-white/25"
+                    }`}
+                  >
+                    {size}
+                    {isSelected && (
+                      <Check className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 text-[#0f0f0f] bg-[#ff0040] rounded-full p-[2px]" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Color swatches */}
+            <div className="flex items-center gap-2">
+              {variants.map((v, i) => (
+                <button
+                  key={v.name}
+                  onClick={() => setActiveColor(i)}
+                  className={`relative w-7 h-7 rounded-full transition-all duration-300 ${
+                    activeColor === i
+                      ? "ring-2 ring-[#ff0040] ring-offset-2 ring-offset-[#0f0f0f] scale-110"
+                      : "opacity-50 hover:opacity-100 hover:scale-105"
+                  }`}
+                  style={{ backgroundColor: v.hex }}
+                  aria-label={v.name}
+                >
+                  {v.hex === "#1a1a1a" && (
+                    <span className="absolute inset-0 rounded-full border border-white/20" />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Boton CTA full-width gradient */}
+            <button
+              onClick={() => openWhatsApp("textilPersonalizar")}
+              className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-[#ff0040] to-[#ff6600] shadow-[0_4px_20px_rgba(255,0,64,0.3)] transition-all duration-300 hover:shadow-[0_8px_30px_rgba(255,0,64,0.45)] hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Pedir ahora
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── Main Section ── */
 export function TextilServices() {
+  const { content } = useContent();
+  const catalog = (content.textilCatalog && content.textilCatalog.length > 0)
+    ? content.textilCatalog
+    : fallbackCatalog;
+
   return (
     <section id="catalogo" className="theme-textil py-24 relative overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black" />
-
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute -top-1/2 -left-1/4 w-[800px] h-[800px] rounded-full bg-[#ff0040]/5 blur-[150px]"
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-          }}
-          transition={{ duration: 15, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute -bottom-1/2 -right-1/4 w-[800px] h-[800px] rounded-full bg-[#ff6600]/5 blur-[150px]"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            x: [0, -50, 0],
-          }}
-          transition={{ duration: 15, repeat: Infinity }}
-        />
-      </div>
-
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ff004008_1px,transparent_1px),linear-gradient(to_bottom,#ff004008_1px,transparent_1px)] bg-[size:50px_50px]" />
+      <div className="absolute inset-0 bg-[#0a0a0a]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(255,0,64,0.06),transparent)]" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
         {/* Header */}
@@ -67,7 +206,7 @@ export function TextilServices() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
           <motion.span
             initial={{ scale: 0 }}
@@ -76,109 +215,25 @@ export function TextilServices() {
             className="tag-racing mb-6"
           >
             <Sparkles className="w-4 h-4" />
-            Catalogo de Productos
+            Catalogo
           </motion.span>
 
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6" style={{ fontFamily: "var(--font-display)" }}>
             Nuestros{" "}
-            <span className="title-gradient-animated">
-              Productos
-            </span>
+            <span className="title-gradient-animated">Productos</span>
           </h2>
 
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Personalizamos todo tipo de prendas con tecnologia DTF de ultima generacion
+          <p className="text-lg text-white/40 max-w-xl mx-auto">
+            Prendas personalizadas con tecnologia DTF de ultima generacion
           </p>
 
           <div className="divider-racing mt-8" />
         </motion.div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{
-                y: -15,
-                rotateX: 5,
-                rotateY: -5
-              }}
-              className="group relative card-3d-tilt"
-            >
-              {/* Glow Effect on Hover */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ff0040] to-[#ff6600] rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
-
-              <div className="relative card-racing glow-corners rounded-2xl overflow-hidden">
-                {/* Shine Element */}
-                <div className="card-shine" />
-
-                {/* Image */}
-                <div className="relative h-64 overflow-hidden gallery-image-racing">
-                  <motion.img
-                    src={service.image}
-                    alt={service.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-
-                  {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent" />
-
-                  {/* Features Tags */}
-                  <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
-                    {service.features.map((feature, i) => (
-                      <motion.span
-                        key={i}
-                        initial={{ opacity: 0, y: -10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 + i * 0.1 }}
-                        className="tag-racing"
-                      >
-                        {feature}
-                      </motion.span>
-                    ))}
-                  </div>
-
-                  {/* Hover Icon */}
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    whileHover={{ scale: 1, opacity: 1 }}
-                    className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-                  >
-                    <div className="icon-racing">
-                      <Shirt className="w-8 h-8" />
-                    </div>
-                  </motion.div>
-                </div>
-
-                {/* Content */}
-                <div className="p-6 relative z-10">
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#ff0040] transition-colors" style={{ fontFamily: "var(--font-display)" }}>
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                    {service.description}
-                  </p>
-
-                  {/* CTA */}
-                  <button
-                    onClick={() => openWhatsApp("textilPersonalizar")}
-                    className="inline-flex items-center gap-2 text-[#ff0040] font-bold text-sm group-hover:gap-3 transition-all"
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    Cotizar ahora
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {/* Bottom Accent Line */}
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ff0040] to-[#ff6600] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-              </div>
-            </motion.div>
+        {/* Grid uniforme */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {catalog.map((item, i) => (
+            <ProductCard key={item.id} item={item} index={i} />
           ))}
         </div>
 
@@ -189,7 +244,7 @@ export function TextilServices() {
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <p className="text-gray-400 mb-6">
+          <p className="text-white/40 mb-6">
             ¿Tienes un proyecto especial? ¡Te ayudamos a hacerlo realidad!
           </p>
           <motion.button

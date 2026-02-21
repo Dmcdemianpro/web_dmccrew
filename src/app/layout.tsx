@@ -3,7 +3,7 @@ import "./globals.css";
 import { Providers } from "@/components/providers/Providers";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dmcprojects.cl"),
+  metadataBase: new URL("https://dmccrew.cl"),
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -12,20 +12,17 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   title: {
-    default: "DMC Projects - Interoperabilidad en Salud e Impresión DTF",
+    default: "DMC Projects - Personalización Textil DTF",
     template: "%s | DMC Projects",
   },
   description:
-    "Especialistas en integración de sistemas clínicos (HL7, FHIR, Mirth) y personalización textil DTF. Poleras, uniformes y más. Chile.",
+    "Impresión DTF y personalización textil en Chile. Poleras, polerones, uniformes y merchandising con entrega rápida y calidad premium.",
   keywords: [
-    "interoperabilidad salud Chile",
-    "integración sistemas clínicos",
-    "HL7",
-    "FHIR",
-    "Mirth Connect",
     "impresión DTF",
     "poleras personalizadas",
     "uniformes corporativos",
+    "polerones personalizados",
+    "merchandising personalizado",
     "DMC Projects",
   ],
   authors: [{ name: "DMC Projects" }],
@@ -33,11 +30,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_CL",
-    url: "https://dmcprojects.cl",
+    url: "https://dmccrew.cl",
     siteName: "DMC Projects",
-    title: "DMC Projects - Interoperabilidad en Salud e Impresión DTF",
+    title: "DMC Projects - Personalización Textil DTF",
     description:
-      "Especialistas en integración de sistemas clínicos y personalización textil DTF en Chile.",
+      "Impresión DTF y personalización textil en Chile. Poleras, polerones, uniformes y merchandising.",
     images: [
       {
         url: "/images/og-image.jpg",
@@ -49,9 +46,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "DMC Projects - Interoperabilidad en Salud e Impresión DTF",
+    title: "DMC Projects - Personalización Textil DTF",
     description:
-      "Especialistas en integración de sistemas clínicos y personalización textil DTF en Chile.",
+      "Impresión DTF y personalización textil en Chile. Poleras, polerones, uniformes y merchandising.",
     images: ["/images/og-image.jpg"],
   },
   robots: {

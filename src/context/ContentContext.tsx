@@ -22,7 +22,7 @@ interface PortfolioItem {
   id: number
   title: string
   description: string
-  type: 'salud' | 'textil'
+  type: 'textil'
   image: string
   tags: string[]
 }
@@ -32,7 +32,7 @@ interface Testimonial {
   quote: string
   author: string
   company: string
-  type: 'salud' | 'textil'
+  type: 'textil'
 }
 
 interface ContactInfo {
@@ -44,6 +44,39 @@ interface ContactInfo {
   instagram: string
   facebook: string
   linkedin: string
+}
+
+interface TextilStat {
+  value: string
+  label: string
+  icon: string
+}
+
+interface CatalogItem {
+  id: number
+  title: string
+  description: string
+  image: string
+  features: string[]
+  highlighted: boolean
+}
+
+interface ConfiguratorProduct {
+  id: number
+  nombre: string
+  imagen: string
+}
+
+interface ConfiguratorColor {
+  id: number
+  nombre: string
+  hex: string
+}
+
+interface TextilConfigurator {
+  products: ConfiguratorProduct[]
+  colors: ConfiguratorColor[]
+  sizes: string[]
 }
 
 interface StockDesign {
@@ -60,13 +93,6 @@ interface WelcomeSelector {
   subtitle: string
   description: string
   backgroundImage: string
-  saludCard: {
-    title: string
-    subtitle: string
-    description: string
-    image: string
-    buttonText: string
-  }
   textilCard: {
     title: string
     subtitle: string
@@ -96,19 +122,10 @@ interface SiteContent {
   // Hero Principal
   hero: HeroContent
 
-  // Salud
-  saludHero: HeroContent
-  saludServices: ServiceItem[]
-  saludTechnologies: {
-    motors: string[]
-    standards: string[]
-    profiles: string[]
-    protocols: string[]
-    databases: string[]
-  }
-
   // Textil
   textilHero: HeroContent
+  textilStats: TextilStat[]
+  textilCatalog: CatalogItem[]
   textilServices: ServiceItem[]
   textilPricing: {
     adultos: { producto: string; talla: string; precio: number }[]
@@ -116,6 +133,9 @@ interface SiteContent {
     cotizacion: string[]
   }
   textilGallery: { id: number; url: string; caption: string }[]
+
+  // Configurador Textil
+  textilConfigurator: TextilConfigurator
 
   // Stock Designs (Poleras de Stock)
   stockDesigns: StockDesign[]
@@ -134,7 +154,7 @@ interface SiteContent {
 const defaultContent: SiteContent = {
   // General
   siteName: 'DMC Projects',
-  siteTagline: 'Conectamos sistemas de salud e imprimimos tu identidad',
+  siteTagline: 'Personalización textil DTF con calidad premium',
 
   // Diseño
   design: {
@@ -147,17 +167,10 @@ const defaultContent: SiteContent = {
 
   // Selector de Bienvenida
   welcome: {
-    title: 'Bienvenido a DMC Projects Spa',
-    subtitle: 'Dos especialidades, un solo equipo',
-    description: 'Somos una empresa dedicada a dos rubros especializados. Selecciona el area que necesitas para conocer nuestros servicios.',
+    title: 'Bienvenido a DMC Projects',
+    subtitle: 'Personalizacion Textil DTF',
+    description: 'Selecciona tu prenda y personalizala con impresion DTF de alta calidad.',
     backgroundImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80',
-    saludCard: {
-      title: 'Salud Digital',
-      subtitle: 'Interoperabilidad e Integracion',
-      description: 'Conectamos sistemas clinicos HIS, RIS, LIS, PACS con estandares HL7, FHIR y CDA. Especialistas en Mirth Connect y motores de integracion.',
-      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&q=80',
-      buttonText: 'Explorar Salud Digital',
-    },
     textilCard: {
       title: 'Personalizacion Textil',
       subtitle: 'Impresion DTF Profesional',
@@ -169,33 +182,10 @@ const defaultContent: SiteContent = {
 
   // Hero Principal
   hero: {
-    title1: 'Conectamos sistemas de salud',
-    title2: 'e imprimimos tu identidad',
-    subtitle: 'Un equipo, dos especialidades, cero complicaciones',
-    description: 'Interoperabilidad clinica + Personalizacion textil DTF.',
-  },
-
-  // Salud
-  saludHero: {
-    title1: 'Interoperabilidad',
-    title2: 'e Integracion de Sistemas',
-    subtitle: 'Que tus sistemas hablen el mismo idioma',
-    description: 'Conectamos tus sistemas clinicos HIS, RIS, LIS, PACS con estandares HL7, FHIR y CDA. Desde el levantamiento inicial hasta el monitoreo continuo.',
-  },
-  saludServices: [
-    { id: 1, icon: 'GitBranch', title: 'Levantamiento de Flujos', description: 'Mapeamos tus procesos actuales, identificamos puntos de integracion y documentamos requerimientos tecnicos y de negocio.' },
-    { id: 2, icon: 'Layers', title: 'Diseno de Integracion', description: 'Definimos la arquitectura de integracion optima: protocolos, transformaciones, validaciones y manejo de errores.' },
-    { id: 3, icon: 'Plug', title: 'Desarrollo de Conectores', description: 'Construimos interfaces especificas para tus sistemas: HIS, RIS, LIS, PACS, ERP, y cualquier aplicacion con capacidad de integracion.' },
-    { id: 4, icon: 'RefreshCw', title: 'Normalizacion y Transformacion', description: 'Convertimos datos entre formatos y estandares. HL7 v2 a FHIR, XML a JSON, y cualquier transformacion que requieras.' },
-    { id: 5, icon: 'Server', title: 'Implementacion de Motores', description: 'Instalamos, configuramos y optimizamos Mirth Connect u OIE segun tus necesidades de volumen, redundancia y monitoreo.' },
-    { id: 6, icon: 'Activity', title: 'Monitoreo y Trazabilidad', description: 'Dashboards en tiempo real, alertas proactivas y logs completos para auditoria y troubleshooting.' },
-  ],
-  saludTechnologies: {
-    motors: ['Mirth Connect (NextGen)', 'Open Integration Engine (OIE)'],
-    standards: ['HL7 v2.x (ADT, ORM, ORU, SIU, MDM...)', 'HL7 FHIR R4', 'CDA (Clinical Document Architecture)'],
-    profiles: ['PIX/PDQ (Gestion de pacientes)', 'XDS (Documentos)', 'ATNA (Auditoria)'],
-    protocols: ['MLLP, HTTP/REST, SOAP', 'TCP/IP, SFTP, AS2'],
-    databases: ['PostgreSQL', 'MySQL', 'SQL Server', 'Oracle'],
+    title1: 'Personaliza',
+    title2: 'tu estilo',
+    subtitle: 'Impresión DTF Profesional',
+    description: 'Tu diseño, impreso con calidad excepcional en la prenda que elijas.',
   },
 
   // Textil
@@ -205,6 +195,18 @@ const defaultContent: SiteContent = {
     subtitle: 'Impresion DTF Profesional',
     description: 'Tu diseno, impreso con calidad excepcional en la prenda que elijas. Poleras, polerones, uniformes corporativos y mas. Desde 1 unidad.',
   },
+  textilStats: [
+    { value: '50+', label: 'Lavados garantizados', icon: 'Shirt' },
+    { value: '24h', label: 'Entregas express', icon: 'Zap' },
+    { value: '100%', label: 'Full color vibrante', icon: 'Palette' },
+    { value: '5★', label: 'Calificacion clientes', icon: 'Star' },
+  ],
+  textilCatalog: [
+    { id: 1, title: 'Poleras Streetwear', description: 'Algodon premium, oversize y regular fit. Disenos urbanos, graficos bold y colores vibrantes.', image: '', features: ['Oversize', 'Full Color', 'Urban'], highlighted: true },
+    { id: 2, title: 'Polerones Urban', description: 'Hoodies premium con o sin capucha. Estilo streetwear, perfectos para tu crew o marca.', image: '', features: ['Hoodie', 'Crew', 'Premium'], highlighted: false },
+    { id: 3, title: 'Uniformes Corporativos', description: 'Polos, camisas y chaquetas con tu identidad. Cotizacion especial por volumen.', image: '', features: ['Logo', 'Bordado', 'Volumen'], highlighted: false },
+    { id: 4, title: 'Gorras & Accesorios', description: 'Snapbacks, dad hats, beanies y mas. Complementa tu estilo con accesorios personalizados.', image: '', features: ['Snapback', 'Beanie', 'Custom'], highlighted: false },
+  ],
   textilServices: [
     { id: 1, icon: 'Shirt', title: 'Poleras', description: 'Algodon, poliester o mezcla. Cuello redondo o polo. Desde talla XS hasta XXXL.', image: '/images/polera.jpg' },
     { id: 2, icon: 'Jacket', title: 'Polerones', description: 'Con o sin capucha, canguro o full zipper. Ideales para equipos de trabajo.', image: '/images/poleron.jpg' },
@@ -244,22 +246,34 @@ const defaultContent: SiteContent = {
     { id: 4, url: '/images/gallery/dtf-4.jpg', caption: 'Merchandising Evento' },
   ],
 
+  // Configurador Textil
+  textilConfigurator: {
+    products: [
+      { id: 1, nombre: 'Polera', imagen: '' },
+      { id: 2, nombre: 'Polerón', imagen: '' },
+    ],
+    colors: [
+      { id: 1, nombre: 'Negro', hex: '#000000' },
+      { id: 2, nombre: 'Blanco', hex: '#FFFFFF' },
+      { id: 3, nombre: 'Rojo', hex: '#EF4444' },
+      { id: 4, nombre: 'Azul Marino', hex: '#1E3A5F' },
+      { id: 5, nombre: 'Gris', hex: '#6B7280' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+
   // Stock Designs
   stockDesigns: [],
 
   // Portfolio
   portfolio: [
-    { id: 1, title: 'Integracion HIS-LIS', description: 'Conexion bidireccional entre sistema hospitalario y laboratorio usando HL7 v2.5', type: 'salud', image: '/images/portfolio/salud-1.jpg', tags: ['HL7', 'Mirth Connect', 'HIS', 'LIS'] },
     { id: 2, title: 'Uniformes Empresa Tech', description: '500 poleras y 200 polerones personalizados para equipo de startup', type: 'textil', image: '/images/portfolio/textil-1.jpg', tags: ['DTF', 'Corporativo', 'Poleras'] },
-    { id: 3, title: 'Motor FHIR R4', description: 'Implementacion de gateway FHIR para interoperabilidad con apps moviles', type: 'salud', image: '/images/portfolio/salud-2.jpg', tags: ['FHIR', 'API', 'Mirth Connect'] },
     { id: 4, title: 'Merchandising Evento', description: 'Kit completo de merchandising para conferencia', type: 'textil', image: '/images/portfolio/textil-2.jpg', tags: ['DTF', 'Evento', 'Merchandising'] },
   ],
 
   // Testimoniales
   testimonials: [
-    { id: 1, quote: 'DMC Projects integro nuestros sistemas HIS y LIS en tiempo record. La comunicacion fue excelente.', author: 'Director de TI', company: 'Centro Medico', type: 'salud' },
     { id: 2, quote: 'Las poleras quedaron increibles. Los colores vibrantes y la durabilidad superaron expectativas.', author: 'Gerente de RRHH', company: 'Empresa Tech', type: 'textil' },
-    { id: 3, quote: 'Profesionales y comprometidos. Resolvieron integraciones complejas que otros no pudieron.', author: 'Jefe de Informatica', company: 'Clinica Privada', type: 'salud' },
     { id: 4, quote: 'Pedimos 200 uniformes personalizados y todo llego perfecto. Ya preparamos el siguiente pedido.', author: 'Dueno', company: 'Restaurant', type: 'textil' },
   ],
 
@@ -293,15 +307,14 @@ interface ContentContextType {
   logout: () => void
   updateContent: <K extends keyof SiteContent>(section: K, data: SiteContent[K]) => void
   updateHero: (data: Partial<HeroContent>) => void
-  updateSaludHero: (data: Partial<HeroContent>) => void
   updateTextilHero: (data: Partial<HeroContent>) => void
   updateTextilPricing: (data: SiteContent['textilPricing']) => void
   updateContact: (data: Partial<ContactInfo>) => void
   updateWelcome: (data: Partial<WelcomeSelector>) => void
   updateDesign: (data: Partial<SiteContent['design']>) => void
-  addService: (type: 'salud' | 'textil', service: Omit<ServiceItem, 'id'>) => void
-  updateService: (type: 'salud' | 'textil', id: number, data: Partial<ServiceItem>) => void
-  deleteService: (type: 'salud' | 'textil', id: number) => void
+  addService: (type: 'textil', service: Omit<ServiceItem, 'id'>) => void
+  updateService: (type: 'textil', id: number, data: Partial<ServiceItem>) => void
+  deleteService: (type: 'textil', id: number) => void
   addPortfolioItem: (item: Omit<PortfolioItem, 'id'>) => void
   updatePortfolioItem: (id: number, data: Partial<PortfolioItem>) => void
   deletePortfolioItem: (id: number) => void
@@ -494,10 +507,6 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     setContent(prev => ({ ...prev, hero: { ...prev.hero, ...data } }))
   }
 
-  const updateSaludHero = (data: Partial<HeroContent>) => {
-    setContent(prev => ({ ...prev, saludHero: { ...prev.saludHero, ...data } }))
-  }
-
   const updateTextilHero = (data: Partial<HeroContent>) => {
     setContent(prev => ({ ...prev, textilHero: { ...prev.textilHero, ...data } }))
   }
@@ -519,23 +528,20 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }
 
   // Servicios
-  const addService = (type: 'salud' | 'textil', service: Omit<ServiceItem, 'id'>) => {
-    const key = type === 'salud' ? 'saludServices' : 'textilServices'
+  const addService = (_type: 'textil', service: Omit<ServiceItem, 'id'>) => {
     const newService = { ...service, id: Date.now() }
-    setContent(prev => ({ ...prev, [key]: [...prev[key], newService] }))
+    setContent(prev => ({ ...prev, textilServices: [...prev.textilServices, newService] }))
   }
 
-  const updateService = (type: 'salud' | 'textil', id: number, data: Partial<ServiceItem>) => {
-    const key = type === 'salud' ? 'saludServices' : 'textilServices'
+  const updateService = (_type: 'textil', id: number, data: Partial<ServiceItem>) => {
     setContent(prev => ({
       ...prev,
-      [key]: prev[key].map(s => s.id === id ? { ...s, ...data } : s)
+      textilServices: prev.textilServices.map(s => s.id === id ? { ...s, ...data } : s)
     }))
   }
 
-  const deleteService = (type: 'salud' | 'textil', id: number) => {
-    const key = type === 'salud' ? 'saludServices' : 'textilServices'
-    setContent(prev => ({ ...prev, [key]: prev[key].filter(s => s.id !== id) }))
+  const deleteService = (_type: 'textil', id: number) => {
+    setContent(prev => ({ ...prev, textilServices: prev.textilServices.filter(s => s.id !== id) }))
   }
 
   // Portfolio
@@ -690,7 +696,6 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     logout,
     updateContent,
     updateHero,
-    updateSaludHero,
     updateTextilHero,
     updateTextilPricing,
     updateContact,

@@ -5,7 +5,7 @@ import { ContactContent } from "./components/contact-content";
 export const metadata: Metadata = {
   title: "Contacto",
   description:
-    "Agenda una reunión, solicita cotización o escríbenos. Integración de sistemas de salud e impresión DTF en Chile.",
+    "Agenda una reunión, solicita cotización o escríbenos. Impresión DTF y personalización textil en Chile.",
 };
 
 function ContactLoading() {

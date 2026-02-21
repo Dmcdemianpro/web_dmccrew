@@ -43,3 +43,14 @@ next-env.d.ts
 
 # user data
 data/messages.json
+data/visits.json
+data/uploads/
+data/content/
+data/tmp/
+data/Polerones/
+
+# mockups (assets locales)
+mockups/
+
+# claude code
+.claude/

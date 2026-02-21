@@ -20,7 +20,6 @@ import {
   Edit2,
   Eye,
   Lock,
-  Heart,
   Shirt,
   Home,
   Camera,
@@ -35,6 +34,8 @@ import {
   Clock,
   CheckCheck,
   Tag,
+  Zap,
+  Star,
 } from "lucide-react";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
@@ -43,9 +44,6 @@ const tabs = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "messages", label: "Mensajes", icon: MessageSquare },
   { id: "design", label: "Diseño", icon: Palette },
-  { id: "welcome", label: "Bienvenida", icon: Home },
-  { id: "hero", label: "Hero", icon: FileText },
-  { id: "salud", label: "Salud", icon: Heart },
   { id: "textil", label: "Textil", icon: Shirt },
   { id: "gallery", label: "Galeria Textil", icon: Camera },
   { id: "stockDesigns", label: "Poleras Stock", icon: Tag },
@@ -64,7 +62,6 @@ export default function AdminPage() {
     logout,
     updateContent,
     updateHero,
-    updateSaludHero,
     updateTextilHero,
     updateTextilPricing,
     updateContact,
@@ -351,17 +348,12 @@ export default function AdminPage() {
                   updateHero={updateHero}
                 />
               )}
-              {activeTab === "salud" && (
-                <SaludTab
-                  content={content}
-                  updateSaludHero={updateSaludHero}
-                />
-              )}
               {activeTab === "textil" && (
                 <TextilTab
                   content={content}
                   updateTextilHero={updateTextilHero}
                   updateTextilPricing={updateTextilPricing}
+                  updateContent={updateContent}
                 />
               )}
               {activeTab === "gallery" && (
@@ -434,13 +426,6 @@ function DashboardTab({ content }: any) {
       trendUp: true,
     },
     {
-      label: "Servicios Salud",
-      value: content.saludServices?.length || 0,
-      icon: Heart,
-      color: "text-green-500",
-      bg: "bg-green-500/10",
-    },
-    {
       label: "Servicios Textil",
       value: content.textilServices?.length || 0,
       icon: Shirt,
@@ -456,13 +441,7 @@ function DashboardTab({ content }: any) {
     },
   ];
 
-  const portfolioByType = {
-    salud: content.portfolio?.filter((p: any) => p.type === "salud").length || 0,
-    textil: content.portfolio?.filter((p: any) => p.type === "textil").length || 0,
-  };
-
-  const totalPortfolio = portfolioByType.salud + portfolioByType.textil;
-  const saludPercent = totalPortfolio > 0 ? (portfolioByType.salud / totalPortfolio) * 100 : 50;
+  const portfolioTextil = content.portfolio?.filter((p: any) => p.type === "textil").length || 0;
 
   return (
     <div className="space-y-6">
@@ -552,38 +531,19 @@ function DashboardTab({ content }: any) {
           </div>
         </div>
 
-        {/* Portfolio por Tipo con barra visual */}
+        {/* Portfolio Textil */}
         <div className="admin-card p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <FolderOpen className="w-5 h-5 text-brand" />
-            Portfolio por Tipo
+            Portfolio Textil
           </h3>
           <div className="space-y-4">
-            {/* Barra visual */}
-            <div className="h-4 bg-white/10 rounded-full overflow-hidden flex">
-              <div
-                className="h-full bg-green-500 transition-all duration-500"
-                style={{ width: `${saludPercent}%` }}
-              />
-              <div
-                className="h-full bg-[#ff0040] transition-all duration-500"
-                style={{ width: `${100 - saludPercent}%` }}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-green-500" />
-                <span className="text-gray-400 text-sm">Salud Digital</span>
-              </div>
-              <span className="text-xl font-bold text-white">{portfolioByType.salud}</span>
-            </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#ff0040]" />
                 <span className="text-gray-400 text-sm">Textil DTF</span>
               </div>
-              <span className="text-xl font-bold text-white">{portfolioByType.textil}</span>
+              <span className="text-xl font-bold text-white">{portfolioTextil}</span>
             </div>
           </div>
         </div>
@@ -640,15 +600,7 @@ function DashboardTab({ content }: any) {
             <span className="text-sm text-white">Ver Sitio</span>
           </a>
           <a
-            href="/salud"
-            target="_blank"
-            className="flex flex-col items-center gap-2 p-4 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/5 border border-green-500/20 hover:border-green-500/40 transition-all text-center group"
-          >
-            <Heart className="w-6 h-6 text-green-500 group-hover:scale-110 transition-transform" />
-            <span className="text-sm text-white">Salud</span>
-          </a>
-          <a
-            href="/textil"
+            href="/"
             target="_blank"
             className="flex flex-col items-center gap-2 p-4 rounded-lg bg-gradient-to-br from-[#ff0040]/20 to-[#ff0040]/5 border border-[#ff0040]/20 hover:border-[#ff0040]/40 transition-all text-center group"
           >
@@ -727,13 +679,11 @@ function MessagesTab() {
   };
 
   const topicLabels: Record<string, string> = {
-    salud: "Salud Digital",
     textil: "Textil DTF",
     general: "General",
   };
 
   const topicColors: Record<string, string> = {
-    salud: "bg-green-500/20 text-green-500",
     textil: "bg-[#ff0040]/20 text-[#ff0040]",
     general: "bg-blue-500/20 text-blue-500",
   };
@@ -1205,7 +1155,7 @@ function DesignTab({ content, updateDesign }: any) {
                 DMC Projects
               </p>
               <p className="text-xl text-white" style={{ fontFamily: design.fontFamily }}>
-                Conectamos sistemas de salud e imprimimos tu identidad
+                Personalización textil DTF con calidad premium
               </p>
               <p className="text-base text-gray-300" style={{ fontFamily: design.fontFamily }}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fuente aplicada a todo el contenido del sitio web.
@@ -1251,7 +1201,7 @@ function DesignTab({ content, updateDesign }: any) {
 
           {/* Color Secundario */}
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Color Secundario (Salud)</label>
+            <label className="block text-sm text-gray-400 mb-2">Color Secundario</label>
             <div className="flex gap-3">
               <input
                 type="color"
@@ -1402,13 +1352,6 @@ function WelcomeTab({ content, updateWelcome }: any) {
     }
   }, [welcome, updateWelcome]);
 
-  const updateSaludCard = (field: string, value: string) => {
-    setWelcome({
-      ...welcome,
-      saludCard: { ...welcome.saludCard, [field]: value },
-    });
-  };
-
   const updateTextilCard = (field: string, value: string) => {
     setWelcome({
       ...welcome,
@@ -1460,63 +1403,6 @@ function WelcomeTab({ content, updateWelcome }: any) {
             helpText="Recomendado: Imagen panorámica 1920x1080"
             previewAspect="video"
           />
-        </div>
-      </div>
-
-      {/* Tarjeta Salud Digital */}
-      <div className="admin-card p-6">
-        <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-          <Heart className="w-5 h-5 text-green-500" />
-          Tarjeta Salud Digital
-        </h3>
-
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Titulo</label>
-            <input
-              type="text"
-              value={welcome.saludCard.title}
-              onChange={(e) => updateSaludCard("title", e.target.value)}
-              className="admin-input w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Subtitulo</label>
-            <input
-              type="text"
-              value={welcome.saludCard.subtitle}
-              onChange={(e) => updateSaludCard("subtitle", e.target.value)}
-              className="admin-input w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Descripcion</label>
-            <textarea
-              value={welcome.saludCard.description}
-              onChange={(e) => updateSaludCard("description", e.target.value)}
-              className="admin-input w-full h-20 resize-none"
-            />
-          </div>
-
-          <ImageUploadField
-            value={welcome.saludCard.image}
-            onChange={(url) => updateSaludCard("image", url)}
-            label="Imagen de la Tarjeta"
-            placeholder="https://..."
-            previewAspect="video"
-          />
-
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Texto del Boton</label>
-            <input
-              type="text"
-              value={welcome.saludCard.buttonText}
-              onChange={(e) => updateSaludCard("buttonText", e.target.value)}
-              className="admin-input w-full"
-            />
-          </div>
         </div>
       </div>
 
@@ -1656,76 +1542,461 @@ function HeroTab({ content, updateHero }: any) {
   );
 }
 
-// Salud Tab
-function SaludTab({ content, updateSaludHero }: any) {
-  const [hero, setHero] = useState(content.saludHero);
-  const isFirstRender = useRef(true);
-  const lastContextValue = useRef(JSON.stringify(content.saludHero));
+// Catalog Editor
+function CatalogEditor({ content, updateContent }: any) {
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [newItem, setNewItem] = useState({ title: '', description: '', image: '', features: '', highlighted: false });
+  const [editItem, setEditItem] = useState({ title: '', description: '', image: '', features: '', highlighted: false });
 
-  useEffect(() => {
-    const currentContextStr = JSON.stringify(content.saludHero);
-    if (currentContextStr !== lastContextValue.current) {
-      lastContextValue.current = currentContextStr;
-      setHero(content.saludHero);
-    }
-  }, [content.saludHero]);
+  const catalog = content.textilCatalog || [];
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    const heroStr = JSON.stringify(hero);
-    if (heroStr !== lastContextValue.current) {
-      lastContextValue.current = heroStr;
-      updateSaludHero(hero);
-    }
-  }, [hero, updateSaludHero]);
+  const handleAdd = () => {
+    if (!newItem.title.trim()) return;
+    const item = {
+      id: Date.now(),
+      title: newItem.title,
+      description: newItem.description,
+      image: newItem.image,
+      features: newItem.features.split(',').map((f: string) => f.trim()).filter((f: string) => f),
+      highlighted: newItem.highlighted,
+    };
+    updateContent('textilCatalog', [...catalog, item]);
+    setNewItem({ title: '', description: '', image: '', features: '', highlighted: false });
+    setShowAddForm(false);
+  };
+
+  const handleDelete = (id: number) => {
+    updateContent('textilCatalog', catalog.filter((c: any) => c.id !== id));
+  };
+
+  const startEdit = (item: any) => {
+    setEditingId(item.id);
+    setEditItem({
+      title: item.title,
+      description: item.description,
+      image: item.image || '',
+      features: (item.features || []).join(', '),
+      highlighted: item.highlighted || false,
+    });
+  };
+
+  const handleSaveEdit = () => {
+    if (!editItem.title.trim() || editingId === null) return;
+    const updated = catalog.map((c: any) => c.id === editingId ? {
+      ...c,
+      title: editItem.title,
+      description: editItem.description,
+      image: editItem.image,
+      features: editItem.features.split(',').map((f: string) => f.trim()).filter((f: string) => f),
+      highlighted: editItem.highlighted,
+    } : c);
+    updateContent('textilCatalog', updated);
+    setEditingId(null);
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="admin-card p-6">
-        <h3 className="text-lg font-semibold text-white mb-6">Seccion Salud Digital</h3>
+    <div className="admin-card p-6">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-semibold text-white">Catalogo de Productos</h3>
+        <button
+          onClick={() => setShowAddForm(!showAddForm)}
+          className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+        >
+          <Plus className="w-4 h-4" />
+          Agregar
+        </button>
+      </div>
 
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Titulo Linea 1</label>
-            <input
-              type="text"
-              value={hero.title1}
-              onChange={(e) => setHero({ ...hero, title1: e.target.value })}
-              className="admin-input w-full"
+      {/* Add Form */}
+      <AnimatePresence>
+        {showAddForm && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10 space-y-4"
+          >
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Titulo</label>
+                <input
+                  type="text"
+                  value={newItem.title}
+                  onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
+                  className="admin-input w-full"
+                  placeholder="Ej: Poleras Streetwear"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Tags (separados por coma)</label>
+                <input
+                  type="text"
+                  value={newItem.features}
+                  onChange={(e) => setNewItem({ ...newItem, features: e.target.value })}
+                  className="admin-input w-full"
+                  placeholder="Oversize, Full Color, Urban"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">Descripcion</label>
+              <textarea
+                value={newItem.description}
+                onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
+                className="admin-input w-full h-20 resize-none"
+                placeholder="Descripcion del producto..."
+              />
+            </div>
+            <ImageUploadField
+              value={newItem.image}
+              onChange={(url: string) => setNewItem({ ...newItem, image: url })}
+              label="Imagen del Producto"
+              placeholder="https://..."
+              previewAspect="video"
             />
-          </div>
+            <div className="flex items-center gap-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={newItem.highlighted}
+                  onChange={(e) => setNewItem({ ...newItem, highlighted: e.target.checked })}
+                  className="w-4 h-4 rounded accent-[#ff0040]"
+                />
+                <span className="text-sm text-gray-400">Destacado (mas grande en el bento grid)</span>
+              </label>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleAdd}
+                disabled={!newItem.title.trim()}
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-700 text-white text-sm rounded-lg transition-colors"
+              >
+                Agregar Producto
+              </button>
+              <button
+                onClick={() => setShowAddForm(false)}
+                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Titulo Linea 2</label>
-            <input
-              type="text"
-              value={hero.title2}
-              onChange={(e) => setHero({ ...hero, title2: e.target.value })}
-              className="admin-input w-full"
-            />
+      {/* Items List */}
+      <div className="space-y-4">
+        {catalog.map((item: any) => (
+          <div key={item.id} className="p-4 bg-white/5 rounded-lg border border-white/10">
+            {editingId === item.id ? (
+              /* Edit Mode */
+              <div className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">Titulo</label>
+                    <input
+                      type="text"
+                      value={editItem.title}
+                      onChange={(e) => setEditItem({ ...editItem, title: e.target.value })}
+                      className="admin-input w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">Tags (separados por coma)</label>
+                    <input
+                      type="text"
+                      value={editItem.features}
+                      onChange={(e) => setEditItem({ ...editItem, features: e.target.value })}
+                      className="admin-input w-full"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Descripcion</label>
+                  <textarea
+                    value={editItem.description}
+                    onChange={(e) => setEditItem({ ...editItem, description: e.target.value })}
+                    className="admin-input w-full h-20 resize-none"
+                  />
+                </div>
+                <ImageUploadField
+                  value={editItem.image}
+                  onChange={(url: string) => setEditItem({ ...editItem, image: url })}
+                  label="Imagen del Producto"
+                  placeholder="https://..."
+                  previewAspect="video"
+                />
+                <div className="flex items-center gap-3">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={editItem.highlighted}
+                      onChange={(e) => setEditItem({ ...editItem, highlighted: e.target.checked })}
+                      className="w-4 h-4 rounded accent-[#ff0040]"
+                    />
+                    <span className="text-sm text-gray-400">Destacado</span>
+                  </label>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={handleSaveEdit} className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors">
+                    Guardar
+                  </button>
+                  <button onClick={() => setEditingId(null)} className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg transition-colors">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* View Mode */
+              <div className="flex items-start gap-4">
+                {/* Thumbnail */}
+                <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-white/5">
+                  {item.image ? (
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-600">
+                      <Shirt className="w-8 h-8" />
+                    </div>
+                  )}
+                </div>
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-semibold text-white text-sm">{item.title}</h4>
+                    {item.highlighted && (
+                      <span className="px-2 py-0.5 bg-[#ff0040]/20 text-[#ff0040] text-[10px] font-bold rounded-full">DESTACADO</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 line-clamp-1 mb-1">{item.description}</p>
+                  <div className="flex flex-wrap gap-1">
+                    {(item.features || []).map((f: string, i: number) => (
+                      <span key={i} className="px-2 py-0.5 bg-white/5 text-gray-400 text-[10px] rounded-full">{f}</span>
+                    ))}
+                  </div>
+                </div>
+                {/* Actions */}
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <button
+                    onClick={() => startEdit(item)}
+                    className="p-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-lg transition-colors"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
+        ))}
 
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Subtitulo</label>
-            <input
-              type="text"
-              value={hero.subtitle}
-              onChange={(e) => setHero({ ...hero, subtitle: e.target.value })}
-              className="admin-input w-full"
-            />
-          </div>
+        {catalog.length === 0 && (
+          <p className="text-center text-gray-500 text-sm py-8">No hay productos en el catalogo. Agrega uno para comenzar.</p>
+        )}
+      </div>
+    </div>
+  );
+}
 
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Descripcion</label>
-            <textarea
-              value={hero.description}
-              onChange={(e) => setHero({ ...hero, description: e.target.value })}
-              className="admin-input w-full h-24 resize-none"
-            />
-          </div>
+// Configurator Editor
+function ConfiguratorEditor({ content, updateContent }: any) {
+  const config = content.textilConfigurator || { products: [], colors: [], sizes: [] };
+
+  const updateConfig = (data: any) => {
+    updateContent('textilConfigurator', { ...config, ...data });
+  };
+
+  // Products
+  const addProduct = () => {
+    updateConfig({
+      products: [...config.products, { id: Date.now(), nombre: '', imagen: '' }],
+    });
+  };
+
+  const updateProduct = (id: number, field: string, value: string) => {
+    updateConfig({
+      products: config.products.map((p: any) => p.id === id ? { ...p, [field]: value } : p),
+    });
+  };
+
+  const removeProduct = (id: number) => {
+    updateConfig({ products: config.products.filter((p: any) => p.id !== id) });
+  };
+
+  // Colors
+  const addColor = () => {
+    updateConfig({
+      colors: [...config.colors, { id: Date.now(), nombre: '', hex: '#000000' }],
+    });
+  };
+
+  const updateColor = (id: number, field: string, value: string) => {
+    updateConfig({
+      colors: config.colors.map((c: any) => c.id === id ? { ...c, [field]: value } : c),
+    });
+  };
+
+  const removeColor = (id: number) => {
+    updateConfig({ colors: config.colors.filter((c: any) => c.id !== id) });
+  };
+
+  // Sizes
+  const addSize = () => {
+    updateConfig({ sizes: [...config.sizes, ''] });
+  };
+
+  const updateSize = (index: number, value: string) => {
+    const sizes = [...config.sizes];
+    sizes[index] = value;
+    updateConfig({ sizes });
+  };
+
+  const removeSize = (index: number) => {
+    updateConfig({ sizes: config.sizes.filter((_: any, i: number) => i !== index) });
+  };
+
+  return (
+    <div className="admin-card p-6">
+      <h3 className="text-lg font-semibold text-white mb-6">Configurador de Producto</h3>
+      <p className="text-sm text-gray-500 mb-6">Opciones que el cliente puede elegir al personalizar su pedido.</p>
+
+      {/* Products */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white">Productos</h4>
+          <button
+            onClick={addProduct}
+            className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Agregar
+          </button>
+        </div>
+        <div className="space-y-3">
+          {config.products.map((p: any) => (
+            <div key={p.id} className="flex flex-col sm:flex-row gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="flex-1">
+                <label className="block text-xs text-gray-500 mb-1">Nombre</label>
+                <input
+                  type="text"
+                  value={p.nombre}
+                  onChange={(e) => updateProduct(p.id, 'nombre', e.target.value)}
+                  className="admin-input w-full"
+                  placeholder="Ej: Polera"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs text-gray-500 mb-1">Imagen</label>
+                <ImageUploadField
+                  value={p.imagen}
+                  onChange={(url) => updateProduct(p.id, 'imagen', url)}
+                  placeholder="URL de imagen o subir archivo"
+                />
+              </div>
+              <div className="flex items-end">
+                <button
+                  onClick={() => removeProduct(p.id)}
+                  className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Colors */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white">Colores</h4>
+          <button
+            onClick={addColor}
+            className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Agregar
+          </button>
+        </div>
+        <div className="space-y-3">
+          {config.colors.map((c: any) => (
+            <div key={c.id} className="flex flex-col sm:flex-row gap-3 items-center p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="w-12">
+                <input
+                  type="color"
+                  value={c.hex}
+                  onChange={(e) => updateColor(c.id, 'hex', e.target.value)}
+                  className="w-10 h-10 rounded-lg cursor-pointer border-0 bg-transparent"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs text-gray-500 mb-1">Nombre</label>
+                <input
+                  type="text"
+                  value={c.nombre}
+                  onChange={(e) => updateColor(c.id, 'nombre', e.target.value)}
+                  className="admin-input w-full"
+                  placeholder="Ej: Negro"
+                />
+              </div>
+              <div className="w-32">
+                <label className="block text-xs text-gray-500 mb-1">Hex</label>
+                <input
+                  type="text"
+                  value={c.hex}
+                  onChange={(e) => updateColor(c.id, 'hex', e.target.value)}
+                  className="admin-input w-full"
+                  placeholder="#000000"
+                />
+              </div>
+              <div className="flex items-end">
+                <button
+                  onClick={() => removeColor(c.id)}
+                  className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Sizes */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-md font-semibold text-white">Tallas</h4>
+          <button
+            onClick={addSize}
+            className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Agregar
+          </button>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          {config.sizes.map((size: string, index: number) => (
+            <div key={index} className="flex items-center gap-2 p-2 bg-white/5 rounded-lg border border-white/10">
+              <input
+                type="text"
+                value={size}
+                onChange={(e) => updateSize(index, e.target.value)}
+                className="admin-input w-20 text-center"
+                placeholder="XL"
+              />
+              <button
+                onClick={() => removeSize(index)}
+                className="p-1 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded transition-colors"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -1733,7 +2004,7 @@ function SaludTab({ content, updateSaludHero }: any) {
 }
 
 // Textil Tab
-function TextilTab({ content, updateTextilHero, updateTextilPricing }: any) {
+function TextilTab({ content, updateTextilHero, updateTextilPricing, updateContent }: any) {
   const [hero, setHero] = useState(content.textilHero);
   const _defaultPricing = {
     adultos: [
@@ -1906,6 +2177,99 @@ function TextilTab({ content, updateTextilHero, updateTextilPricing }: any) {
           </div>
         </div>
       </div>
+
+      {/* Estadisticas Hero */}
+      <div className="admin-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-white">Estadisticas del Hero</h3>
+          <button
+            onClick={() => {
+              const stats = [...(content.textilStats || []), { value: '', label: '', icon: 'Star' }];
+              updateContent('textilStats', stats);
+            }}
+            className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Agregar
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {(content.textilStats || []).map((stat: any, index: number) => {
+            const iconOptions = [
+              { value: 'Shirt', label: 'Polera', Icon: Shirt },
+              { value: 'Zap', label: 'Rayo', Icon: Zap },
+              { value: 'Palette', label: 'Paleta', Icon: Palette },
+              { value: 'Star', label: 'Estrella', Icon: Star },
+            ];
+            return (
+              <div key={index} className="flex flex-col sm:flex-row gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
+                <div className="w-20">
+                  <label className="block text-xs text-gray-500 mb-1">Icono</label>
+                  <select
+                    value={stat.icon}
+                    onChange={(e) => {
+                      const stats = [...(content.textilStats || [])];
+                      stats[index] = { ...stats[index], icon: e.target.value };
+                      updateContent('textilStats', stats);
+                    }}
+                    className="admin-input w-full"
+                  >
+                    {iconOptions.map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="w-28">
+                  <label className="block text-xs text-gray-500 mb-1">Valor</label>
+                  <input
+                    type="text"
+                    value={stat.value}
+                    onChange={(e) => {
+                      const stats = [...(content.textilStats || [])];
+                      stats[index] = { ...stats[index], value: e.target.value };
+                      updateContent('textilStats', stats);
+                    }}
+                    className="admin-input w-full"
+                    placeholder="50+"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-500 mb-1">Etiqueta</label>
+                  <input
+                    type="text"
+                    value={stat.label}
+                    onChange={(e) => {
+                      const stats = [...(content.textilStats || [])];
+                      stats[index] = { ...stats[index], label: e.target.value };
+                      updateContent('textilStats', stats);
+                    }}
+                    className="admin-input w-full"
+                    placeholder="Lavados garantizados"
+                  />
+                </div>
+                <div className="flex items-end">
+                  <button
+                    onClick={() => {
+                      const stats = (content.textilStats || []).filter((_: any, i: number) => i !== index);
+                      updateContent('textilStats', stats);
+                    }}
+                    className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Catalogo de Productos */}
+      <CatalogEditor content={content} updateContent={updateContent} />
+
+      {/* Configurador de Producto */}
+      <ConfiguratorEditor content={content} updateContent={updateContent} />
 
       {/* Precios Adultos */}
       <div className="admin-card p-6">
@@ -2707,7 +3071,7 @@ function PortfolioTab({ content, addPortfolioItem, updatePortfolioItem, deletePo
   const [newItem, setNewItem] = useState({
     title: "",
     description: "",
-    type: "salud" as "salud" | "textil",
+    type: "textil" as "textil",
     image: "",
     tags: "",
   });
@@ -2716,7 +3080,7 @@ function PortfolioTab({ content, addPortfolioItem, updatePortfolioItem, deletePo
   const [editItem, setEditItem] = useState({
     title: "",
     description: "",
-    type: "salud" as "salud" | "textil",
+    type: "textil" as "textil",
     image: "",
     tags: "",
   });
@@ -2730,7 +3094,7 @@ function PortfolioTab({ content, addPortfolioItem, updatePortfolioItem, deletePo
         image: newItem.image.trim(),
         tags: newItem.tags.split(",").map(t => t.trim()).filter(t => t),
       });
-      setNewItem({ title: "", description: "", type: "salud", image: "", tags: "" });
+      setNewItem({ title: "", description: "", type: "textil", image: "", tags: "" });
       setIsAdding(false);
       onSave();
     }
@@ -2768,7 +3132,6 @@ function PortfolioTab({ content, addPortfolioItem, updatePortfolioItem, deletePo
     }
   };
 
-  const portfolioSalud = content.portfolio?.filter((p: any) => p.type === "salud") || [];
   const portfolioTextil = content.portfolio?.filter((p: any) => p.type === "textil") || [];
 
   return (
@@ -2778,7 +3141,7 @@ function PortfolioTab({ content, addPortfolioItem, updatePortfolioItem, deletePo
         <div>
           <h3 className="text-xl font-bold text-white">Proyectos Portfolio</h3>
           <p className="text-sm text-gray-400 mt-1">
-            Gestiona los proyectos destacados de ambas secciones
+            Gestiona los proyectos destacados de la sección textil
           </p>
         </div>
         <button
@@ -2818,7 +3181,6 @@ function PortfolioTab({ content, addPortfolioItem, updatePortfolioItem, deletePo
                   onChange={(e) => setNewItem({ ...newItem, type: e.target.value as any })}
                   className="admin-input w-full"
                 >
-                  <option value="salud">Salud Digital</option>
                   <option value="textil">Textil DTF</option>
                 </select>
               </div>
@@ -2866,108 +3228,6 @@ function PortfolioTab({ content, addPortfolioItem, updatePortfolioItem, deletePo
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Proyectos Salud Digital */}
-      <div className="admin-card p-6">
-        <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-          <Heart className="w-5 h-5 text-green-500" />
-          Proyectos Salud Digital ({portfolioSalud.length})
-        </h4>
-        <div className="grid md:grid-cols-2 gap-4">
-          {portfolioSalud.map((item: any) => (
-            <div key={item.id} className="relative group bg-white/5 rounded-lg overflow-hidden border border-white/10">
-              {editingId === item.id ? (
-                <div className="p-4 space-y-3">
-                  <input
-                    type="text"
-                    value={editItem.title}
-                    onChange={(e) => setEditItem({ ...editItem, title: e.target.value })}
-                    className="admin-input w-full text-sm"
-                    placeholder="Titulo"
-                  />
-                  <textarea
-                    value={editItem.description}
-                    onChange={(e) => setEditItem({ ...editItem, description: e.target.value })}
-                    className="admin-input w-full text-sm h-16 resize-none"
-                    placeholder="Descripcion"
-                  />
-                  <ImageUploadField
-                    value={editItem.image}
-                    onChange={(url) => setEditItem({ ...editItem, image: url })}
-                    label="Imagen"
-                    showPreview={false}
-                  />
-                  <input
-                    type="text"
-                    value={editItem.tags}
-                    onChange={(e) => setEditItem({ ...editItem, tags: e.target.value })}
-                    className="admin-input w-full text-sm"
-                    placeholder="Tags (separados por coma)"
-                  />
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handleSaveEdit}
-                      className="flex-1 px-3 py-2 bg-green-500/20 text-green-500 rounded-lg hover:bg-green-500/30 text-sm"
-                    >
-                      Guardar
-                    </button>
-                    <button
-                      onClick={() => setEditingId(null)}
-                      className="flex-1 px-3 py-2 bg-gray-500/20 text-gray-400 rounded-lg hover:bg-gray-500/30 text-sm"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="aspect-video relative bg-gray-800">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                      <button
-                        onClick={() => handleStartEdit(item)}
-                        className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-green-500"
-                      >
-                        <Edit2 size={18} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-red-500"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h5 className="text-white font-semibold mb-1">{item.title}</h5>
-                    <p className="text-gray-400 text-sm mb-3 line-clamp-2">{item.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {item.tags?.map((tag: string, i: number) => (
-                        <span key={i} className="px-2 py-1 bg-green-500/10 text-green-500 text-xs rounded">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
-        {portfolioSalud.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            <FolderOpen className="w-12 h-12 mx-auto mb-3 opacity-50" />
-            <p>No hay proyectos de Salud Digital</p>
-          </div>
-        )}
-      </div>
 
       {/* Proyectos Textil DTF */}
       <div className="admin-card p-6">

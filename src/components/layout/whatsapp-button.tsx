@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Heart, Shirt, HelpCircle, Send, Layers, Package, ArrowLeft, User } from "lucide-react";
+import { MessageCircle, X, Shirt, HelpCircle, Send, Layers, Package, ArrowLeft, User } from "lucide-react";
 import { getWhatsAppLink, WHATSAPP_MESSAGES } from "@/lib/utils";
 
 const chatOptions = [
@@ -37,16 +37,6 @@ const chatOptions = [
     link: "textilMayor" as keyof typeof WHATSAPP_MESSAGES,
   },
   {
-    id: "salud",
-    label: "Integración de Sistemas",
-    description: "Consultas sobre HL7, Mirth Connect, HIS/LIS",
-    icon: Heart,
-    color: "text-green-500",
-    bgColor: "bg-green-500/10",
-    borderColor: "border-green-500/20",
-    link: "salud" as keyof typeof WHATSAPP_MESSAGES,
-  },
-  {
     id: "general",
     label: "Consulta General",
     description: "Otras consultas o información",
@@ -62,6 +52,7 @@ export function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [selectedOption, setSelectedOption] = useState<keyof typeof WHATSAPP_MESSAGES | null>(null);
+  const [extraData, setExtraData] = useState<Record<string, string> | undefined>();
   const [nombre, setNombre] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -73,6 +64,9 @@ export function WhatsAppButton() {
       setShowTooltip(false);
       if (detail?.option) {
         setSelectedOption(detail.option);
+      }
+      if (detail?.extra) {
+        setExtraData(detail.extra);
       }
     };
     window.addEventListener("open-whatsapp", handler);
@@ -102,6 +96,7 @@ export function WhatsAppButton() {
   const handleToggle = () => {
     if (isOpen) {
       setSelectedOption(null);
+      setExtraData(undefined);
       setNombre("");
     }
     setIsOpen(!isOpen);
@@ -114,15 +109,17 @@ export function WhatsAppButton() {
 
   const handleBack = () => {
     setSelectedOption(null);
+    setExtraData(undefined);
     setNombre("");
   };
 
   const handleSend = () => {
     if (!nombre.trim() || !selectedOption) return;
-    const url = getWhatsAppLink(selectedOption, nombre.trim());
+    const url = getWhatsAppLink(selectedOption, nombre.trim(), extraData);
     window.open(url, "_blank", "noopener,noreferrer");
     setIsOpen(false);
     setSelectedOption(null);
+    setExtraData(undefined);
     setNombre("");
   };
 

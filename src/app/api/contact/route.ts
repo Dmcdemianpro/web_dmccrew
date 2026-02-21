@@ -59,7 +59,7 @@ interface ContactFormData {
   email: string;
   phone?: string;
   company?: string;
-  topic: "salud" | "textil" | "general";
+  topic: "textil" | "general";
   message: string;
   garment?: string;
   quantity?: string;
@@ -100,7 +100,6 @@ export async function POST(request: NextRequest) {
   try {
     // Determinar el asunto según el tema
     const topicLabels = {
-      salud: "Integración de Sistemas de Salud",
       textil: "Cotización Impresión DTF",
       general: "Consulta General",
     };
@@ -115,12 +114,12 @@ export async function POST(request: NextRequest) {
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background: ${data.topic === "salud" ? "#10b981" : data.topic === "textil" ? "#ff0040" : "#3b82f6"}; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+          .header { background: ${data.topic === "textil" ? "#ff0040" : "#3b82f6"}; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
           .content { background: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; border-radius: 0 0 8px 8px; }
           .field { margin-bottom: 15px; }
           .label { font-weight: bold; color: #6b7280; font-size: 12px; text-transform: uppercase; }
           .value { margin-top: 4px; }
-          .message-box { background: white; padding: 15px; border-radius: 8px; border-left: 4px solid ${data.topic === "salud" ? "#10b981" : data.topic === "textil" ? "#ff0040" : "#3b82f6"}; }
+          .message-box { background: white; padding: 15px; border-radius: 8px; border-left: 4px solid ${data.topic === "textil" ? "#ff0040" : "#3b82f6"}; }
           .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; }
         </style>
       </head>
@@ -147,7 +146,7 @@ export async function POST(request: NextRequest) {
             ` : ""}
             ${data.company ? `
             <div class="field">
-              <div class="label">${data.topic === "salud" ? "Institución" : "Empresa"}</div>
+              <div class="label">Empresa</div>
               <div class="value">${data.company}</div>
             </div>
             ` : ""}
@@ -184,7 +183,7 @@ Nuevo mensaje de contacto - ${topicLabels[data.topic]}
 Nombre: ${data.name}
 Email: ${data.email}
 ${data.phone ? `Teléfono: ${data.phone}` : ""}
-${data.company ? `${data.topic === "salud" ? "Institución" : "Empresa"}: ${data.company}` : ""}
+${data.company ? `Empresa: ${data.company}` : ""}
 ${data.topic === "textil" && data.garment ? `Tipo de Prenda: ${data.garment}` : ""}
 ${data.topic === "textil" && data.quantity ? `Cantidad: ${data.quantity}` : ""}
 
@@ -264,7 +263,7 @@ ${new Date().toLocaleString("es-CL", { timeZone: "America/Santiago" })}
               </p>
 
               <div class="footer">
-                <p>DMC Projects - Conectamos sistemas de salud e imprimimos tu identidad</p>
+                <p>DMC Projects - Personalización textil DTF</p>
                 <p>Santiago, Chile | +56 9 4228 7787 | contacto@dmcprojects.cl</p>
               </div>
             </div>

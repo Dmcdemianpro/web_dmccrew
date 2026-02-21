@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { MessageCircle, ArrowRight, Sparkles, Shirt, Palette, Star, Zap } from "lucide-react";
+import { MessageCircle, ArrowRight, Sparkles, Shirt, Palette, Star, Zap, type LucideIcon } from "lucide-react";
 import { openWhatsApp } from "@/lib/utils";
-import { useRef, useState, useEffect } from "react";
+import { useContent } from "@/context/ContentContext";
+import { useRef, useState, useEffect, useCallback } from "react";
+
+const ICON_MAP: Record<string, LucideIcon> = { Shirt, Zap, Palette, Star, Sparkles, MessageCircle };
 
 const videos = [
   "/videos/8058590-hd_1920_1080_25fps.mp4",
@@ -12,49 +15,147 @@ const videos = [
   "/videos/2026-02-05T16-39-19_slow_motion_watermarked.mp4",
 ];
 
+const VIDEO_DURATION = 10000; // 10s por video
+const CROSSFADE_DURATION = 1500; // 1.5s de crossfade suave
+
 export function TextilHero() {
+  const { content } = useContent();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentVideo, setCurrentVideo] = useState(0);
-  const [fade, setFade] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const progressRef = useRef<number>(0);
+  const animFrameRef = useRef<number>(0);
+  const startTimeRef = useRef<number>(Date.now());
 
+  const advanceVideo = useCallback(() => {
+    setIsTransitioning(true);
+    const next = (activeIndex + 1) % videos.length;
+    setNextIndex(next);
+
+    // Iniciar reproducción del siguiente video
+    const nextVideo = videoRefs.current[next];
+    if (nextVideo) {
+      nextVideo.currentTime = 0;
+      nextVideo.play().catch(() => {});
+    }
+
+    // Después del crossfade, el siguiente pasa a ser el activo
+    setTimeout(() => {
+      setActiveIndex(next);
+      setNextIndex((next + 1) % videos.length);
+      setIsTransitioning(false);
+      setProgress(0);
+      startTimeRef.current = Date.now();
+    }, CROSSFADE_DURATION);
+  }, [activeIndex]);
+
+  // Timer de progreso y avance automático
   useEffect(() => {
-    // Cuando un video termina, hacer crossfade al siguiente
-    const timer = setTimeout(() => {
-      setFade(false); // Ocultar actual
-      setTimeout(() => {
-        setCurrentVideo((prev) => (prev + 1) % videos.length);
-        setFade(true); // Mostrar siguiente
-      }, 500); // 500ms de transición
-    }, 12000); // Cada 12 segundos cambiar de video
+    startTimeRef.current = Date.now();
 
-    return () => clearTimeout(timer);
-  }, [currentVideo]);
+    const tick = () => {
+      const elapsed = Date.now() - startTimeRef.current;
+      const pct = Math.min(elapsed / VIDEO_DURATION, 1);
+      progressRef.current = pct;
+      setProgress(pct);
+
+      if (pct >= 1 && !isTransitioning) {
+        advanceVideo();
+      } else {
+        animFrameRef.current = requestAnimationFrame(tick);
+      }
+    };
+
+    animFrameRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animFrameRef.current);
+  }, [activeIndex, isTransitioning, advanceVideo]);
+
+  // Click en indicador
+  const goToVideo = (index: number) => {
+    if (index === activeIndex || isTransitioning) return;
+    cancelAnimationFrame(animFrameRef.current);
+    setIsTransitioning(true);
+    setNextIndex(index);
+
+    const nextVideo = videoRefs.current[index];
+    if (nextVideo) {
+      nextVideo.currentTime = 0;
+      nextVideo.play().catch(() => {});
+    }
+
+    setTimeout(() => {
+      setActiveIndex(index);
+      setNextIndex((index + 1) % videos.length);
+      setIsTransitioning(false);
+      setProgress(0);
+      startTimeRef.current = Date.now();
+    }, CROSSFADE_DURATION);
+  };
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, 300]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
 
   return (
     <section ref={containerRef} className="theme-textil relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Video Carousel */}
+      {/* Background Video Carousel - Dual layer crossfade */}
       <div className="absolute inset-0 z-0">
-        <video
-          key={currentVideo}
-          autoPlay
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-          style={{ opacity: fade ? 1 : 0 }}
-        >
-          <source src={videos[currentVideo]} type="video/mp4" />
-        </video>
-        {/* Overlay oscuro para legibilidad */}
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        {videos.map((src, i) => (
+          <video
+            key={src}
+            ref={(el) => { videoRefs.current[i] = el; }}
+            autoPlay={i === 0}
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              opacity: i === activeIndex ? (isTransitioning ? 0 : 1) : (isTransitioning && i === nextIndex ? 1 : 0),
+              transition: `opacity ${CROSSFADE_DURATION}ms ease-in-out`,
+              transform: i === activeIndex && !isTransitioning ? "scale(1.05)" : "scale(1)",
+              transitionProperty: "opacity, transform",
+              transitionDuration: `${CROSSFADE_DURATION}ms, ${VIDEO_DURATION}ms`,
+              transitionTimingFunction: "ease-in-out, linear",
+            }}
+          >
+            <source src={src} type="video/mp4" />
+          </video>
+        ))}
+
+        {/* Overlays */}
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+      </div>
+
+      {/* Video Indicators */}
+      <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
+        {videos.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goToVideo(i)}
+            className="group relative h-1 rounded-full overflow-hidden cursor-pointer transition-all duration-300"
+            style={{ width: i === activeIndex ? 48 : 24 }}
+            aria-label={`Video ${i + 1}`}
+          >
+            <div className="absolute inset-0 bg-white/30 rounded-full" />
+            {i === activeIndex && (
+              <motion.div
+                className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff0040] to-[#ff6600]"
+                style={{ transformOrigin: "left", scaleX: progress }}
+              />
+            )}
+            {i !== activeIndex && (
+              <div className="absolute inset-0 rounded-full bg-white/30 group-hover:bg-white/50 transition-colors" />
+            )}
+          </button>
+        ))}
       </div>
 
       {/* Animated Grid Pattern */}
@@ -260,40 +361,38 @@ export function TextilHero() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-10 flex flex-wrap gap-6"
           >
-            {[
-              { value: "50+", label: "Lavados garantizados", icon: Shirt },
-              { value: "24h", label: "Entregas express", icon: Zap },
-              { value: "100%", label: "Full color vibrante", icon: Palette },
-              { value: "5★", label: "Calificacion clientes", icon: Star },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5 + index * 0.1 }}
-                whileHover={{
-                  scale: 1.05,
-                  y: -5,
-                  rotateX: 5,
-                  rotateY: -5
-                }}
-                className="group relative card-racing card-3d-tilt glow-corners p-4 cursor-pointer"
-              >
-                {/* Shine Element */}
-                <div className="card-shine" />
-                <div className="relative flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#ff0040] to-[#ff6600] flex items-center justify-center icon-float-animated">
-                    <stat.icon className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-black title-gradient-animated" style={{ fontFamily: "var(--font-display)" }}>
-                      {stat.value}
+            {(content.textilStats || []).map((stat, index) => {
+              const IconComp = ICON_MAP[stat.icon] || Star;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                  whileHover={{
+                    scale: 1.05,
+                    y: -5,
+                    rotateX: 5,
+                    rotateY: -5
+                  }}
+                  className="group relative card-racing card-3d-tilt glow-corners p-4 cursor-pointer"
+                >
+                  {/* Shine Element */}
+                  <div className="card-shine" />
+                  <div className="relative flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#ff0040] to-[#ff6600] flex items-center justify-center icon-float-animated">
+                      <IconComp className="w-5 h-5 text-white" />
                     </div>
-                    <div className="text-xs text-gray-400">{stat.label}</div>
+                    <div>
+                      <div className="text-2xl font-black title-gradient-animated" style={{ fontFamily: "var(--font-display)" }}>
+                        {stat.value}
+                      </div>
+                      <div className="text-xs text-gray-400">{stat.label}</div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </motion.div>
 
           {/* CTA Buttons */}

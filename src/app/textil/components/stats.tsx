@@ -110,7 +110,7 @@ export function Stats() {
     { icon: <Eye className="w-7 h-7 md:w-8 md:h-8" />, value: visits, label: 'Visitas', suffix: '' },
     { icon: <Briefcase className="w-7 h-7 md:w-8 md:h-8" />, value: 500, label: 'Trabajos Realizados', suffix: '+' },
     { icon: <Users className="w-7 h-7 md:w-8 md:h-8" />, value: 200, label: 'Clientes Felices', suffix: '+' },
-    { icon: <Award className="w-7 h-7 md:w-8 md:h-8" />, value: 5, label: 'Anos de Experiencia', suffix: '' },
+    { icon: <Award className="w-7 h-7 md:w-8 md:h-8" />, value: 3, label: 'Años de Experiencia', suffix: '' },
   ]
 
   return (

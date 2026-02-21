@@ -8,7 +8,7 @@ import { NosotrosCTA } from "./components/cta";
 export const metadata: Metadata = {
   title: "Sobre DMC Projects",
   description:
-    "Conoce al equipo detrás de DMC Projects. Especialistas en integración de sistemas de salud y personalización textil.",
+    "Conoce al equipo detrás de DMC Projects. Especialistas en personalización textil e impresión DTF.",
 };
 
 export default function NosotrosPage() {
