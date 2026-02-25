@@ -158,7 +158,7 @@ const defaultContent: SiteContent = {
 
   // Diseño
   design: {
-    logo: '/logo.png',
+    logo: '/images/logo_dmccrew.png',
     fontFamily: 'Inter',
     primaryColor: '#3b82f6',
     secondaryColor: '#10b981',

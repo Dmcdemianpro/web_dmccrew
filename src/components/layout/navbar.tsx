@@ -47,7 +47,7 @@ export function Navbar() {
               <img
                 src={content.design.logo}
                 alt={content.siteName || "DMC Projects"}
-                className="h-10 w-auto max-w-[160px] object-contain"
+                className="h-14 w-auto max-w-[200px] object-contain"
               />
             ) : (
               <>

@@ -5,7 +5,7 @@ import { DTF_PROCESS } from "@/lib/constants";
 
 export function TextilProcess() {
   return (
-    <section className="theme-textil py-16 md:py-24 relative overflow-hidden">
+    <section id="proceso" className="theme-textil py-16 md:py-24 relative overflow-hidden">
       {/* Dark Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111] to-[#0a0a0a]" />
       <div className="absolute inset-0 urban-pattern opacity-10" />

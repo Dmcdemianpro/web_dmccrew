@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Palette, Droplet, Sparkles, Zap } from "lucide-react";
-import { DTF_PROCESS } from "@/lib/constants";
+import { Check, Palette, Droplet, Sparkles, Zap, X } from "lucide-react";
 
 const benefits = [
   { icon: Palette, text: "Colores vibrantes full color" },
@@ -80,27 +79,53 @@ export function TextilWhatIsDTF() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            {/* Process Steps */}
-            <div className="space-y-3">
-              {DTF_PROCESS.map((step, index) => (
+            {/* Comparison Cards */}
+            <div className="space-y-4">
+              {[
+                {
+                  technique: "Sublimado",
+                  dtfWins: ["Funciona en algodón y mezclas", "No requiere prenda blanca", "Colores más opacos y cubrientes"],
+                  sublimadoWins: ["Mejor en poliéster 100%"],
+                },
+                {
+                  technique: "Vinilo / HTV",
+                  dtfWins: ["Permite fotos y degradados", "Sin límite de colores", "Detalles finos sin problemas"],
+                  sublimadoWins: ["Setup más rápido en colores sólidos"],
+                },
+                {
+                  technique: "Serigrafía",
+                  dtfWins: ["Sin mínimos de producción", "Full color sin costo extra", "Listo en horas, no días"],
+                  sublimadoWins: ["Más económico en pedidos masivos iguales"],
+                },
+              ].map((comp, index) => (
                 <motion.div
-                  key={step.step}
+                  key={comp.technique}
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.2 + index * 0.08 }}
+                  transition={{ delay: 0.2 + index * 0.1 }}
                   whileHover={{ x: 4 }}
-                  className="card-racing glow-corners p-4 flex items-start gap-4"
+                  className="card-racing glow-corners p-4"
                 >
                   <div className="card-shine" />
-                  <span className="step-number-racing w-9 h-9 text-sm flex-shrink-0 relative z-10">
-                    {step.step}
-                  </span>
                   <div className="relative z-10">
-                    <p className="font-semibold text-white text-sm" style={{ fontFamily: "var(--font-display)" }}>
-                      {step.title}
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                      DTF vs {comp.technique}
                     </p>
-                    <p className="text-xs text-gray-500 mt-0.5">{step.description}</p>
+                    <div className="space-y-1">
+                      {comp.dtfWins.map((win) => (
+                        <div key={win} className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-[#ff0040] flex-shrink-0 mt-0.5" />
+                          <span className="text-xs text-gray-300">{win}</span>
+                        </div>
+                      ))}
+                      {comp.sublimadoWins.map((note) => (
+                        <div key={note} className="flex items-start gap-2">
+                          <X className="w-3.5 h-3.5 text-gray-600 flex-shrink-0 mt-0.5" />
+                          <span className="text-xs text-gray-600">{note}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </motion.div>
               ))}

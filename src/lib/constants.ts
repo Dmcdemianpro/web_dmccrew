@@ -5,6 +5,7 @@ export const NAV_ITEMS = [
     href: "/",
     children: [
       { label: "Servicios DTF", href: "/" },
+      { label: "Proceso DTF", href: "/#proceso" },
       { label: "Catálogo", href: "/#catalogo" },
       { label: "Cotizar Ahora", href: "/contacto?tema=textil" },
     ],
