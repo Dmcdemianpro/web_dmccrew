@@ -122,15 +122,22 @@ export function TextilGallery() {
               onClick={() => openLightbox(index)}
             >
               {/* Image */}
-              <div className={`relative ${index === 0 || index === 5 ? 'h-[500px]' : 'h-60'}`}>
+              <div className={`relative ${index === 0 || index === 5 ? 'h-[500px]' : 'h-60'} overflow-hidden`}>
+                {/* Grayscale → color on hover */}
                 <img
                   src={item.url}
                   alt={item.caption}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
                 />
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+                {/* Vignette permanente */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 pointer-events-none z-[5]" />
+
+                {/* Red color wash on hover */}
+                <div className="absolute inset-0 bg-[#ff0040]/0 group-hover:bg-[#ff0040]/10 transition-colors duration-500 z-[6]" />
+
+                {/* Overlay oscuro hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
 
                 {/* Zoom Icon */}
                 <motion.div
