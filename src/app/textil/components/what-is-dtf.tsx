@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Check, Palette, Droplet, Sparkles, Zap } from "lucide-react";
+import { DTF_PROCESS } from "@/lib/constants";
 
 const benefits = [
   { icon: Palette, text: "Colores vibrantes full color" },
@@ -79,41 +80,28 @@ export function TextilWhatIsDTF() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            {/* Comparison Cards */}
-            <div className="space-y-4">
-              {[
-                {
-                  title: "DTF vs Sublimado",
-                  description: "El sublimado solo funciona en poliester blanco. DTF funciona en cualquier color y material, incluyendo algodon 100%.",
-                },
-                {
-                  title: "DTF vs Vinilo",
-                  description: "El vinilo es ideal para textos y logos simples. DTF permite fotos, degradados y disenos complejos con mejor tacto.",
-                },
-                {
-                  title: "DTF vs Serigrafia",
-                  description: "La serigrafia conviene para tirajes grandes del mismo diseno. DTF es mas flexible y economico para pedidos pequenos.",
-                },
-              ].map((item, index) => (
+            {/* Process Steps */}
+            <div className="space-y-3">
+              {DTF_PROCESS.map((step, index) => (
                 <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  key={step.step}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                  whileHover={{ y: -5, rotateX: 3, rotateY: -3 }}
-                  className="card-racing card-3d-tilt glow-corners p-6"
+                  transition={{ delay: 0.2 + index * 0.08 }}
+                  whileHover={{ x: 4 }}
+                  className="card-racing glow-corners p-4 flex items-start gap-4"
                 >
                   <div className="card-shine" />
-                  <h3 className="font-bold text-white mb-3 flex items-center gap-2 relative z-10" style={{ fontFamily: "var(--font-display)" }}>
-                    <span className="step-number-racing w-8 h-8 text-sm">
-                      {index + 1}
-                    </span>
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-gray-400 relative z-10">
-                    {item.description}
-                  </p>
+                  <span className="step-number-racing w-9 h-9 text-sm flex-shrink-0 relative z-10">
+                    {step.step}
+                  </span>
+                  <div className="relative z-10">
+                    <p className="font-semibold text-white text-sm" style={{ fontFamily: "var(--font-display)" }}>
+                      {step.title}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-0.5">{step.description}</p>
+                  </div>
                 </motion.div>
               ))}
             </div>
