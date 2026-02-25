@@ -5,48 +5,19 @@ import { useState } from "react";
 import { X, ZoomIn, ChevronLeft, ChevronRight, Camera } from "lucide-react";
 import { useContent } from "@/context/ContentContext";
 
-// Default gallery images - Urban Streetwear Style
+// Default gallery images - trabajos reales DMC Projects
 const defaultGallery = [
-  {
-    id: 1,
-    url: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&q=80",
-    caption: "Polera Streetwear Oversize"
-  },
-  {
-    id: 2,
-    url: "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=800&q=80",
-    caption: "Coleccion Urban Spring"
-  },
-  {
-    id: 3,
-    url: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=800&q=80",
-    caption: "Hoodie Premium Custom"
-  },
-  {
-    id: 4,
-    url: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80",
-    caption: "Poleron Canguro Negro"
-  },
-  {
-    id: 5,
-    url: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80",
-    caption: "Gorras Snapback Custom"
-  },
-  {
-    id: 6,
-    url: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&q=80",
-    caption: "Uniformes Corporativos"
-  },
-  {
-    id: 7,
-    url: "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=800&q=80",
-    caption: "Streetwear Collection"
-  },
-  {
-    id: 8,
-    url: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80",
-    caption: "Urban Fashion Shoot"
-  },
+  { id: 1, url: "/images/gallery/trabajo-01.jpg", caption: "Trabajo DTF" },
+  { id: 2, url: "/images/gallery/trabajo-02.jpg", caption: "Polera Personalizada" },
+  { id: 3, url: "/images/gallery/trabajo-03.jpg", caption: "Impresion DTF" },
+  { id: 4, url: "/images/gallery/trabajo-04.jpg", caption: "Trabajo DTF" },
+  { id: 5, url: "/images/gallery/trabajo-05.jpg", caption: "Polera Full Color" },
+  { id: 6, url: "/images/gallery/trabajo-06.jpg", caption: "Polera Personalizada" },
+  { id: 7, url: "/images/gallery/trabajo-07.jpg", caption: "Impresion DTF" },
+  { id: 8, url: "/images/gallery/trabajo-08.jpg", caption: "Trabajo DTF" },
+  { id: 9, url: "/images/gallery/trabajo-09.jpg", caption: "Polera Personalizada" },
+  { id: 10, url: "/images/gallery/trabajo-10.jpg", caption: "Poleras DTF" },
+  { id: 11, url: "/images/gallery/trabajo-11.jpg", caption: "Trabajos Recientes" },
 ];
 
 export function TextilGallery() {

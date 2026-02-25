@@ -240,10 +240,17 @@ const defaultContent: SiteContent = {
     cotizacion: ['Personalización Empresas', 'Tallas Especiales', 'Pedidos por Mayor'],
   },
   textilGallery: [
-    { id: 1, url: '/images/gallery/dtf-1.jpg', caption: 'Polera Full Color' },
-    { id: 2, url: '/images/gallery/dtf-2.jpg', caption: 'Poleron Personalizado' },
-    { id: 3, url: '/images/gallery/dtf-3.jpg', caption: 'Uniformes Empresa' },
-    { id: 4, url: '/images/gallery/dtf-4.jpg', caption: 'Merchandising Evento' },
+    { id: 1, url: '/images/gallery/trabajo-01.jpg', caption: 'Trabajo DTF' },
+    { id: 2, url: '/images/gallery/trabajo-02.jpg', caption: 'Polera Personalizada' },
+    { id: 3, url: '/images/gallery/trabajo-03.jpg', caption: 'Impresion DTF' },
+    { id: 4, url: '/images/gallery/trabajo-04.jpg', caption: 'Trabajo DTF' },
+    { id: 5, url: '/images/gallery/trabajo-05.jpg', caption: 'Polera Full Color' },
+    { id: 6, url: '/images/gallery/trabajo-06.jpg', caption: 'Polera Personalizada' },
+    { id: 7, url: '/images/gallery/trabajo-07.jpg', caption: 'Impresion DTF' },
+    { id: 8, url: '/images/gallery/trabajo-08.jpg', caption: 'Trabajo DTF' },
+    { id: 9, url: '/images/gallery/trabajo-09.jpg', caption: 'Polera Personalizada' },
+    { id: 10, url: '/images/gallery/trabajo-10.jpg', caption: 'Poleras DTF' },
+    { id: 11, url: '/images/gallery/trabajo-11.jpg', caption: 'Trabajos Recientes' },
   ],
 
   // Configurador Textil

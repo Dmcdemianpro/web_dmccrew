@@ -35,11 +35,19 @@ export function PortfolioContent() {
               transition={{ duration: 0.3 }}
               className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all duration-300"
             >
-              {/* Image Placeholder */}
+              {/* Image */}
               <div className="aspect-video bg-muted relative overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Shirt className="h-12 w-12 text-accent-textil/30" />
-                </div>
+                {item.image ? (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Shirt className="h-12 w-12 text-accent-textil/30" />
+                  </div>
+                )}
 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
