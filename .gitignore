@@ -49,8 +49,10 @@ data/content/
 data/tmp/
 data/Polerones/
 
-# mockups (assets locales)
+# mockups (assets locales - excluir raíz pero incluir public/)
 mockups/
+!public/mockups/
+!public/mockups/**
 
 # claude code
 .claude/
