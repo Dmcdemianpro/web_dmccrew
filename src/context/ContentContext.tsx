@@ -205,7 +205,7 @@ const defaultContent: SiteContent = {
     title1: 'PERSONALIZA',
     title2: 'TU ESTILO',
     subtitle: 'Impresión DTF Profesional',
-    description: 'Tu diseño, impreso con calidad excepcional en la prenda que elijas. Poleras, polerones, uniformes y más. Desde 1 unidad.',
+    description: 'Poleras y polerones personalizados con impresión DTF. Full color, excelente terminación, desde 1 unidad.',
   },
   textilStats: [
     { value: '1+', label: 'Desde 1 unidad', icon: 'Star' },

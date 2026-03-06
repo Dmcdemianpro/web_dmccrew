@@ -322,15 +322,15 @@ export function TextilHero() {
                 ]
               }}
               transition={{ duration: 2, repeat: Infinity }}
-              data-text="PERSONALIZA"
+              data-text={content.textilHero.title1}
             >
-              PERSONALIZA
+              {content.textilHero.title1}
             </motion.span>
             <motion.span
               className="block title-gradient-animated relative glitch-text-urban"
-              data-text="TU ESTILO"
+              data-text={content.textilHero.title2}
             >
-              TU ESTILO
+              {content.textilHero.title2}
             </motion.span>
           </motion.h1>
 
@@ -344,10 +344,7 @@ export function TextilHero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-8 text-xl sm:text-2xl text-gray-300 max-w-2xl leading-relaxed"
           >
-            <span className="text-white font-bold">Poleras y polerones personalizados</span> con impresión DTF.
-            <span className="block mt-2 text-gray-300">
-              Full color, excelente terminación y personalización desde 1 unidad.
-            </span>
+            <span className="text-white font-bold">{content.textilHero.description}</span>
             <span className="inline-flex items-center gap-2 mt-3 text-[#ff0040] font-bold">
               <Zap className="w-5 h-5" />
               Atención en Santiago · Envíos a todo Chile

@@ -57,7 +57,6 @@ const tabs = [
   { id: "faq", label: "FAQ", icon: HelpCircle },
   { id: "cta", label: "CTA Final", icon: Megaphone },
   { id: "testimonios", label: "Testimonios", icon: Users },
-  { id: "portfolio", label: "Portfolio", icon: FolderOpen },
   { id: "contact", label: "Contacto", icon: Phone },
   { id: "settings", label: "Ajustes", icon: Settings },
 ];
@@ -2178,11 +2177,12 @@ function TextilTab({ content, updateTextilHero, updateTextilPricing, updateConte
     <div className="space-y-6">
       {/* Hero Section */}
       <div className="admin-card p-6">
-        <h3 className="text-lg font-semibold text-white mb-6">Seccion Textil DTF</h3>
+        <h3 className="text-lg font-semibold text-white mb-1">Hero Principal</h3>
+        <p className="text-sm text-gray-500 mb-6">Texto grande visible al inicio de la página</p>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Titulo Linea 1</label>
+            <label className="block text-sm text-gray-400 mb-2">Título línea 1 (ej: PERSONALIZA)</label>
             <input
               type="text"
               value={hero.title1}
@@ -2192,7 +2192,7 @@ function TextilTab({ content, updateTextilHero, updateTextilPricing, updateConte
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Titulo Linea 2</label>
+            <label className="block text-sm text-gray-400 mb-2">Título línea 2 (ej: TU ESTILO)</label>
             <input
               type="text"
               value={hero.title2}
@@ -2202,21 +2202,11 @@ function TextilTab({ content, updateTextilHero, updateTextilPricing, updateConte
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Subtitulo</label>
-            <input
-              type="text"
-              value={hero.subtitle}
-              onChange={(e) => setHero({ ...hero, subtitle: e.target.value })}
-              className="admin-input w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Descripcion</label>
+            <label className="block text-sm text-gray-400 mb-2">Descripción (párrafo bajo el título)</label>
             <textarea
               value={hero.description}
               onChange={(e) => setHero({ ...hero, description: e.target.value })}
-              className="admin-input w-full h-24 resize-none"
+              className="admin-input w-full h-20 resize-none"
             />
           </div>
         </div>
@@ -2308,12 +2298,6 @@ function TextilTab({ content, updateTextilHero, updateTextilPricing, updateConte
           })}
         </div>
       </div>
-
-      {/* Catalogo de Productos */}
-      <CatalogEditor content={content} updateContent={updateContent} />
-
-      {/* Configurador de Producto */}
-      <ConfiguratorEditor content={content} updateContent={updateContent} />
 
       {/* Precios Adultos */}
       <div className="admin-card p-6">
