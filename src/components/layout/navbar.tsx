@@ -2,18 +2,17 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Shirt, Menu, X, MessageCircle, Zap, Sparkles } from "lucide-react";
+import { Menu, X, MessageCircle, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { openWhatsApp } from "@/lib/utils";
 import { useContent } from "@/context/ContentContext";
 
 const navLinks = [
   { href: "/", label: "Inicio" },
-  { href: "/#catalogo", label: "Catalogo" },
+  { href: "/#galeria", label: "Galería" },
   { href: "/#proceso", label: "Proceso" },
   { href: "/#precios", label: "Precios" },
-  { href: "/#configurador", label: "Configura tu Prenda", highlight: true },
-  { href: "/contacto?tema=textil", label: "Contacto" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export function Navbar() {
@@ -72,24 +71,9 @@ export function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={
-                    link.highlight
-                      ? "relative group"
-                      : "text-sm font-medium text-gray-300 hover:text-[#ff0040] transition-colors"
-                  }
+                  className="text-sm font-medium text-gray-300 hover:text-[#ff0040] transition-colors"
                 >
-                  {link.highlight ? (
-                    <span className="relative inline-flex items-center">
-                      <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-[#ff0040] to-[#ff6600] blur-md opacity-50 group-hover:opacity-80 transition-opacity animate-glow-pulse" />
-                      <span className="absolute inset-0 rounded-full bg-[#0a0a0a]/70 border border-white/10 shadow-[0_0_25px_rgba(255,0,64,0.35)]" />
-                      <span className="relative z-10 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white shine-effect-auto">
-                        <Sparkles className="w-4 h-4" />
-                        {link.label}
-                      </span>
-                    </span>
-                  ) : (
-                    link.label
-                  )}
+                  {link.label}
                 </Link>
               </li>
             ))}
@@ -131,20 +115,9 @@ export function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={
-                      link.highlight
-                        ? "relative block text-white font-semibold px-4 py-3 rounded-lg bg-gradient-to-r from-[#ff0040] to-[#ff6600] shadow-[0_0_18px_rgba(255,0,64,0.35)]"
-                        : "block text-gray-300 hover:text-[#ff0040]"
-                    }
+                    className="block text-gray-300 hover:text-[#ff0040]"
                   >
-                    {link.highlight ? (
-                      <span className="flex items-center gap-2">
-                        <Shirt className="w-4 h-4" />
-                        {link.label}
-                      </span>
-                    ) : (
-                      link.label
-                    )}
+                    {link.label}
                   </Link>
                 </li>
               ))}

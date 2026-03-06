@@ -12,7 +12,7 @@ const benefits = [
 
 export function TextilWhatIsDTF() {
   return (
-    <section className="theme-textil py-20 relative overflow-hidden">
+    <section className="theme-textil py-12 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-[#111]" />
       <div className="absolute inset-0 urban-pattern opacity-20" />

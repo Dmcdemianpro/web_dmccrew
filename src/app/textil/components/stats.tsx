@@ -82,7 +82,8 @@ function StatItem({ icon, value, label, suffix = '', delay = 0 }: StatItemProps)
 }
 
 export function Stats() {
-  const [visits, setVisits] = useState(0)
+  const VISITS_BASE = 1200 // base offset para que nunca muestre 0
+  const [visits, setVisits] = useState(VISITS_BASE)
 
   useEffect(() => {
     // Registrar visita e obtener contador
@@ -90,16 +91,14 @@ export function Stats() {
       try {
         const response = await fetch('/api/visits', { method: 'POST' })
         const data = await response.json()
-        setVisits(data.count || 0)
-      } catch (error) {
-        console.error('Error tracking visit:', error)
-        // Intentar solo obtener el contador si falla el POST
+        setVisits(Math.max(data.count || 0, VISITS_BASE))
+      } catch {
         try {
           const response = await fetch('/api/visits')
           const data = await response.json()
-          setVisits(data.count || 0)
+          setVisits(Math.max(data.count || 0, VISITS_BASE))
         } catch {
-          setVisits(0)
+          // mantiene el valor base
         }
       }
     }
@@ -114,7 +113,7 @@ export function Stats() {
   ]
 
   return (
-    <section className="theme-textil py-20 md:py-28 relative overflow-hidden">
+    <section className="theme-textil py-12 md:py-16 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black" />
 
@@ -148,7 +147,7 @@ export function Stats() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-8"
         >
           <motion.span
             initial={{ opacity: 0, scale: 0.9 }}
@@ -158,10 +157,6 @@ export function Stats() {
           >
             Nuestros Numeros
           </motion.span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            <span className="text-white">Impulsando </span>
-            <span className="text-gradient-neon">Tu Estilo</span>
-          </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Cada numero representa historias de clientes satisfechos y proyectos exitosos
           </p>

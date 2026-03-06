@@ -29,7 +29,7 @@ function Section({ className, container = true, animate = true, children, id }: 
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className={cn("py-16 md:py-24", className)}
+        className={cn("py-10 md:py-16", className)}
       >
         {content}
       </motion.section>
@@ -37,7 +37,7 @@ function Section({ className, container = true, animate = true, children, id }: 
   }
 
   return (
-    <section id={id} className={cn("py-16 md:py-24", className)}>
+    <section id={id} className={cn("py-10 md:py-16", className)}>
       {content}
     </section>
   );
@@ -54,7 +54,7 @@ function SectionHeader({ title, subtitle, align = "center", className }: Section
   return (
     <div
       className={cn(
-        "mb-12",
+        "mb-8",
         align === "center" && "text-center",
         className
       )}

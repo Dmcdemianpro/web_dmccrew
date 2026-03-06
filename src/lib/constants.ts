@@ -46,28 +46,32 @@ export const TEXTIL_SERVICES = [
 // FAQ - Textil
 export const TEXTIL_FAQ = [
   {
-    question: "¿Cuántos lavados aguanta?",
-    answer: "Con cuidado normal (lavar al revés, no usar secadora), la impresión dura la vida útil de la prenda. Garantizamos mínimo 50 lavados sin deterioro visible.",
+    question: "¿Trabajan desde una sola unidad?",
+    answer: "Sí. Puedes cotizar desde 1 unidad sin problema. No exigimos pedidos mínimos.",
   },
   {
-    question: "¿Pueden imprimir fotos?",
-    answer: "Sí. DTF permite full color, degradados y fotos. El resultado depende de la calidad de la imagen original.",
+    question: "¿Debo tener el diseño listo?",
+    answer: "No necesariamente. Si tienes una idea, referencia o imagen base, te ayudamos a ordenarla para que quede bien en la prenda.",
   },
   {
-    question: "¿Qué pasa si no tengo diseño?",
-    answer: "Podemos ayudarte a crear uno simple o conectarte con diseñadores. Consulta por este servicio adicional.",
-  },
-  {
-    question: "¿Puedo elegir la marca de la prenda?",
-    answer: "Sí. Trabajamos con varias marcas y calidades. También puedes traer tus propias prendas.",
+    question: "¿Qué tipo de diseños pueden hacer?",
+    answer: "Logos, nombres, ilustraciones, fotos, frases y diseños full color. DTF permite imprimir con gran detalle, degradados y sin límite de colores.",
   },
   {
     question: "¿Hacen envíos a regiones?",
-    answer: "Sí, a todo Chile vía Starken, Chilexpress o el courier de tu preferencia. Costo de envío adicional.",
+    answer: "Sí, enviamos a todo Chile vía Starken, Chilexpress o el courier que prefieras. El costo del envío es adicional.",
   },
   {
-    question: "¿Tienen tienda física?",
-    answer: "Trabajamos principalmente con retiro coordinado y despacho. Visitas con cita previa en nuestra ubicación.",
+    question: "¿Atienden en Santiago?",
+    answer: "Sí. Coordinamos atención y entrega en Santiago. Visitas con cita previa en nuestra ubicación.",
+  },
+  {
+    question: "¿Cuánto demora un pedido?",
+    answer: "Depende del tipo de prenda, la cantidad y la carga de trabajo del momento. Escríbenos y te indicamos el plazo estimado exacto para tu pedido.",
+  },
+  {
+    question: "¿Puedo cotizar para marca o negocio?",
+    answer: "Sí. Trabajamos tanto con pedidos individuales como con producción para marcas, emprendimientos, eventos y empresas. Cotización personalizada según volumen.",
   },
 ];
 
@@ -75,33 +79,23 @@ export const TEXTIL_FAQ = [
 export const DTF_PROCESS = [
   {
     step: 1,
-    title: "Nos envías tu diseño",
-    description: "Archivo en alta resolución (PNG, AI, PSD). Te asesoramos gratis si necesitas ajustes.",
+    title: "Envíanos tu idea o diseño",
+    description: "Un logo, imagen, referencia o simplemente lo que necesitas. Te ayudamos a prepararlo para la impresión.",
   },
   {
     step: 2,
-    title: "Preparamos el arte",
-    description: "Optimizamos colores, tamaño y ubicación para el mejor resultado.",
+    title: "Te cotizamos rápido",
+    description: "Revisamos tu pedido y te enviamos una propuesta clara con precio, plazo y opciones.",
   },
   {
     step: 3,
-    title: "Imprimimos en film",
-    description: "Tu diseño se imprime con tintas especiales en film de transferencia.",
+    title: "Producimos tu prenda",
+    description: "Fabricamos con impresión DTF de alta calidad: colores vibrantes, buen acabado y excelente adherencia.",
   },
   {
     step: 4,
-    title: "Transferimos a la prenda",
-    description: "Aplicamos calor y presión controlados para adherir el diseño.",
-  },
-  {
-    step: 5,
-    title: "Control de calidad",
-    description: "Revisamos cada prenda antes de embalar.",
-  },
-  {
-    step: 6,
-    title: "Entregamos",
-    description: "Retiro en Santiago o despacho a todo Chile.",
+    title: "Coordinamos la entrega",
+    description: "Retiras en Santiago según coordinación o solicitamos despacho a tu dirección en todo Chile.",
   },
 ];
 

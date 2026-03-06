@@ -344,13 +344,13 @@ export function TextilHero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-8 text-xl sm:text-2xl text-gray-300 max-w-2xl leading-relaxed"
           >
-            Tu diseno, impreso con tecnologia de ultima generacion.
-            <span className="block mt-2">
-              <span className="text-white font-bold">Poleras, polerones, uniformes</span> y todo lo que imagines.
+            <span className="text-white font-bold">Poleras y polerones personalizados</span> con impresión DTF.
+            <span className="block mt-2 text-gray-300">
+              Full color, excelente terminación y personalización desde 1 unidad.
             </span>
             <span className="inline-flex items-center gap-2 mt-3 text-[#ff0040] font-bold">
               <Zap className="w-5 h-5" />
-              Desde 1 unidad, sin minimos
+              Atención en Santiago · Envíos a todo Chile
             </span>
           </motion.p>
 

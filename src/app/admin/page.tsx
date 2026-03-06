@@ -15,6 +15,7 @@ import {
   RotateCcw,
   Menu,
   X,
+  ChevronLeft,
   Plus,
   Trash2,
   Edit2,
@@ -82,6 +83,7 @@ export default function AdminPage() {
 
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
 
   // Login state
@@ -182,49 +184,71 @@ export default function AdminPage() {
     <div className="min-h-screen bg-[#0a0a0a] flex">
       {/* Sidebar */}
       <aside
-        className={`admin-sidebar fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ${
+        className={`admin-sidebar fixed lg:static inset-y-0 left-0 z-50 transform transition-all duration-300 flex flex-col ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        }`}
+        } ${isCollapsed ? "lg:w-16" : "lg:w-64"} w-64`}
       >
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-xl font-bold text-white">DMC Admin</h2>
-              <p className="text-xs text-gray-500">Panel de Control</p>
+        <div className={`p-4 flex-1 overflow-y-auto`}>
+          <div className={`flex items-center mb-6 ${isCollapsed ? "lg:justify-center" : "justify-between"}`}>
+            {!isCollapsed && (
+              <div className="hidden lg:block">
+                <h2 className="text-lg font-bold text-white">DMC Admin</h2>
+                <p className="text-xs text-gray-500">Panel de Control</p>
+              </div>
+            )}
+            <div className={`flex items-center gap-2 ${isCollapsed ? "" : ""}`}>
+              <button
+                onClick={() => setIsCollapsed((c) => !c)}
+                className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-all"
+                title={isCollapsed ? "Expandir sidebar" : "Colapsar sidebar"}
+              >
+                <ChevronLeft size={18} className={`transition-transform duration-300 ${isCollapsed ? "rotate-180" : ""}`} />
+              </button>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="lg:hidden text-gray-400 hover:text-white"
+              >
+                <X size={24} />
+              </button>
             </div>
-            <button
-              onClick={() => setIsSidebarOpen(false)}
-              className="lg:hidden text-gray-400 hover:text-white"
-            >
-              <X size={24} />
-            </button>
+            {!isCollapsed && (
+              <div className="lg:hidden">
+                <h2 className="text-lg font-bold text-white">DMC Admin</h2>
+              </div>
+            )}
           </div>
 
-          <nav className="space-y-2">
+          <nav className="space-y-1">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                onClick={() => { setActiveTab(tab.id); setIsSidebarOpen(false); }}
+                title={isCollapsed ? tab.label : undefined}
+                className={`w-full flex items-center gap-3 rounded-lg transition-all ${
+                  isCollapsed ? "lg:justify-center lg:px-0 lg:py-3 px-4 py-3" : "px-4 py-2.5"
+                } ${
                   activeTab === tab.id
                     ? "bg-brand text-white"
                     : "text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
               >
-                <tab.icon size={20} />
-                {tab.label}
+                <tab.icon size={18} className="flex-shrink-0" />
+                <span className={`text-sm ${isCollapsed ? "lg:hidden" : ""}`}>{tab.label}</span>
               </button>
             ))}
           </nav>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10">
+        <div className={`p-3 border-t border-white/10`}>
           <button
             onClick={logout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-all"
+            title={isCollapsed ? "Cerrar Sesion" : undefined}
+            className={`w-full flex items-center gap-3 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-all ${
+              isCollapsed ? "lg:justify-center lg:px-0 lg:py-3 px-4 py-3" : "px-4 py-2.5"
+            }`}
           >
-            <LogOut size={20} />
-            Cerrar Sesion
+            <LogOut size={18} className="flex-shrink-0" />
+            <span className={`text-sm ${isCollapsed ? "lg:hidden" : ""}`}>Cerrar Sesion</span>
           </button>
         </div>
       </aside>
@@ -232,7 +256,7 @@ export default function AdminPage() {
       {/* Main Content */}
       <main className="flex-1 lg:ml-0">
         {/* Top Bar */}
-        <header className="sticky top-0 z-40 bg-[#0a0a0a]/90 backdrop-blur border-b border-white/10 px-6 py-4">
+        <header className="sticky top-0 z-40 bg-[#0a0a0a]/90 backdrop-blur border-b border-white/10 px-4 py-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
@@ -241,7 +265,7 @@ export default function AdminPage() {
               >
                 <Menu size={24} />
               </button>
-              <h1 className="text-xl font-semibold text-white">
+              <h1 className="text-base font-semibold text-white">
                 {tabs.find((t) => t.id === activeTab)?.label}
               </h1>
             </div>
@@ -315,7 +339,7 @@ export default function AdminPage() {
         </header>
 
         {/* Content Area */}
-        <div className="p-6">
+        <div className="p-4">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}

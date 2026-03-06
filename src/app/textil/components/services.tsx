@@ -195,7 +195,7 @@ export function TextilServices() {
     : fallbackCatalog;
 
   return (
-    <section id="catalogo" className="theme-textil py-24 relative overflow-hidden">
+    <section id="catalogo" className="theme-textil py-12 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[#0a0a0a]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(255,0,64,0.06),transparent)]" />
@@ -206,7 +206,7 @@ export function TextilServices() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <motion.span
             initial={{ scale: 0 }}
@@ -242,7 +242,7 @@ export function TextilServices() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          className="text-center mt-10"
         >
           <p className="text-white/40 mb-6">
             ¿Tienes un proyecto especial? ¡Te ayudamos a hacerlo realidad!

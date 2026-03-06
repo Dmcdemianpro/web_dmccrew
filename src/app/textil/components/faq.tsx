@@ -11,7 +11,7 @@ import { TEXTIL_FAQ } from "@/lib/constants";
 
 export function TextilFAQ() {
   return (
-    <section className="theme-textil py-16 md:py-24 relative overflow-hidden">
+    <section id="faq" className="theme-textil py-10 md:py-14 relative overflow-hidden">
       {/* Dark Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] to-[#111]" />
       <div className="absolute inset-0 urban-pattern opacity-10" />

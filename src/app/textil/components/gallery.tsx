@@ -65,7 +65,7 @@ export function TextilGallery() {
   const lightboxNext = () => setLightbox((l) => l === null ? null : (l + 1) % gallery.length);
 
   return (
-    <section id="galeria" className="theme-textil py-24 relative overflow-hidden">
+    <section id="galeria" className="theme-textil py-12 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-black to-[#0a0a0a]" />
       <div className="absolute inset-0">
@@ -88,7 +88,7 @@ export function TextilGallery() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <motion.span
             initial={{ scale: 0 }}
@@ -121,7 +121,7 @@ export function TextilGallery() {
           onMouseLeave={() => setAutoplay(true)}
         >
           {/* Stage */}
-          <div className="relative h-[300px] sm:h-[420px] lg:h-[500px] flex items-center justify-center overflow-hidden">
+          <div className="relative h-[240px] sm:h-[340px] lg:h-[400px] flex items-center justify-center overflow-hidden">
             {gallery.map((item, index) => {
               const pos = getRelPos(index, current, gallery.length);
               const isCenter = pos === 0;
@@ -247,16 +247,6 @@ export function TextilGallery() {
           </div>
         </div>
 
-        {/* Note */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center text-gray-600 text-xs mt-6"
-        >
-          Puedes actualizar estas imagenes desde el{" "}
-          <span className="text-[#ff0040]">panel de administracion</span>
-        </motion.p>
       </div>
 
       {/* ── Lightbox ── */}

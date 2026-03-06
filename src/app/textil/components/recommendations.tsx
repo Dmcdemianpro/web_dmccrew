@@ -19,7 +19,7 @@ const donts = [
 
 export function TextilRecommendations() {
   return (
-    <section className="theme-textil py-16 md:py-24 relative overflow-hidden">
+    <section className="theme-textil py-10 md:py-14 relative overflow-hidden">
       {/* Dark Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111] to-[#0a0a0a]" />
       <div className="absolute inset-0 urban-pattern opacity-10" />

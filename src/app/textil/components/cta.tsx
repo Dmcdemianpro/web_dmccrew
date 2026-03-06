@@ -1,13 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { MessageCircle, FileText, Sparkles } from "lucide-react";
+import { MessageCircle, Sparkles } from "lucide-react";
 import { openWhatsApp } from "@/lib/utils";
 
 export function TextilCTA() {
   return (
-    <section className="theme-textil py-20 relative overflow-hidden">
+    <section className="theme-textil py-12 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] to-black" />
       <div className="absolute inset-0 particles-bg" />
@@ -43,14 +42,15 @@ export function TextilCTA() {
               className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-6"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Listo para <span className="title-gradient-animated neon-text-intense">personalizar</span>?
+              Envíanos tu diseño y te{" "}
+              <span className="title-gradient-animated neon-text-intense">cotizamos hoy</span>
             </h2>
 
             <p className="text-lg sm:text-xl text-gray-300 mb-10">
-              Cuentanos que necesitas y te enviamos una cotizacion en menos de <span className="text-[#ff0040] font-bold">24 horas</span>.
+              Poleras, polerones, uniformes y más. Atención por WhatsApp, retiro coordinado en Santiago y envíos a todo Chile.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center">
               <motion.button
                 onClick={() => openWhatsApp("textilPersonalizar")}
                 whileHover={{ scale: 1.05 }}
@@ -60,15 +60,6 @@ export function TextilCTA() {
                 <MessageCircle className="h-5 w-5" />
                 Cotizar por WhatsApp
               </motion.button>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href="/contacto?tema=textil"
-                  className="btn-racing-outline"
-                >
-                  <FileText className="h-5 w-5" />
-                  Completar Formulario
-                </Link>
-              </motion.div>
             </div>
           </div>
         </motion.div>

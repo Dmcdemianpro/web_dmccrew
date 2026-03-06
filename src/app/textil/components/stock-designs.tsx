@@ -37,7 +37,7 @@ export function StockDesigns() {
   return (
     <section
       id="poleras-stock"
-      className="theme-textil py-16 md:py-24 relative overflow-hidden"
+      className="theme-textil py-10 md:py-14 relative overflow-hidden"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111] via-black to-[#0a0a0a]" />
@@ -200,7 +200,7 @@ export function StockDesigns() {
 
                 <div className="relative card-racing rounded-2xl overflow-hidden">
                   {/* Image */}
-                  <div className="relative h-80 overflow-hidden bg-black/50">
+                  <div className="relative h-56 overflow-hidden bg-black/50">
                     <img
                       src={design.imagen}
                       alt={design.nombre}
