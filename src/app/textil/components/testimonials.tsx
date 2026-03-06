@@ -2,10 +2,11 @@
 
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
-import { TESTIMONIALS } from "@/lib/constants";
+import { useContent } from "@/context/ContentContext";
 
 export function TextilTestimonials() {
-  const items = TESTIMONIALS.filter((t) => t.type === "textil");
+  const { content } = useContent();
+  const items = (content.testimonials || []).filter((t: any) => t.type === "textil");
   if (items.length === 0) return null;
 
   return (

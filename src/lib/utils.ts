@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export const WHATSAPP_NUMBER = "56942287787";
 
 export const WHATSAPP_MESSAGES = {
+  textilCotizarRapido: "Hola, quiero cotizar una prenda personalizada con impresión DTF.",
   textilPersonalizar: "Hola, mi nombre es {nombre}. Me interesa *personalizar prendas* con impresión DTF. ¿Me pueden dar más información?",
   textilEstampado: "Hola, mi nombre es {nombre}. Necesito solo el *estampado DTF* (transfer/lámina). ¿Me pueden enviar detalles y precios?",
   textilMayor: "Hola, mi nombre es {nombre}. Quiero *cotizar por mayor* impresión DTF. ¿Me pueden enviar precios por volumen?",

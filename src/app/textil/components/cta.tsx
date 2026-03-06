@@ -3,8 +3,17 @@
 import { motion } from "framer-motion";
 import { MessageCircle, Sparkles } from "lucide-react";
 import { openWhatsApp } from "@/lib/utils";
+import { useContent } from "@/context/ContentContext";
 
 export function TextilCTA() {
+  const { content } = useContent();
+  const cta = content.textilCta || {
+    title: 'Envíanos tu diseño y te',
+    highlightedWord: 'cotizamos hoy',
+    description: 'Poleras, polerones, uniformes y más. Atención por WhatsApp, retiro coordinado en Santiago y envíos a todo Chile.',
+    buttonText: 'Cotizar por WhatsApp',
+  };
+
   return (
     <section className="theme-textil py-12 relative overflow-hidden">
       {/* Background */}
@@ -42,12 +51,12 @@ export function TextilCTA() {
               className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-6"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Envíanos tu diseño y te{" "}
-              <span className="title-gradient-animated neon-text-intense">cotizamos hoy</span>
+              {cta.title}{" "}
+              <span className="title-gradient-animated neon-text-intense">{cta.highlightedWord}</span>
             </h2>
 
             <p className="text-lg sm:text-xl text-gray-300 mb-10">
-              Poleras, polerones, uniformes y más. Atención por WhatsApp, retiro coordinado en Santiago y envíos a todo Chile.
+              {cta.description}
             </p>
 
             <div className="flex justify-center">
@@ -58,7 +67,7 @@ export function TextilCTA() {
                 className="btn-racing shine-effect-auto"
               >
                 <MessageCircle className="h-5 w-5" />
-                Cotizar por WhatsApp
+                {cta.buttonText}
               </motion.button>
             </div>
           </div>

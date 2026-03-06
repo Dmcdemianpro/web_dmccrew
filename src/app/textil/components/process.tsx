@@ -1,9 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { DTF_PROCESS } from "@/lib/constants";
+import { useContent } from "@/context/ContentContext";
 
 export function TextilProcess() {
+  const { content } = useContent();
+  const steps = content.textilProcess || [];
+
   return (
     <section id="proceso" className="theme-textil py-10 md:py-14 relative overflow-hidden">
       {/* Dark Background */}
@@ -41,7 +44,7 @@ export function TextilProcess() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {DTF_PROCESS.map((step, index) => (
+          {steps.map((step, index) => (
             <motion.div
               key={step.step}
               initial={{ opacity: 0, y: 20 }}

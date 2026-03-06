@@ -7,9 +7,12 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import { TEXTIL_FAQ } from "@/lib/constants";
+import { useContent } from "@/context/ContentContext";
 
 export function TextilFAQ() {
+  const { content } = useContent();
+  const faqs = content.textilFaq || [];
+
   return (
     <section id="faq" className="theme-textil py-10 md:py-14 relative overflow-hidden">
       {/* Dark Background */}
@@ -47,7 +50,7 @@ export function TextilFAQ() {
         </motion.div>
 
         <Accordion type="single" defaultValue="0">
-          {TEXTIL_FAQ.map((faq, index) => (
+          {faqs.map((faq, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 10 }}

@@ -140,6 +140,18 @@ interface SiteContent {
   // Stock Designs (Poleras de Stock)
   stockDesigns: StockDesign[]
 
+  // Beneficios
+  textilBenefits: { icon: string; title: string; description: string }[]
+
+  // Proceso
+  textilProcess: { step: number; title: string; description: string }[]
+
+  // FAQ
+  textilFaq: { question: string; answer: string }[]
+
+  // CTA
+  textilCta: { title: string; highlightedWord: string; description: string; buttonText: string }
+
   // Portfolio
   portfolio: PortfolioItem[]
 
@@ -196,10 +208,9 @@ const defaultContent: SiteContent = {
     description: 'Tu diseno, impreso con calidad excepcional en la prenda que elijas. Poleras, polerones, uniformes corporativos y mas. Desde 1 unidad.',
   },
   textilStats: [
-    { value: '50+', label: 'Lavados garantizados', icon: 'Shirt' },
-    { value: '24h', label: 'Entregas express', icon: 'Zap' },
-    { value: '100%', label: 'Full color vibrante', icon: 'Palette' },
-    { value: '5★', label: 'Calificacion clientes', icon: 'Star' },
+    { value: '1+', label: 'Desde 1 unidad', icon: 'Star' },
+    { value: 'DTF', label: 'Alta calidad de impresión', icon: 'Palette' },
+    { value: '⚡', label: 'Entrega rápida', icon: 'Zap' },
   ],
   textilCatalog: [
     { id: 1, title: 'Poleras Streetwear', description: 'Algodon premium, oversize y regular fit. Disenos urbanos, graficos bold y colores vibrantes.', image: '', features: ['Oversize', 'Full Color', 'Urban'], highlighted: true },
@@ -267,6 +278,40 @@ const defaultContent: SiteContent = {
 
   // Stock Designs
   stockDesigns: [],
+
+  // Beneficios
+  textilBenefits: [
+    { icon: 'Package', title: 'Desde 1 unidad', description: 'Sin mínimos. Personalizamos desde una sola prenda sin costos adicionales.' },
+    { icon: 'Palette', title: 'Full color y gran definición', description: 'Ideal para logos, fotos e ilustraciones. Sin límite de colores ni degradados.' },
+    { icon: 'Droplet', title: 'Excelente terminación', description: 'Acabado profesional, colores vibrantes y alta adherencia. Resiste el lavado con cuidado normal.' },
+    { icon: 'Truck', title: 'Entrega rápida', description: 'Gestionamos tu pedido con tiempos ágiles. Retiro coordinado en Santiago o despacho a todo Chile.' },
+    { icon: 'MessageCircle', title: 'Atención directa y simple', description: 'Cotizas, confirmamos, producimos y coordinamos la entrega. Sin vueltas ni complicaciones.' },
+  ],
+
+  // Proceso
+  textilProcess: [
+    { step: 1, title: 'Envíanos tu idea o diseño', description: 'Un logo, imagen, referencia o simplemente lo que necesitas. Te ayudamos a prepararlo para la impresión.' },
+    { step: 2, title: 'Te cotizamos rápido', description: 'Revisamos tu pedido y te enviamos una propuesta clara con precio, plazo y opciones.' },
+    { step: 3, title: 'Producimos tu prenda', description: 'Fabricamos con impresión DTF de alta calidad: colores vibrantes, buen acabado y excelente adherencia.' },
+    { step: 4, title: 'Coordinamos la entrega', description: 'Retiras en Santiago según coordinación o solicitamos despacho a tu dirección en todo Chile.' },
+  ],
+
+  // FAQ
+  textilFaq: [
+    { question: '¿Trabajan desde 1 unidad?', answer: 'Sí. No exigimos pedidos mínimos. Puedes cotizar desde una sola prenda sin costo adicional.' },
+    { question: '¿Cuánto demora un pedido?', answer: 'Depende de la cantidad y el tipo de prenda. Escríbenos y te indicamos el plazo exacto para tu pedido.' },
+    { question: '¿Hacen envíos a regiones?', answer: 'Sí, enviamos a todo Chile vía Starken, Chilexpress o el courier que prefieras. El costo del envío es adicional.' },
+    { question: '¿Me ayudan con el diseño?', answer: 'Sí. Si tienes una idea, referencia o imagen base, te orientamos para que quede bien impresa en la prenda.' },
+    { question: '¿Puedo cotizar para mi marca o empresa?', answer: 'Sí. Trabajamos con pedidos individuales y producción para marcas, emprendimientos, eventos y empresas. Cotización personalizada según volumen.' },
+  ],
+
+  // CTA
+  textilCta: {
+    title: 'Tu diseño puede convertirse en una prenda lista para',
+    highlightedWord: 'usar, vender o regalar',
+    description: 'Personalizamos poleras y polerones con impresión DTF, atención directa y cotización rápida.',
+    buttonText: 'Cotizar por WhatsApp',
+  },
 
   // Portfolio
   portfolio: [

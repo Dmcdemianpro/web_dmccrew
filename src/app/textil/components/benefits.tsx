@@ -1,42 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Package, Palette, Droplet, Truck, MessageCircle, Star } from "lucide-react";
+import { Package, Palette, Droplet, Truck, MessageCircle, Star, LucideIcon } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
 
-const benefits = [
-  {
-    icon: Package,
-    title: "Desde 1 unidad",
-    description: "No necesitas hacer un pedido grande. Personalizamos desde una sola prenda sin costos adicionales.",
-  },
-  {
-    icon: Palette,
-    title: "Full color sin límite",
-    description: "Ideal para logos, ilustraciones, fotos y diseños complejos con muchos colores y degradados.",
-  },
-  {
-    icon: Droplet,
-    title: "Excelente terminación",
-    description: "Acabado profesional, colores vibrantes y alta adherencia. Resiste el lavado con cuidado normal.",
-  },
-  {
-    icon: Star,
-    title: "Te ayudamos con tu diseño",
-    description: "Si no tienes el archivo listo, te orientamos para que tu idea quede bien impresa en la prenda.",
-  },
-  {
-    icon: Truck,
-    title: "Entrega rápida",
-    description: "Gestionamos tu pedido con tiempos ágiles. Retiro coordinado en Santiago o despacho a todo Chile.",
-  },
-  {
-    icon: MessageCircle,
-    title: "Atención directa y simple",
-    description: "Cotizas, confirmamos, producimos y coordinamos la entrega. Sin vueltas ni complicaciones.",
-  },
-];
+const iconMap: Record<string, LucideIcon> = {
+  Package, Palette, Droplet, Truck, MessageCircle, Star,
+};
 
 export function TextilBenefits() {
+  const { content } = useContent();
+  const benefits = content.textilBenefits || [];
+
   return (
     <section className="theme-textil py-10 md:py-14 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] to-[#111]" />
@@ -69,7 +44,9 @@ export function TextilBenefits() {
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {benefits.map((benefit, index) => (
+          {benefits.map((benefit, index) => {
+            const Icon = iconMap[benefit.icon] || Star;
+            return (
             <motion.div
               key={benefit.title}
               initial={{ opacity: 0, y: 20 }}
@@ -81,7 +58,7 @@ export function TextilBenefits() {
             >
               <div className="card-shine" />
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ff0040]/20 to-[#ff6600]/10 flex items-center justify-center flex-shrink-0 relative z-10">
-                <benefit.icon className="w-5 h-5 text-[#ff0040]" />
+                <Icon className="w-5 h-5 text-[#ff0040]" />
               </div>
               <div className="relative z-10">
                 <h3
@@ -95,7 +72,8 @@ export function TextilBenefits() {
                 </p>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

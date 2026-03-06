@@ -4,12 +4,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Menu, X, MessageCircle, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
-import { openWhatsApp } from "@/lib/utils";
+import { getWhatsAppLink } from "@/lib/utils";
 import { useContent } from "@/context/ContentContext";
 
 const navLinks = [
-  { href: "/", label: "Inicio" },
-  { href: "/#galeria", label: "Galería" },
+  { href: "/#galeria", label: "Trabajos" },
   { href: "/#proceso", label: "Proceso" },
   { href: "/#precios", label: "Precios" },
   { href: "/#faq", label: "FAQ" },
@@ -81,13 +80,15 @@ export function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={() => openWhatsApp("textilPersonalizar")}
-              className="px-4 py-2 bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white rounded-lg font-medium hover:scale-105 transition-transform neon-glow"
+            <a
+              href={getWhatsAppLink("textilCotizarRapido")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white rounded-lg font-medium hover:scale-105 transition-transform neon-glow inline-flex items-center gap-2"
             >
-              <MessageCircle className="w-4 h-4 inline mr-2" />
-              Cotizar
-            </button>
+              <MessageCircle className="w-4 h-4" />
+              Cotizar por WhatsApp
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -122,13 +123,16 @@ export function Navbar() {
                 </li>
               ))}
             </ul>
-            <button
-              onClick={() => { openWhatsApp("textilPersonalizar"); setIsMobileMenuOpen(false); }}
-              className="mt-4 block w-full text-center px-4 py-3 bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white rounded-lg font-medium"
+            <a
+              href={getWhatsAppLink("textilCotizarRapido")}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-4 flex items-center justify-center gap-2 w-full text-center px-4 py-3 bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-white rounded-lg font-medium"
             >
-              <MessageCircle className="w-4 h-4 inline mr-2" />
-              Cotizar Ahora
-            </button>
+              <MessageCircle className="w-4 h-4" />
+              Cotizar por WhatsApp
+            </a>
           </div>
         </motion.div>
       )}

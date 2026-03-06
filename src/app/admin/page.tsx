@@ -37,6 +37,10 @@ import {
   Tag,
   Zap,
   Star,
+  MessageCircle,
+  HelpCircle,
+  Megaphone,
+  Users,
 } from "lucide-react";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
@@ -48,6 +52,11 @@ const tabs = [
   { id: "textil", label: "Textil", icon: Shirt },
   { id: "gallery", label: "Galeria Textil", icon: Camera },
   { id: "stockDesigns", label: "Poleras Stock", icon: Tag },
+  { id: "beneficios", label: "Beneficios", icon: Star },
+  { id: "proceso", label: "Proceso DTF", icon: Zap },
+  { id: "faq", label: "FAQ", icon: HelpCircle },
+  { id: "cta", label: "CTA Final", icon: Megaphone },
+  { id: "testimonios", label: "Testimonios", icon: Users },
   { id: "portfolio", label: "Portfolio", icon: FolderOpen },
   { id: "contact", label: "Contacto", icon: Phone },
   { id: "settings", label: "Ajustes", icon: Settings },
@@ -397,6 +406,21 @@ export default function AdminPage() {
                   deleteStockDesign={deleteStockDesign}
                   onSave={showSaveMessage}
                 />
+              )}
+              {activeTab === "beneficios" && (
+                <BeneficiosTab content={content} updateContent={updateContent} />
+              )}
+              {activeTab === "proceso" && (
+                <ProcesoTab content={content} updateContent={updateContent} />
+              )}
+              {activeTab === "faq" && (
+                <FAQTab content={content} updateContent={updateContent} />
+              )}
+              {activeTab === "cta" && (
+                <CTATab content={content} updateContent={updateContent} />
+              )}
+              {activeTab === "testimonios" && (
+                <TestimoniosTab content={content} updateContent={updateContent} />
               )}
               {activeTab === "portfolio" && (
                 <PortfolioTab
@@ -3349,6 +3373,299 @@ function PortfolioTab({ content, addPortfolioItem, updatePortfolioItem, deletePo
             <p>No hay proyectos de Textil DTF</p>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+// Beneficios Tab
+function BeneficiosTab({ content, updateContent }: any) {
+  const benefits = content.textilBenefits || [];
+  const iconOptions = ['Package', 'Palette', 'Droplet', 'Star', 'Truck', 'MessageCircle', 'Zap', 'CheckCircle', 'Shield', 'Heart'];
+
+  const update = (index: number, field: string, value: string) => {
+    const updated = benefits.map((b: any, i: number) =>
+      i === index ? { ...b, [field]: value } : b
+    );
+    updateContent('textilBenefits', updated);
+  };
+
+  const add = () => {
+    updateContent('textilBenefits', [...benefits, { icon: 'Star', title: 'Nuevo beneficio', description: 'Descripción del beneficio.' }]);
+  };
+
+  const remove = (index: number) => {
+    updateContent('textilBenefits', benefits.filter((_: any, i: number) => i !== index));
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="admin-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-lg font-semibold text-white">Sección Beneficios</h3>
+            <p className="text-sm text-gray-500 mt-1">Los 6 cards de "¿Por qué elegirnos?"</p>
+          </div>
+          <button onClick={add} className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors">
+            <Plus className="w-4 h-4" /> Agregar
+          </button>
+        </div>
+        <div className="space-y-4">
+          {benefits.map((benefit: any, index: number) => (
+            <div key={index} className="p-4 bg-white/5 rounded-lg border border-white/10 space-y-3">
+              <div className="flex gap-3">
+                <div className="w-36">
+                  <label className="block text-xs text-gray-500 mb-1">Icono</label>
+                  <select value={benefit.icon} onChange={(e) => update(index, 'icon', e.target.value)} className="admin-input w-full">
+                    {iconOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-500 mb-1">Título</label>
+                  <input type="text" value={benefit.title} onChange={(e) => update(index, 'title', e.target.value)} className="admin-input w-full" />
+                </div>
+                <div className="flex items-end">
+                  <button onClick={() => remove(index)} className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Descripción</label>
+                <textarea value={benefit.description} onChange={(e) => update(index, 'description', e.target.value)} className="admin-input w-full h-16 resize-none" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Proceso Tab
+function ProcesoTab({ content, updateContent }: any) {
+  const steps = content.textilProcess || [];
+
+  const update = (index: number, field: string, value: string) => {
+    const updated = steps.map((s: any, i: number) =>
+      i === index ? { ...s, [field]: value } : s
+    );
+    updateContent('textilProcess', updated);
+  };
+
+  const add = () => {
+    updateContent('textilProcess', [...steps, { step: steps.length + 1, title: 'Nuevo paso', description: 'Descripción del paso.' }]);
+  };
+
+  const remove = (index: number) => {
+    const updated = steps
+      .filter((_: any, i: number) => i !== index)
+      .map((s: any, i: number) => ({ ...s, step: i + 1 }));
+    updateContent('textilProcess', updated);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="admin-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-lg font-semibold text-white">Proceso DTF</h3>
+            <p className="text-sm text-gray-500 mt-1">Pasos del proceso de personalización</p>
+          </div>
+          <button onClick={add} className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors">
+            <Plus className="w-4 h-4" /> Agregar paso
+          </button>
+        </div>
+        <div className="space-y-4">
+          {steps.map((step: any, index: number) => (
+            <div key={index} className="p-4 bg-white/5 rounded-lg border border-white/10 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ff0040] to-[#ff6600] flex items-center justify-center text-white font-bold flex-shrink-0">
+                  {step.step}
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-500 mb-1">Título</label>
+                  <input type="text" value={step.title} onChange={(e) => update(index, 'title', e.target.value)} className="admin-input w-full" />
+                </div>
+                <button onClick={() => remove(index)} className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Descripción</label>
+                <textarea value={step.description} onChange={(e) => update(index, 'description', e.target.value)} className="admin-input w-full h-16 resize-none" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// FAQ Tab
+function FAQTab({ content, updateContent }: any) {
+  const faqs = content.textilFaq || [];
+
+  const update = (index: number, field: string, value: string) => {
+    const updated = faqs.map((f: any, i: number) =>
+      i === index ? { ...f, [field]: value } : f
+    );
+    updateContent('textilFaq', updated);
+  };
+
+  const add = () => {
+    updateContent('textilFaq', [...faqs, { question: 'Nueva pregunta', answer: 'Respuesta aquí.' }]);
+  };
+
+  const remove = (index: number) => {
+    updateContent('textilFaq', faqs.filter((_: any, i: number) => i !== index));
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="admin-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-lg font-semibold text-white">Preguntas Frecuentes</h3>
+            <p className="text-sm text-gray-500 mt-1">Preguntas y respuestas de la sección FAQ</p>
+          </div>
+          <button onClick={add} className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors">
+            <Plus className="w-4 h-4" /> Agregar
+          </button>
+        </div>
+        <div className="space-y-4">
+          {faqs.map((faq: any, index: number) => (
+            <div key={index} className="p-4 bg-white/5 rounded-lg border border-white/10 space-y-3">
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-500 mb-1">Pregunta</label>
+                  <input type="text" value={faq.question} onChange={(e) => update(index, 'question', e.target.value)} className="admin-input w-full" />
+                </div>
+                <button onClick={() => remove(index)} className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors self-end">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Respuesta</label>
+                <textarea value={faq.answer} onChange={(e) => update(index, 'answer', e.target.value)} className="admin-input w-full h-20 resize-none" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// CTA Tab
+function CTATab({ content, updateContent }: any) {
+  const cta = content.textilCta || {};
+
+  const update = (field: string, value: string) => {
+    updateContent('textilCta', { ...cta, [field]: value });
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="admin-card p-6">
+        <h3 className="text-lg font-semibold text-white mb-6">Sección CTA Final</h3>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Título (texto normal)</label>
+            <input type="text" value={cta.title || ''} onChange={(e) => update('title', e.target.value)} className="admin-input w-full" placeholder="Envíanos tu diseño y te" />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Palabra destacada (en rojo)</label>
+            <input type="text" value={cta.highlightedWord || ''} onChange={(e) => update('highlightedWord', e.target.value)} className="admin-input w-full" placeholder="cotizamos hoy" />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Descripción</label>
+            <textarea value={cta.description || ''} onChange={(e) => update('description', e.target.value)} className="admin-input w-full h-24 resize-none" />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Texto del botón WhatsApp</label>
+            <input type="text" value={cta.buttonText || ''} onChange={(e) => update('buttonText', e.target.value)} className="admin-input w-full" placeholder="Cotizar por WhatsApp" />
+          </div>
+        </div>
+      </div>
+      <div className="admin-card p-4 border-l-4 border-[#ff0040]">
+        <p className="text-sm text-gray-400">
+          <strong className="text-[#ff0040]">Vista previa del título:</strong>{' '}
+          <span className="text-white">{cta.title} </span>
+          <span className="text-[#ff0040] font-bold">{cta.highlightedWord}</span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Testimonios Tab
+function TestimoniosTab({ content, updateContent }: any) {
+  const testimonials = (content.testimonials || []).filter((t: any) => t.type === 'textil');
+  const allTestimonials = content.testimonials || [];
+
+  const update = (id: number, field: string, value: string) => {
+    const updated = allTestimonials.map((t: any) =>
+      t.id === id ? { ...t, [field]: value } : t
+    );
+    updateContent('testimonials', updated);
+  };
+
+  const add = () => {
+    const newId = Math.max(0, ...allTestimonials.map((t: any) => t.id)) + 1;
+    updateContent('testimonials', [...allTestimonials, { id: newId, quote: 'Testimonio del cliente.', author: 'Nombre', company: 'Empresa', type: 'textil' }]);
+  };
+
+  const remove = (id: number) => {
+    if (window.confirm('¿Eliminar este testimonio?')) {
+      updateContent('testimonials', allTestimonials.filter((t: any) => t.id !== id));
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="admin-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-lg font-semibold text-white">Testimonios</h3>
+            <p className="text-sm text-gray-500 mt-1">Opiniones de clientes que aparecen en la página</p>
+          </div>
+          <button onClick={add} className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors">
+            <Plus className="w-4 h-4" /> Agregar
+          </button>
+        </div>
+        <div className="space-y-4">
+          {testimonials.map((t: any) => (
+            <div key={t.id} className="p-4 bg-white/5 rounded-lg border border-white/10 space-y-3">
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Testimonio</label>
+                <textarea value={t.quote} onChange={(e) => update(t.id, 'quote', e.target.value)} className="admin-input w-full h-20 resize-none" />
+              </div>
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-500 mb-1">Autor</label>
+                  <input type="text" value={t.author} onChange={(e) => update(t.id, 'author', e.target.value)} className="admin-input w-full" />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-500 mb-1">Empresa</label>
+                  <input type="text" value={t.company} onChange={(e) => update(t.id, 'company', e.target.value)} className="admin-input w-full" />
+                </div>
+                <div className="flex items-end">
+                  <button onClick={() => remove(t.id)} className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+          {testimonials.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              <Users className="w-12 h-12 mx-auto mb-3 opacity-50" />
+              <p>No hay testimonios. Agrega el primero.</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

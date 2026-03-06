@@ -97,19 +97,19 @@ export function TextilGallery() {
             className="tag-racing mb-6"
           >
             <Camera className="w-4 h-4" />
-            Nuestros Trabajos
+            Trabajos Reales
           </motion.span>
 
           <h2
             className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Galeria{" "}
-            <span className="title-gradient-animated">Urban</span>
+            Así quedan{" "}
+            <span className="title-gradient-animated">nuestros trabajos</span>
           </h2>
 
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Explora nuestros trabajos mas recientes y dejate inspirar
+            Personalizamos poleras y polerones con impresión DTF de alta calidad, desde 1 unidad y con excelente terminación.
           </p>
           <div className="divider-racing mt-8" />
         </motion.div>
@@ -150,6 +150,7 @@ export function TextilGallery() {
                       src={item.url}
                       alt={item.caption}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
 
                     {/* Gradient overlay on center */}

@@ -129,9 +129,9 @@ export function TextilHero() {
         ))}
 
         {/* Overlays */}
-        <div className="absolute inset-0 bg-black/55" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
       </div>
 
       {/* Video Indicators */}
@@ -414,10 +414,10 @@ export function TextilHero() {
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
-                href="#catalogo"
+                href="/#galeria"
                 className="btn-racing-outline group"
               >
-                Ver Catalogo
+                Ver trabajos
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-2" />
               </Link>
             </motion.div>
