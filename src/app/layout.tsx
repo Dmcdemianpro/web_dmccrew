@@ -12,8 +12,8 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   title: {
-    default: "DMC Projects - Personalización Textil DTF",
-    template: "%s | DMC Projects",
+    default: "DMC Crew - Personalización Textil DTF",
+    template: "%s | DMC Crew",
   },
   description:
     "Impresión DTF y personalización textil en Chile. Poleras, polerones, uniformes y merchandising con entrega rápida y calidad premium.",
@@ -23,16 +23,16 @@ export const metadata: Metadata = {
     "uniformes corporativos",
     "polerones personalizados",
     "merchandising personalizado",
-    "DMC Projects",
+    "DMC Crew",
   ],
-  authors: [{ name: "DMC Projects" }],
-  creator: "DMC Projects",
+  authors: [{ name: "DMC Crew" }],
+  creator: "DMC Crew",
   openGraph: {
     type: "website",
     locale: "es_CL",
     url: "https://dmccrew.cl",
-    siteName: "DMC Projects",
-    title: "DMC Projects - Personalización Textil DTF",
+    siteName: "DMC Crew",
+    title: "DMC Crew - Personalización Textil DTF",
     description:
       "Impresión DTF y personalización textil en Chile. Poleras, polerones, uniformes y merchandising.",
     images: [
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "DMC Projects",
+        alt: "DMC Crew",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DMC Projects - Personalización Textil DTF",
+    title: "DMC Crew - Personalización Textil DTF",
     description:
       "Impresión DTF y personalización textil en Chile. Poleras, polerones, uniformes y merchandising.",
     images: ["/images/og-image.jpg"],

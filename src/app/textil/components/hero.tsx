@@ -300,7 +300,7 @@ export function TextilHero() {
               >
                 <Sparkles className="w-4 h-4" />
               </motion.span>
-              Impresion DTF Premium
+              Impresión DTF Premium
             </span>
           </motion.div>
 

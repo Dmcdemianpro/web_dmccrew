@@ -165,7 +165,7 @@ interface SiteContent {
 // Contenido por defecto
 const defaultContent: SiteContent = {
   // General
-  siteName: 'DMC Projects',
+  siteName: 'DMC Crew',
   siteTagline: 'Personalización textil DTF con calidad premium',
 
   // Diseño
@@ -179,14 +179,14 @@ const defaultContent: SiteContent = {
 
   // Selector de Bienvenida
   welcome: {
-    title: 'Bienvenido a DMC Projects',
-    subtitle: 'Personalizacion Textil DTF',
-    description: 'Selecciona tu prenda y personalizala con impresion DTF de alta calidad.',
+    title: 'Bienvenido a DMC Crew',
+    subtitle: 'Personalización Textil DTF',
+    description: 'Selecciona tu prenda y personalízala con impresión DTF de alta calidad.',
     backgroundImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80',
     textilCard: {
-      title: 'Personalizacion Textil',
-      subtitle: 'Impresion DTF Profesional',
-      description: 'Poleras, polerones, uniformes y merchandising con impresion DTF de alta calidad. Desde 1 unidad hasta pedidos mayoristas.',
+      title: 'Personalización Textil',
+      subtitle: 'Impresión DTF Profesional',
+      description: 'Poleras, polerones, uniformes y merchandising con impresión DTF de alta calidad. Desde 1 unidad hasta pedidos mayoristas.',
       image: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=800&q=80',
       buttonText: 'Explorar Textil DTF',
     },
@@ -204,8 +204,8 @@ const defaultContent: SiteContent = {
   textilHero: {
     title1: 'PERSONALIZA',
     title2: 'TU ESTILO',
-    subtitle: 'Impresion DTF Profesional',
-    description: 'Tu diseno, impreso con calidad excepcional en la prenda que elijas. Poleras, polerones, uniformes corporativos y mas. Desde 1 unidad.',
+    subtitle: 'Impresión DTF Profesional',
+    description: 'Tu diseño, impreso con calidad excepcional en la prenda que elijas. Poleras, polerones, uniformes y más. Desde 1 unidad.',
   },
   textilStats: [
     { value: '1+', label: 'Desde 1 unidad', icon: 'Star' },
@@ -213,15 +213,15 @@ const defaultContent: SiteContent = {
     { value: '⚡', label: 'Entrega rápida', icon: 'Zap' },
   ],
   textilCatalog: [
-    { id: 1, title: 'Poleras Streetwear', description: 'Algodon premium, oversize y regular fit. Disenos urbanos, graficos bold y colores vibrantes.', image: '', features: ['Oversize', 'Full Color', 'Urban'], highlighted: true },
+    { id: 1, title: 'Poleras Streetwear', description: 'Algodón premium, oversize y regular fit. Diseños urbanos, gráficos bold y colores vibrantes.', image: '', features: ['Oversize', 'Full Color', 'Urban'], highlighted: true },
     { id: 2, title: 'Polerones Urban', description: 'Hoodies premium con o sin capucha. Estilo streetwear, perfectos para tu crew o marca.', image: '', features: ['Hoodie', 'Crew', 'Premium'], highlighted: false },
-    { id: 3, title: 'Uniformes Corporativos', description: 'Polos, camisas y chaquetas con tu identidad. Cotizacion especial por volumen.', image: '', features: ['Logo', 'Bordado', 'Volumen'], highlighted: false },
-    { id: 4, title: 'Gorras & Accesorios', description: 'Snapbacks, dad hats, beanies y mas. Complementa tu estilo con accesorios personalizados.', image: '', features: ['Snapback', 'Beanie', 'Custom'], highlighted: false },
+    { id: 3, title: 'Uniformes Corporativos', description: 'Polos, camisas y chaquetas con tu identidad. Cotización especial por volumen.', image: '', features: ['Logo', 'Bordado', 'Volumen'], highlighted: false },
+    { id: 4, title: 'Gorras & Accesorios', description: 'Snapbacks, dad hats, beanies y más. Complementa tu estilo con accesorios personalizados.', image: '', features: ['Snapback', 'Beanie', 'Custom'], highlighted: false },
   ],
   textilServices: [
-    { id: 1, icon: 'Shirt', title: 'Poleras', description: 'Algodon, poliester o mezcla. Cuello redondo o polo. Desde talla XS hasta XXXL.', image: '/images/polera.jpg' },
+    { id: 1, icon: 'Shirt', title: 'Poleras', description: 'Algodón, poliéster o mezcla. Cuello redondo o polo. Desde talla XS hasta XXXL.', image: '/images/polera.jpg' },
     { id: 2, icon: 'Jacket', title: 'Polerones', description: 'Con o sin capucha, canguro o full zipper. Ideales para equipos de trabajo.', image: '/images/poleron.jpg' },
-    { id: 3, icon: 'Users', title: 'Uniformes Corporativos', description: 'Polos, camisas, chaquetas. Con tu logo y datos. Cotizacion especial por volumen.', image: '/images/uniforme.jpg' },
+    { id: 3, icon: 'Users', title: 'Uniformes Corporativos', description: 'Polos, camisas, chaquetas. Con tu logo y datos. Cotización especial por volumen.', image: '/images/uniforme.jpg' },
     { id: 4, icon: 'Gift', title: 'Merchandising', description: 'Bolsos, gorros, delantales y mas. Si es tela, probablemente lo podemos personalizar.', image: '/images/merchandising.jpg' },
   ],
   textilPricing: {
@@ -321,8 +321,9 @@ const defaultContent: SiteContent = {
 
   // Testimoniales
   testimonials: [
-    { id: 2, quote: 'Las poleras quedaron increibles. Los colores vibrantes y la durabilidad superaron expectativas.', author: 'Gerente de RRHH', company: 'Empresa Tech', type: 'textil' },
-    { id: 4, quote: 'Pedimos 200 uniformes personalizados y todo llego perfecto. Ya preparamos el siguiente pedido.', author: 'Dueno', company: 'Restaurant', type: 'textil' },
+    { id: 1, quote: 'Pedí 30 poleras para mi equipo y quedaron perfectas. Los colores salieron exactos al diseño y llegaron antes de lo esperado.', author: 'Francisca M.', company: 'Coordinadora de eventos', type: 'textil' },
+    { id: 2, quote: 'Desde la primera consulta por WhatsApp hasta la entrega todo fue muy directo. Sin vueltas. Las poleras para mi marca quedaron increíbles.', author: 'Rodrigo A.', company: 'Emprendimiento streetwear', type: 'textil' },
+    { id: 3, quote: 'Cotizamos uniformes para 80 personas y el precio fue muy competitivo. La calidad de la impresión DTF aguanta perfectamente el lavado.', author: 'Javier C.', company: 'Empresa de servicios', type: 'textil' },
   ],
 
   // Contacto

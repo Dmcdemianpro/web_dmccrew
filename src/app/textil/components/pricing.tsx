@@ -226,8 +226,7 @@ export function TextilPricing() {
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 <Icon className="w-4 h-4" />
-                <span className="hidden sm:inline">{cat.nombre}</span>
-                <span className="sm:hidden">{cat.nombre.split(" ").pop()}</span>
+                <span>{cat.nombre}</span>
                 {isActive && (
                   <motion.div
                     layoutId="activeTabIndicator"

@@ -44,7 +44,7 @@ export function TextilCTA() {
               className="tag-racing mb-6"
             >
               <Sparkles className="w-4 h-4" />
-              Cotizacion Gratis
+              Cotización Gratis
             </motion.div>
 
             <h2

@@ -44,7 +44,7 @@ export function Navbar() {
             {content.design?.logo ? (
               <img
                 src={content.design.logo}
-                alt={content.siteName || "DMC Projects"}
+                alt={content.siteName || "DMC Crew"}
                 className="h-14 w-auto max-w-[200px] object-contain"
               />
             ) : (
@@ -57,7 +57,7 @@ export function Navbar() {
                   <Zap className="w-5 h-5 text-white" />
                 </motion.div>
                 <div>
-                  <span className="font-bold text-white">DMC Projects</span>
+                  <span className="font-bold text-white">DMC Crew</span>
                   <span className="block text-xs text-[#ff0040]">Textil DTF</span>
                 </div>
               </>

@@ -17,7 +17,7 @@ export function Footer() {
               {content.design?.logo ? (
                 <img
                   src={content.design.logo}
-                  alt={content.siteName || "DMC Projects"}
+                  alt={content.siteName || "DMC Crew"}
                   className="h-14 w-auto max-w-[180px] object-contain"
                 />
               ) : (
@@ -26,14 +26,14 @@ export function Footer() {
                     <Zap className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <span className="font-bold text-white">DMC Projects</span>
+                    <span className="font-bold text-white">DMC Crew</span>
                     <span className="block text-xs text-[#ff0040]">Textil DTF</span>
                   </div>
                 </>
               )}
             </div>
             <p className="text-sm text-gray-400">
-              Personalizacion textil profesional con impresion DTF de alta calidad.
+              Personalización textil profesional con impresión DTF de alta calidad.
             </p>
           </div>
 
@@ -61,7 +61,7 @@ export function Footer() {
 
         <div className="border-t border-white/10 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} DMC Projects. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} DMC Crew. Todos los derechos reservados.
           </p>
         </div>
       </div>
